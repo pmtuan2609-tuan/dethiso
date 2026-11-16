@@ -920,6 +920,42 @@
             .flow-body { padding: 16px; }
             .flow-nav { padding: 12px 16px; }
         }
+    
+        /* ===== Nâng cấp giao diện ===== */
+        body { background: radial-gradient(1100px 480px at 8% -8%, #dbeafe 0, transparent 60%), radial-gradient(900px 420px at 100% 0, #e0e7ff 0, transparent 55%), #f8fafc; background-attachment: fixed; }
+        header { backdrop-filter: blur(10px); background: rgba(255,255,255,.88); }
+        .tab-btn.active { background: linear-gradient(135deg, #2563eb, #4f46e5); }
+        .btn { border-radius: 12px; }
+        .btn:active { transform: scale(.97); }
+        .card { border-radius: 18px; box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 10px 26px -14px rgba(15,23,42,.14); transition: box-shadow .2s, transform .2s; }
+        .card:hover { box-shadow: 0 1px 2px rgba(15,23,42,.05), 0 16px 34px -14px rgba(15,23,42,.2); }
+        .presentation-container { background: linear-gradient(160deg, #eff6ff 0%, #f8fafc 45%, #f5f3ff 100%); }
+        .pres-progress { position: absolute; left: 0; top: 0; width: 100%; height: 6px; background: #e2e8f0; }
+        .pres-progress i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, #3b82f6, #8b5cf6); transition: width .35s; }
+        .pres-question { font-size: clamp(26px, 3.3vw, 46px); font-weight: 900; }
+        .pres-opt-card { position: relative; overflow: hidden; border-radius: 20px; padding: 22px 26px; font-size: clamp(20px, 2.3vw, 30px); }
+        .pres-opt-card > span:not(.pres-dist) { position: relative; z-index: 1; }
+        .pres-opt-card:nth-child(1) { border-left: 8px solid #ef4444; }
+        .pres-opt-card:nth-child(2) { border-left: 8px solid #3b82f6; }
+        .pres-opt-card:nth-child(3) { border-left: 8px solid #f59e0b; }
+        .pres-opt-card:nth-child(4) { border-left: 8px solid #10b981; }
+        .pres-letter { width: 56px; height: 56px; font-size: 28px; border-radius: 16px; flex-shrink: 0; }
+        .pres-dist { position: absolute; inset: 0; pointer-events: none; display: none; }
+        .pres-dist i { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: rgba(99,102,241,.14); transition: width .5s; }
+        .pres-dist b { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); font-size: 22px; color: #475569; }
+        .revealed .pres-dist { display: block; }
+        .pres-opt-card.correct-revealed .pres-dist i { background: rgba(16,185,129,.24); }
+        .pres-toolbar { backdrop-filter: blur(10px); }
+    
+        /* ===== Đồng hồ đếm ngược ===== */
+        .tm-box { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 800; color: #334155; background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 6px 10px; margin-right: 8px; }
+        .tm-in { width: 62px; border: 1px solid var(--border); border-radius: 8px; padding: 4px 6px; font: inherit; text-align: center; }
+        .pres-timer { display: none; align-items: center; gap: 8px; font-size: 24px; font-weight: 900; font-variant-numeric: tabular-nums; background: #fff; border: 2px solid var(--border); border-radius: 14px; padding: 4px 12px; color: #0f172a; }
+        .pres-timer button { border: 1px solid var(--border); background: #f1f5f9; border-radius: 8px; padding: 3px 9px; font: 800 14px var(--font-sans); cursor: pointer; }
+        .pres-timer.low { color: #d97706; border-color: #f59e0b; }
+        .pres-timer.end { color: #fff; background: #dc2626; border-color: #dc2626; animation: tmblink 1s infinite; }
+        .pres-timer.end button { color: #0f172a; }
+        @keyframes tmblink { 50% { opacity: .65; } }
     </style>
 
     <!-- KaTeX for Math / LaTeX rendering -->
@@ -928,6 +964,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 
     <!-- SheetJS -->
+    <link rel="stylesheet" href="https://tikzjax.com/v1/fonts.css">
+    <script src="https://tikzjax.com/v1/tikzjax.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -958,6 +996,7 @@
             <div class="header-actions">
                 <button class="btn btn-ghost hide-sm" onclick="openQrModal()" title="Kết nối điện thoại để quét thẻ">📱 Kết nối ĐT</button>
                 <button class="btn btn-ghost hide-sm" onclick="openVideoModal()">🎬 Video</button>
+                <label class="tm-box" title="Thời gian mỗi câu (0 = không đếm giờ)">⏱ <input type="number" class="tm-in" min="0" max="3600" step="5" oninput="setTimerSec(this.value)"> giây/câu</label>
                 <button class="btn btn-success" onclick="startPresentation()">▶ Trình chiếu</button>
             </div>
         </div>
@@ -1018,7 +1057,8 @@
                         <div class="step-num">3</div>
                         <h4>Bắt đầu trình chiếu</h4>
                         <p>Chiếu câu hỏi lên màn hình, học sinh giơ thẻ, thầy cô quét và xem kết quả từng em.</p>
-                        <button class="btn btn-success" onclick="startPresentation()">▶ Bật trình chiếu</button>
+                        <label class="tm-box" title="Thời gian mỗi câu (0 = không đếm giờ)">⏱ <input type="number" class="tm-in" min="0" max="3600" step="5" oninput="setTimerSec(this.value)"> giây/câu</label>
+                <button class="btn btn-success" onclick="startPresentation()">▶ Bật trình chiếu</button>
                     </div>
                 </div>
             
@@ -2768,6 +2808,267 @@ D. Do môi trường sống thay đổi
             try { navigator.wakeLock && navigator.wakeLock.request('screen').catch(() => {}); } catch (e) {}
         }
         document.addEventListener('DOMContentLoaded', () => { if (location.hash.startsWith('#phone=')) initPhone(location.hash.slice(7)); });
+
+        // ===== TikZ: tikzpicture thường -> TikZJax; bảng biến thiên tkz-tab -> tự vẽ =====
+        function tkSplit(str, sep) {
+            const o = []; let d = 0, m = false, cur = '';
+            for (const ch of str) {
+                if (ch === '$') m = !m; else if (!m) { if (ch === '{') d++; else if (ch === '}') d--; }
+                if (ch === sep && !m && d === 0) { o.push(cur); cur = ''; } else cur += ch;
+            }
+            o.push(cur); return o.map(x => x.trim());
+        }
+        function tkRead(s, i, n) {
+            let opt = ''; while (i < s.length && /\s/.test(s[i])) i++;
+            if (s[i] === '[') { const e = s.indexOf(']', i); opt = s.slice(i + 1, e); i = e + 1; }
+            const g = [];
+            for (let k = 0; k < n; k++) {
+                while (i < s.length && s[i] !== '{') i++;
+                let d = 0; const st = i;
+                for (; i < s.length; i++) { if (s[i] === '{') d++; else if (s[i] === '}' && --d === 0) break; }
+                g.push(s.slice(st + 1, i)); i++;
+            }
+            return { opt, g, i };
+        }
+        function tkzTabHTML(src) {
+            const m = src.match(/\\tkzTabInit/); if (!m) return null;
+            const U = 40, p = tkRead(src, m.index + 11, 2);
+            const lg = +((p.opt.match(/lgt\s*=\s*([\d.]+)/) || [])[1] || 2), es = +((p.opt.match(/espcl\s*=\s*([\d.]+)/) || [])[1] || 2);
+            const rows = tkSplit(p.g[0], ',').map(r => { const a = tkSplit(r, '/'); return { lb: a[0], h: parseFloat(a[1]) || 1 }; });
+            const xs = tkSplit(p.g[1], ',');
+            const L = Math.max(lg * U, 70), S = Math.max(es * U, 60), n = xs.length, W = L + S * (n - 1) + S * 0.9, X = i => L + S * 0.45 + i * S;
+            const tops = [0]; rows.forEach((r, i) => tops.push(tops[i] + Math.max(r.h * U, 30)));
+            const H = tops[rows.length]; let svg = '', html = '';
+            const lab = (x, y, t, bg) => html += `<div style="position:absolute;left:${x}px;top:${y}px;transform:translate(-50%,-50%);font-size:16px;white-space:nowrap;${bg ? 'background:#fff;padding:0 2px;' : ''}">${escapeHtml(t)}</div>`;
+            const ln = (x1, y1, x2, y2, ex) => svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#000" stroke-width="1.3" ${ex || ''}/>`;
+            svg += `<defs><marker id="tka" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z"/></marker><pattern id="tkh" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#000" stroke-width="1"/></pattern></defs><rect x="0.5" y="0.5" width="${W}" height="${H}" fill="none" stroke="#000" stroke-width="1.6"/>`;
+            ln(L, 0, L, H); for (let i = 1; i < rows.length; i++) ln(0, tops[i], W, tops[i]);
+            rows.forEach((r, i) => lab(L / 2, (tops[i] + tops[i + 1]) / 2, r.lb));
+            xs.forEach((x, i) => lab(X(i), tops[1] / 2, x));
+            const wd = t => Math.max(16, t.replace(/[\\${}]/g, '').length * 8 + 8);
+            let ri = 1, c; const re = /\\tkzTab(Line|Var)/g;
+            while ((c = re.exec(src))) {
+                const q = tkRead(src, c.index + c[0].length, 1); re.lastIndex = q.i;
+                const t0 = tops[ri], t1 = tops[ri + 1]; if (t1 === undefined) break;
+                const cy = (t0 + t1) / 2;
+                if (c[1] === 'Line') {
+                    tkSplit(q.g[0], ',').forEach((e, k) => {
+                        if (k % 2) { if (e === '+' || e === '-') lab((X((k - 1) / 2) + X((k + 1) / 2)) / 2, cy, e === '-' ? '−' : '+'); return; }
+                        const x = X(k / 2);
+                        if (e === 'z' || e === '0') { ln(x, t0, x, t1); lab(x, cy, '0', 1); }
+                        else if (e === 't') ln(x, t0, x, t1, 'stroke-dasharray="4 3"');
+                        else if (e === 'd') { ln(x - 2, t0, x - 2, t1); ln(x + 2, t0, x + 2, t1); }
+                        else if (e === 'h') svg += `<rect x="${x - 6}" y="${t0}" width="12" height="${t1 - t0}" fill="url(#tkh)"/>`;
+                    });
+                } else {
+                    const hiY = t0 + (t1 - t0) * 0.2, loY = t0 + (t1 - t0) * 0.8, nodes = [];
+                    const lv = ch => ch === '+' ? hiY : ch === '-' ? loY : cy;
+                    tkSplit(q.g[0], ',').forEach((it, i) => {
+                        const a = tkSplit(it, '/'), pre = a[0].replace(/\s/g, ''), x = X(i), pm = pre.match(/^([+\-R]?)D([+\-R]?)$/);
+                        if (pm) {
+                            ln(x - 2, t0, x - 2, t1); ln(x + 2, t0, x + 2, t1);
+                            const l = a[1] || '', r = a[2] || '';
+                            if (pm[1] && pm[1] !== 'R') nodes.push({ x: x - 8 - wd(l) / 2, y: lv(pm[1]), l });
+                            if (pm[2] && pm[2] !== 'R') nodes.push({ x: x + 8 + wd(r) / 2, y: lv(pm[2]), l: r, brk: 1 });
+                        } else if (pre === '+' || pre === '-') nodes.push({ x, y: lv(pre), l: a[1] || '' });
+                        else nodes.push({ x, y: cy, l: '', skip: 1 });
+                    });
+                    nodes.forEach(nd => { if (!nd.skip) lab(nd.x, nd.y, nd.l); });
+                    for (let i = 1; i < nodes.length; i++) {
+                        const a = nodes[i - 1], b = nodes[i];
+                        if (a.skip || b.skip || b.brk) continue;
+                        const wa = wd(a.l) / 2 + 3, wb = wd(b.l) / 2 + 3, dy = b.y - a.y, sg = dy > 0 ? 9 : dy < 0 ? -9 : 0;
+                        if (b.x - a.x < wa + wb + 6) continue;
+                        ln(a.x + wa, a.y + sg, b.x - wb, b.y - sg, 'marker-end="url(#tka)"');
+                    }
+                }
+                ri++;
+            }
+            return `<div class="tkz-fig" style="position:relative;width:${W + 2}px;height:${H + 2}px;margin:14px auto;font-weight:400;color:#000"><svg width="${W + 2}" height="${H + 2}" style="position:absolute;left:0;top:0">${svg}</svg>${html}</div>`;
+        }
+        function tikzFill(el, text) {
+            if (typeof el === 'string') el = document.getElementById(el);
+            if (!el || !/\\begin\{tikzpicture\}/.test(text)) return;
+            const pre = (text.match(/\\(usetikzlibrary|usepackage)\{[^}]*\}/g) || []).join('');
+            const re = /\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}/g;
+            let out = '', last = 0, m;
+            while ((m = re.exec(text))) {
+                out += escapeHtml(text.slice(last, m.index).replace(/\\(usetikzlibrary|usepackage)\{[^}]*\}/g, ''));
+                const blk = m[0];
+                out += /\\tkzTabInit/.test(blk) ? (tkzTabHTML(blk) || '')
+                    : `<div style="text-align:center;margin:12px 0"><script type="text/tikz" data-show-console="false">${pre}${/axis/.test(blk) ? '\\usepackage{pgfplots}\\pgfplotsset{compat=1.16}' : ''}\\begin{document}${blk}\\end{document}<\/script></div>`;
+                last = re.lastIndex;
+            }
+            out += escapeHtml(text.slice(last).replace(/\\(usetikzlibrary|usepackage)\{[^}]*\}/g, ''));
+            el.innerHTML = out;
+        }
+        const _rc3 = renderCurrentSlide;
+        renderCurrentSlide = function () {
+            _rc3.apply(this, arguments);
+            const q = questions[currentQuestionIndex]; if (!q) return;
+            tikzFill('pres-question-text', q.question);
+            ['A', 'B', 'C', 'D'].forEach(l => { const e = document.querySelector('#pres-opt-' + l + ' span:last-child'); if (e && q.options[l]) tikzFill(e, q.options[l]); });
+            renderAllMath();
+        };
+
+        // ===== Nâng cấp trình chiếu: thanh tiến độ, toàn màn hình, phổ đáp án sau khi lộ đáp án =====
+        (function () {
+            const pc = document.getElementById('presentation-container');
+            pc.insertAdjacentHTML('afterbegin', '<div class="pres-progress"><i id="pres-prog"></i></div>');
+            const hd = pc.querySelector('.pres-header > div:last-child');
+            if (hd) hd.insertAdjacentHTML('afterbegin', '<button class="btn btn-outline" onclick="togglePresFullscreen()" title="Toàn màn hình (F)" style="margin-right:8px">⛶</button>');
+        })();
+        function togglePresFullscreen() {
+            if (document.fullscreenElement) document.exitFullscreen();
+            else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {});
+        }
+        document.addEventListener('keydown', e => {
+            if (e.key.toLowerCase() === 'f' && document.getElementById('presentation-container').classList.contains('active') && !/INPUT|TEXTAREA/.test(e.target.tagName)) togglePresFullscreen();
+        });
+        function updateDist() {
+            const q = questions[currentQuestionIndex]; if (!q) return;
+            const v = sessionResults[q.id] || {}, cnt = { A: 0, B: 0, C: 0, D: 0 }, tot = Math.max(1, students.length);
+            Object.values(v).forEach(a => { if (cnt[a] !== undefined) cnt[a]++; });
+            ['A', 'B', 'C', 'D'].forEach(l => {
+                const c = document.getElementById('pres-opt-' + l), d = c && c.querySelector('.pres-dist'); if (!d) return;
+                d.firstChild.style.width = (cnt[l] / tot * 100) + '%'; d.lastChild.textContent = cnt[l] + ' em';
+            });
+        }
+        const _rc4 = renderCurrentSlide;
+        renderCurrentSlide = function () {
+            _rc4.apply(this, arguments);
+            const oc = document.getElementById('pres-options-container'); oc.classList.remove('revealed');
+            oc.querySelectorAll('.pres-opt-card').forEach(c => c.insertAdjacentHTML('beforeend', '<span class="pres-dist"><i></i><b></b></span>'));
+            const pg = document.getElementById('pres-prog'); if (pg) pg.style.width = ((currentQuestionIndex + 1) / questions.length * 100) + '%';
+            updateDist();
+        };
+        const _usp2 = updateScannedProgress; updateScannedProgress = function () { _usp2.apply(this, arguments); updateDist(); };
+        const _rca = revealCorrectAnswer;
+        revealCorrectAnswer = function () { _rca.apply(this, arguments); document.getElementById('pres-options-container').classList.add('revealed'); updateDist(); };
+
+        // ===== Đồng hồ đếm ngược mỗi câu =====
+        const TM_KEY = 'dethiso_timer_v1';
+        let tmSec = +(localStorage.getItem(TM_KEY) || 0), tmLeft = 0, tmRun = false, tmInt = null;
+        function setTimerSec(v) {
+            tmSec = Math.max(0, parseInt(v) || 0);
+            try { localStorage.setItem(TM_KEY, tmSec); } catch (e) {}
+            document.querySelectorAll('.tm-in').forEach(i => { if (i !== document.activeElement) i.value = tmSec; });
+        }
+        function tmDraw() {
+            const e = document.getElementById('pres-timer'); if (!e) return;
+            e.style.display = tmSec ? 'flex' : 'none';
+            e.classList.toggle('low', tmSec > 0 && tmLeft > 0 && tmLeft <= 10);
+            e.classList.toggle('end', tmSec > 0 && tmLeft === 0);
+            document.getElementById('tm-text').textContent = tmLeft === 0 ? 'Hết giờ!' : String(Math.floor(tmLeft / 60)).padStart(2, '0') + ':' + String(tmLeft % 60).padStart(2, '0');
+            document.getElementById('tm-pp').textContent = tmRun ? '⏸' : '▶';
+        }
+        function tmReset() {
+            clearInterval(tmInt); tmLeft = tmSec; tmRun = tmSec > 0;
+            tmInt = setInterval(() => {
+                if (!tmRun) return;
+                if (tmLeft > 0) {
+                    tmLeft--;
+                    if (tmLeft > 0 && tmLeft <= 5) playBeep(500);
+                    if (tmLeft === 0) { tmRun = false; playBeep(300); setTimeout(() => playBeep(300), 250); }
+                }
+                tmDraw();
+            }, 1000);
+            tmDraw();
+        }
+        function tmToggle() { if (tmLeft > 0) { tmRun = !tmRun; tmDraw(); } }
+        function tmAdd(d) { tmLeft = Math.max(0, tmLeft + d); if (tmLeft > 0 && d > 0) tmRun = true; tmDraw(); }
+        document.getElementById('pres-counter').insertAdjacentHTML('afterend', '<div id="pres-timer" class="pres-timer">⏱ <span id="tm-text"></span><button id="tm-pp" onclick="tmToggle()"></button><button onclick="tmAdd(30)">+30s</button><button onclick="tmReset()" title="Đếm lại">↺</button></div>');
+        setTimerSec(tmSec);
+        const _rc5 = renderCurrentSlide; renderCurrentSlide = function () { _rc5.apply(this, arguments); tmReset(); };
+        const _exp = exitPresentation; exitPresentation = function () { _exp.apply(this, arguments); tmRun = false; clearInterval(tmInt); };
+        document.addEventListener('keydown', e => {
+            if (e.key.toLowerCase() === 't' && document.getElementById('presentation-container').classList.contains('active') && !/INPUT|TEXTAREA/.test(e.target.tagName)) tmToggle();
+        });
+
+        // ===== DANH SÁCH THEO LỚP + XEM BÀI LÀM CỦA HỌC SINH =====
+        const CLS_KEY = 'dethiso_classes_v1';
+        let CLS = (() => { let d; try { d = JSON.parse(localStorage.getItem(CLS_KEY)); } catch (e) {} return (d && d.list && d.list.length) ? d : { cur: 'c1', list: [{ id: 'c1', name: 'Lớp 1', students: [], results: {} }] }; })();
+        if (!CLS.list.some(c => c.id === CLS.cur)) CLS.cur = CLS.list[0].id;
+        function clsSave() {
+            const c = CLS.list.find(x => x.id === CLS.cur); if (c) { c.students = students; c.results = sessionResults; }
+            try { localStorage.setItem(CLS_KEY, JSON.stringify(CLS)); } catch (e) {}
+        }
+        function clsRefresh() {
+            document.querySelectorAll('.cls-sel').forEach(sel => {
+                sel.innerHTML = CLS.list.map(c => `<option value="${c.id}" ${c.id === CLS.cur ? 'selected' : ''}>${escapeHtml(c.name)} (${(c.id === CLS.cur ? students : (c.students || [])).length} HS)</option>`).join('');
+            });
+            renderClassroom(); renderReports(); renderDashboard();
+        }
+        function clsSwitch(id) {
+            if (id === CLS.cur) return;
+            clsSave();
+            const c = CLS.list.find(x => x.id === id); if (!c) return;
+            CLS.cur = id; students = c.students || []; sessionResults = c.results || {};
+            saveStudents();
+            try { localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults)); } catch (e) {}
+            clsSave(); clsRefresh();
+        }
+        function clsAdd() {
+            const name = (prompt('Tên lớp mới (VD: 12A1):') || '').trim(); if (!name) return;
+            clsSave(); const id = 'c' + Date.now();
+            CLS.list.push({ id, name, students: [], results: {} }); clsSwitch(id);
+        }
+        function clsRename() {
+            const c = CLS.list.find(x => x.id === CLS.cur);
+            const name = (prompt('Đổi tên lớp:', c.name) || '').trim(); if (!name) return;
+            c.name = name; clsSave(); clsRefresh();
+        }
+        function clsDel() {
+            if (CLS.list.length < 2) { alert('Cần giữ lại ít nhất một lớp.'); return; }
+            const c = CLS.list.find(x => x.id === CLS.cur);
+            if (!confirm(`Xoá lớp "${c.name}" cùng danh sách và kết quả của lớp?`)) return;
+            const rest = CLS.list.filter(x => x.id !== c.id), nx = rest[0];
+            CLS.list = rest; CLS.cur = nx.id; students = nx.students || []; sessionResults = nx.results || {};
+            saveStudents();
+            try { localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults)); } catch (e) {}
+            clsSave(); clsRefresh();
+        }
+        function stuStat(s) {
+            let done = 0, ok = 0;
+            questions.forEach(q => { const a = (sessionResults[q.id] || {})[s.id]; if (a) { done++; if (a === q.answer) ok++; } });
+            return { done, ok };
+        }
+        function renderStuList() {
+            const q = questions[currentQuestionIndex], c = CLS.list.find(x => x.id === CLS.cur);
+            document.getElementById('stu-title').textContent = '📋 Bài làm — ' + (c ? c.name : '');
+            let h = `<table class="stu-t"><tr><th>#</th><th>Họ tên</th><th>Đã làm</th><th>Đúng</th><th>Câu ${currentQuestionIndex + 1}</th></tr>`;
+            students.forEach((s, i) => {
+                const t = stuStat(s), a = q && (sessionResults[q.id] || {})[s.id];
+                h += `<tr class="rw" data-id="${s.id}" onclick="openStu(this.dataset.id)"><td>${i + 1}</td><td>${escapeHtml(s.name)}</td><td>${t.done}/${questions.length}</td><td>${t.ok}</td><td>${a ? '<b style="color:#059669">✓ đã trả lời</b>' : '<span style="color:#94a3b8">—</span>'}</td></tr>`;
+            });
+            document.getElementById('stu-body').innerHTML = h + '</table>' + (students.length ? '' : '<p style="color:#64748b">Lớp chưa có học sinh — vào tab "Lớp &amp; Thẻ" để tải danh sách.</p>');
+        }
+        function openStuList() { renderStuList(); document.getElementById('stu-list').classList.add('active'); }
+        function openStu(id) {
+            const s = students.find(x => String(x.id) === String(id)); if (!s) return;
+            const t = stuStat(s);
+            document.getElementById('sd-title').textContent = `${s.name} — đúng ${t.ok}/${questions.length} câu`;
+            let h = '<table class="stu-t"><tr><th>Câu</th><th>Nội dung</th><th>Chọn</th><th>Đúng</th><th></th></tr>';
+            questions.forEach((q, i) => {
+                const a = (sessionResults[q.id] || {})[s.id];
+                const txt = escapeHtml(String(q.question).replace(/\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}/g, '[hình]').slice(0, 60));
+                h += `<tr><td>${i + 1}</td><td style="color:#475569">${txt}</td><td><b>${a || '—'}</b></td><td>${q.answer}</td><td>${!a ? '' : a === q.answer ? '<span style="color:#059669;font-weight:900">✓</span>' : '<span style="color:#dc2626;font-weight:900">✗</span>'}</td></tr>`;
+            });
+            document.getElementById('sd-body').innerHTML = h + '</table>';
+            document.getElementById('stu-detail').classList.add('active');
+        }
+        function closeStu(id) { document.getElementById(id).classList.remove('active'); }
+        document.head.insertAdjacentHTML('beforeend', '<style>.stu-t{width:100%;border-collapse:collapse;font-size:15px}.stu-t th,.stu-t td{padding:8px 10px;border-bottom:1px solid #e2e8f0;text-align:left}.stu-t th{color:#64748b;font-size:13px}.stu-t tr.rw{cursor:pointer}.stu-t tr.rw:hover{background:#eff6ff}.cls-sel{padding:8px 10px;border:1px solid var(--border);border-radius:12px;font:800 14px var(--font-sans);background:#fff;margin-right:8px;max-width:220px}</style>');
+        const mkModal = (id, t, b) => `<div id="${id}" class="chart-modal" onclick="closeStu('${id}')"><div class="chart-box" style="max-width:760px;width:94vw;max-height:88vh;overflow:auto;padding:20px;text-align:left" onclick="event.stopPropagation()"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 id="${t}" style="font-size:20px;font-weight:900;color:#0f172a"></h3><button style="background:none;border:none;font-size:22px;cursor:pointer;color:#94a3b8" onclick="closeStu('${id}')">✕</button></div><div id="${b}"></div></div></div>`;
+        document.body.insertAdjacentHTML('beforeend', mkModal('stu-list', 'stu-title', 'stu-body') + mkModal('stu-detail', 'sd-title', 'sd-body'));
+        document.getElementById('view-classroom').insertAdjacentHTML('afterbegin', '<div class="card" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;margin-bottom:16px"><b>🏫 Lớp:</b><select class="cls-sel" onchange="clsSwitch(this.value)"></select><button class="btn btn-outline" onclick="clsAdd()">＋ Lớp mới</button><button class="btn btn-outline" onclick="clsRename()">✎ Đổi tên</button><button class="btn btn-outline" onclick="clsDel()">🗑 Xoá lớp</button><button class="btn btn-primary" onclick="openStuList()" style="margin-left:auto">📋 Bài làm học sinh</button></div>');
+        document.querySelectorAll('.tm-box').forEach(b => b.insertAdjacentHTML('beforebegin', '<select class="cls-sel" onchange="clsSwitch(this.value)" title="Chọn lớp"></select>'));
+        const rb = document.querySelector('.pres-toolbar button[onclick="showResultModal()"]');
+        if (rb) rb.insertAdjacentHTML('beforebegin', '<button class="btn btn-outline" onclick="openStuList()">👥 Bài làm HS</button>');
+        const _usp3 = updateScannedProgress;
+        updateScannedProgress = function () { _usp3.apply(this, arguments); if (document.getElementById('stu-list').classList.contains('active')) renderStuList(); };
+        clsSave();
+        document.addEventListener('DOMContentLoaded', clsRefresh);
     </script>
 </body>
 </html>
