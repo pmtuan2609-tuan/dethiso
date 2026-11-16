@@ -1251,6 +1251,57 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 #result-modal .res-bars .chart-col:nth-child(4) .chart-letter{background:#10b981}
 #result-modal #res-correct-legend{background:#d1fae5;color:#047857!important;border-radius:12px;padding:8px 12px;text-align:left!important;font-size:13px!important}
 #result-modal.res-locked #chip-ok,#result-modal.res-locked #chip-bad{display:none!important}
+
+/* ===== v4: tô màu hơn, cột mập hơn, thẻ gọn hơn ===== */
+#result-modal .res-grid{grid-template-columns:minmax(340px,440px) 1fr}
+#result-modal .res-grid>.res-panel:first-child{background:#eaf2ff}
+#result-modal .res-ring span,#result-modal .res-grid>.res-panel:first-child .res-ring span{background:#eaf2ff}
+#result-modal .res-grid>.res-panel:last-child{background:#f6f3ff}
+#result-modal .res-grid>.res-panel:first-child .res-chip.ok{background:#10b981;color:#fff}
+#result-modal .res-grid>.res-panel:first-child .res-chip.bad{background:#ef4444;color:#fff}
+#result-modal .res-grid>.res-panel:first-child .res-chip.none{background:#fff;color:#64748b}
+#result-modal .res-chip.on{outline:3px solid #6366f1;outline-offset:1px}
+#result-modal #res-correct-legend{background:#10b981;color:#fff!important;font-weight:900}
+#result-modal .res-bars{gap:10px;padding:0 4px;min-height:340px}
+#result-modal .res-bars .chart-bar-fill{width:min(100%,104px);border-radius:18px 18px 0 0;background-image:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0) 60%)}
+#result-modal .rb-num{font-size:24px}
+#result-modal .rb-pc{font-size:12px}
+#result-modal .rb-tag{font-size:12px;height:18px}
+#result-modal .res-bars .chart-letter{width:40px;height:40px;font-size:18px}
+#result-modal .res-bars .chart-col.c .chart-letter{box-shadow:0 0 0 3px #fff,0 0 0 6px #10b981}
+
+/* Thẻ tên gọn: 1 hàng — số | tên | đáp án */
+#res-students{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.nc{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;text-align:left;min-height:54px}
+.nc::before{display:none}
+.nc-head,.nc-foot{display:contents}
+.nc-st,.nc-lb{display:none}
+.nc-no{min-width:28px;height:28px;font-size:13px;border-radius:50%}
+.nc-nm{min-height:0;padding:0;font-size:14px;text-align:left;-webkit-line-clamp:2}
+.nc-ans{min-width:34px;height:34px;border-radius:10px;font-size:18px}
+.nc.ok{background:#d1fae5;border-color:#10b981}.nc.ok .nc-no,.nc.ok .nc-ans{background:#10b981;color:#fff}
+.nc.bad{background:#fee2e2;border-color:#ef4444}.nc.bad .nc-no,.nc.bad .nc-ans{background:#ef4444;color:#fff}
+.nc.got .nc-no{background:#6366f1;color:#fff}.nc.got{border-color:#a5b4fc}
+.nc.none{opacity:.6}
+#result-modal .res-students{max-height:58vh}
+@media(max-width:480px){#res-students{grid-template-columns:1fr 1fr}}
+
+#res-students{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.nc-nm{white-space:nowrap;-webkit-line-clamp:unset;display:block;overflow:hidden;text-overflow:ellipsis}
+
+#res-students{grid-template-columns:repeat(auto-fill,minmax(176px,1fr))}
+.nc{gap:8px;padding:8px}
+.nc-nm{font-size:13.5px}
+
+.nc{gap:6px;padding:7px 8px}
+.nc-no{min-width:24px;height:24px;font-size:12px}
+.nc-ans{min-width:30px;height:30px;font-size:16px;border-radius:9px}
+.nc-nm{font-size:13px;letter-spacing:-.1px}
+
+/* Tên luôn hiện rõ: họ + tên đệm viết tắt nhỏ, tên in đậm to */
+.nc-nm{display:flex;align-items:baseline;gap:4px;overflow:hidden;white-space:nowrap;-webkit-line-clamp:unset;-webkit-box-orient:horizontal;letter-spacing:0}
+.nc-nm .nm-i{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:11px;font-weight:700;opacity:.6}
+.nc-nm .nm-n{flex:none;font-size:15px;font-weight:900}
 </style>
 
     <!-- KaTeX for Math / LaTeX rendering -->
@@ -3816,6 +3867,19 @@ D. Do môi trường sống thay đổi
         function mathIn(el) { if (el && typeof renderMathInElement === 'function') { try { renderMathInElement(el, { delimiters: MATH_DELIMS, throwOnError: false }); } catch (e) {} } }
         const stripTikz = t => String(t).replace(/\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}/g, '[hình]');
         function saveRes() { try { localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults)); } catch (e) {} }
+        // Viết tắt họ và tên đệm, chừa nguyên tên: "Nguyễn Văn An" -> "N.V. An"
+        function nameHtml(n) {
+            const p = String(n || '').trim().split(/\s+/).filter(Boolean);
+            if (!p.length) return '';
+            const given = escapeHtml(p[p.length - 1]);
+            const ini = p.slice(0, -1).map(w => w.charAt(0).toUpperCase()).join('.');
+            return (ini ? `<span class="nm-i">${escapeHtml(ini)}.</span>` : '') + `<span class="nm-n">${given}</span>`;
+        }
+        function shortName(n) {
+            const p = String(n || '').trim().split(/\s+/).filter(Boolean);
+            if (p.length < 2) return p[0] || '';
+            return p.slice(0, -1).map(w => w.charAt(0).toUpperCase()).join('.') + '. ' + p[p.length - 1];
+        }
         function upgradeResultUI() {
             const q = curQ(); if (!q) return;
             const votes = sessionResults[q.id] || {}, locked = !REV[q.id], cnt = { A: 0, B: 0, C: 0, D: 0 };
@@ -3828,7 +3892,7 @@ D. Do môi trường sống thay đổi
             [['ok', okN, 'Đúng'], ['bad', badN, 'Sai'], ['none', noneN, 'Chưa trả lời']].forEach(([k, n, t]) => { const c = byId('chip-' + k); if (c) c.innerHTML = `<b>${n}</b><span>${t}</span>`; });
             ['A', 'B', 'C', 'D'].forEach(L => {
                 const l = L.toLowerCase(), isR = !locked && L === q.answer;
-                byId('rb-' + l).style.height = Math.max(cnt[L] ? 12 : 4, Math.round(cnt[L] / mx * 170)) + 'px';
+                byId('rb-' + l).style.height = Math.max(cnt[L] ? 12 : 4, Math.round(cnt[L] / mx * 220)) + 'px';
                 byId('rn-' + l).textContent = cnt[L];
                 byId('rp-' + l).textContent = ansN ? Math.round(cnt[L] / ansN * 100) + '%' : '';
                 byId('rt-' + l).innerHTML = isR ? '✓ Đúng' : '';
@@ -3839,7 +3903,7 @@ D. Do môi trường sống thay đổi
             byId('res-students').innerHTML = list.map(s => {
                 const a = votes[s.id];
                 const LB = { none: 'Chưa trả lời', got: 'Đã giơ thẻ', ok: 'Đúng', bad: 'Sai' };
-                return `<button class="nc ${st(s)}" onclick="openStuCard(${s.id})" title="Bấm để xem chi tiết bài làm"><span class="nc-head"><span class="nc-no">${s.id}</span><span class="nc-st">${LB[st(s)]}</span></span><span class="nc-nm">${escapeHtml(s.name)}</span><span class="nc-foot"><span class="nc-lb">Em chọn</span><span class="nc-ans">${a || '–'}</span></span></button>`;
+                return `<button class="nc ${st(s)}" onclick="openStuCard(${s.id})" title="Bấm để xem chi tiết bài làm"><span class="nc-head"><span class="nc-no">${s.id}</span><span class="nc-st">${LB[st(s)]}</span></span><span class="nc-nm" title="${escapeHtml(s.name)}">${nameHtml(s.name)}</span><span class="nc-foot"><span class="nc-lb">Em chọn</span><span class="nc-ans">${a || '–'}</span></span></button>`;
             }).join('') || '<div style="grid-column:1/-1;color:var(--text-muted);font-size:13px;padding:10px">Không có em nào trong nhóm này.</div>';
             mathIn(byId('res-qtext')); mathIn(byId('res-correct-legend'));
         }
