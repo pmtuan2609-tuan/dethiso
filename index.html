@@ -1302,6 +1302,20 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 .nc-nm{display:flex;align-items:baseline;gap:4px;overflow:hidden;white-space:nowrap;-webkit-line-clamp:unset;-webkit-box-orient:horizontal;letter-spacing:0}
 .nc-nm .nm-i{flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;font-size:11px;font-weight:700;opacity:.6}
 .nc-nm .nm-n{flex:none;font-size:15px;font-weight:900}
+
+/* ===== Thẻ tên vuông: chỉ có tên, nền đặc ===== */
+#res-students{grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px}
+.nc{display:flex;flex-direction:column;align-items:center;justify-content:center;aspect-ratio:1/1;min-height:0;padding:6px;border:none;border-radius:14px;text-align:center;gap:0;opacity:1;box-shadow:none}
+.nc:hover{transform:translateY(-2px);box-shadow:0 6px 14px rgba(15,23,42,.18)}
+.nc .nc-nm{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;min-height:0;padding:0;width:100%;white-space:nowrap;text-align:center}
+.nc .nm-i{display:block;max-width:100%;font-size:11px;font-weight:700;opacity:1}
+.nc .nm-n{font-size:17px;font-weight:900;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.nc.ok{background:#10b981}.nc.bad{background:#ef4444}
+.nc.ok .nm-n,.nc.bad .nm-n,.nc.got .nm-n{color:#fff}
+.nc.ok .nm-i,.nc.bad .nm-i,.nc.got .nm-i{color:rgba(255,255,255,.92)}
+.nc.got{background:#64748b}
+.nc.none{background:#fff;opacity:1}
+.nc.none .nm-n{color:#475569}.nc.none .nm-i{color:#94a3b8}
 </style>
 
     <!-- KaTeX for Math / LaTeX rendering -->
@@ -1768,7 +1782,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                         </div>
                     </div>
                     <div class="res-students" id="res-students"></div>
-                    <div class="res-hint">Xanh lá = đúng · Đỏ = sai · Trắng mờ = chưa trả lời. Bấm vào tên một em để sửa đáp án (A → B → C → D → bỏ trống) khi camera đọc sai hoặc nhập tay.</div>
+                    <div class="res-hint">Xanh lá = đúng · Đỏ = sai · Trắng = chưa trả lời. Bấm vào tên một em để sửa đáp án (A → B → C → D → bỏ trống) khi camera đọc sai hoặc nhập tay.</div>
                 </div>
             </div>
             <div class="res-foot">
@@ -3902,8 +3916,7 @@ D. Do môi trường sống thay đổi
             const f = resultFilter, list = students.filter(s => f === 'all' || st(s) === f || (f === 'none' && st(s) === 'none'));
             byId('res-students').innerHTML = list.map(s => {
                 const a = votes[s.id];
-                const LB = { none: 'Chưa trả lời', got: 'Đã giơ thẻ', ok: 'Đúng', bad: 'Sai' };
-                return `<button class="nc ${st(s)}" onclick="openStuCard(${s.id})" title="Bấm để xem chi tiết bài làm"><span class="nc-head"><span class="nc-no">${s.id}</span><span class="nc-st">${LB[st(s)]}</span></span><span class="nc-nm" title="${escapeHtml(s.name)}">${nameHtml(s.name)}</span><span class="nc-foot"><span class="nc-lb">Em chọn</span><span class="nc-ans">${a || '–'}</span></span></button>`;
+                return `<button class="nc ${st(s)}" onclick="openStuCard(${s.id})" title="${escapeHtml(s.name)} — bấm để xem chi tiết"><span class="nc-nm">${nameHtml(s.name)}</span></button>`;
             }).join('') || '<div style="grid-column:1/-1;color:var(--text-muted);font-size:13px;padding:10px">Không có em nào trong nhóm này.</div>';
             mathIn(byId('res-qtext')); mathIn(byId('res-correct-legend'));
         }
@@ -3911,7 +3924,7 @@ D. Do môi trường sống thay đổi
             const _r = renderResultModal;
             renderResultModal = function () { _r.apply(this, arguments); upgradeResultUI(); if (scId !== null) renderStuCard(); };
             const hint = document.querySelector('#result-modal .res-hint');
-            if (hint) hint.textContent = 'Bấm vào thẻ tên của một em để xem em chọn đáp án nào, thống kê các câu trước đó và sửa đáp án khi camera đọc sai. Xanh lá = đúng · Đỏ = sai · Trắng mờ = chưa trả lời.';
+            if (hint) hint.textContent = 'Bấm vào thẻ tên của một em để xem em chọn đáp án nào, thống kê các câu trước đó và sửa đáp án khi camera đọc sai. Xanh lá = đúng · Đỏ = sai · Trắng = chưa trả lời.';
         })();
 
         let scId = null;
