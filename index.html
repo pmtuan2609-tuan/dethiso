@@ -1470,6 +1470,16 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 @keyframes presUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 @media(max-width:700px){.pres-clean .pres-header{padding:16px 16px 0}.pres-clean .pres-body{padding:10px 16px 24px}.pres-clean .pres-opt-card{min-height:96px!important;gap:16px!important;padding:14px 18px 14px 14px!important}}
 </style>
+<style>
+/* ===== v6: tự co chữ cho vừa 1 màn hình, không phải cuộn ===== */
+.presentation-container.pres-clean{--fit:1}
+.pres-clean .pres-body{overflow:hidden;min-height:0}
+.pres-clean .pres-body.fit-fail{overflow:auto}
+.pres-clean .pres-question{font-size:calc(clamp(32px,4.4vw,70px)*var(--fit))!important;margin-bottom:calc(48px*var(--fit))!important}
+.pres-clean .pres-options{gap:calc(26px*var(--fit))!important}
+.presentation-container.pres-clean .pres-opt-card{font-size:calc(clamp(26px,3.2vw,54px)*var(--fit))!important;min-height:calc(132px*var(--fit))!important;padding:calc(24px*var(--fit)) calc(34px*var(--fit)) calc(24px*var(--fit)) calc(24px*var(--fit))!important;gap:calc(26px*var(--fit))!important;border-radius:calc(30px*var(--fit))!important}
+.pres-clean .pres-opt-card .pres-letter{width:calc(clamp(64px,6vw,100px)*var(--fit))!important;height:calc(clamp(64px,6vw,100px)*var(--fit))!important;font-size:calc(clamp(34px,3.4vw,56px)*var(--fit))!important;border-radius:calc(26px*var(--fit))!important}
+</style>
 </head>
 <body class="locked">
 
@@ -4237,6 +4247,22 @@ async function downloadCardsPDF(mode) {
     const c = CLS.list.find(k => k.id === CLS.cur);
     doc.save('The_hoc_sinh_' + (c ? c.name.replace(/\s+/g, '_') : 'lop') + '_' + mode.toUpperCase() + '.pdf');
 }
+
+// ===== v6: tự co chữ vừa 1 trang =====
+function fitSlide() {
+    const pc = document.getElementById('presentation-container');
+    if (!pc || !pc.classList.contains('active') || !pc.classList.contains('pres-clean')) return;
+    const b = pc.querySelector('.pres-body'); if (!b) return;
+    b.classList.remove('fit-fail'); let f = 1; pc.style.setProperty('--fit', f);
+    for (let n = 0; n < 40 && b.scrollHeight > b.clientHeight + 1 && f > 0.3; n++) { f -= 0.03; pc.style.setProperty('--fit', f.toFixed(2)); }
+    if (b.scrollHeight > b.clientHeight + 1) b.classList.add('fit-fail');
+}
+(function () {
+    const _r = window.renderCurrentSlide;
+    window.renderCurrentSlide = function () { const r = _r.apply(this, arguments); [0, 120, 400, 900].forEach(t => setTimeout(() => requestAnimationFrame(fitSlide), t)); return r; };
+    window.addEventListener('resize', fitSlide);
+    document.addEventListener('fullscreenchange', () => setTimeout(fitSlide, 150));
+})();
 </script>
 </body>
 </html>
