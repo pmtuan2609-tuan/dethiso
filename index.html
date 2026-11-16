@@ -1316,6 +1316,23 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 .nc.got{background:#64748b}
 .nc.none{background:#fff;opacity:1}
 .nc.none .nm-n{color:#475569}.nc.none .nm-i{color:#94a3b8}
+
+/* ===== Thẻ tên tách rời: tên ở trên, đáp án chọn ở dưới ===== */
+#result-modal .res-students,#res-students{display:grid;grid-template-columns:repeat(auto-fill,minmax(102px,1fr));grid-auto-rows:max-content;align-content:start;gap:10px;padding:6px 4px 10px}
+.nc{aspect-ratio:1/1!important;height:auto!important;min-height:0;flex-shrink:0;display:flex;flex-direction:column;align-items:stretch;justify-content:space-between;gap:4px;padding:8px 7px 7px;border-radius:10px;box-shadow:0 2px 5px rgba(15,23,42,.14)}
+.nc:hover{transform:translateY(-2px);box-shadow:0 8px 16px -6px rgba(15,23,42,.3)}
+.nc .nc-nm{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;width:100%;min-width:0}
+.nc .nm-i{font-size:10.5px;font-weight:700}
+.nc .nm-n{font-size:15px;font-weight:900;line-height:1.15}
+.nc-pick{display:flex;align-items:center;justify-content:center;gap:4px;padding:3px 6px;border-radius:8px;background:rgba(255,255,255,.95);font:800 10.5px var(--font-sans);color:#64748b;white-space:nowrap}
+.nc-pick b{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:6px;font:900 12px var(--font-sans);color:#fff;background:#94a3b8}
+.nc-pick[data-l="A"] b{background:#ef4444}
+.nc-pick[data-l="B"] b{background:#3b82f6}
+.nc-pick[data-l="C"] b{background:#f59e0b}
+.nc-pick[data-l="D"] b{background:#10b981}
+.nc.none{background:#fff;box-shadow:0 0 0 1.5px #e2e8f0 inset,0 2px 5px rgba(15,23,42,.06)}
+.nc.none .nc-pick{background:#f1f5f9;color:#94a3b8}
+@media(max-width:480px){#res-students{grid-template-columns:repeat(3,1fr);gap:8px}}
 </style>
 
     <!-- KaTeX for Math / LaTeX rendering -->
@@ -3916,7 +3933,7 @@ D. Do môi trường sống thay đổi
             const f = resultFilter, list = students.filter(s => f === 'all' || st(s) === f || (f === 'none' && st(s) === 'none'));
             byId('res-students').innerHTML = list.map(s => {
                 const a = votes[s.id];
-                return `<button class="nc ${st(s)}" onclick="openStuCard(${s.id})" title="${escapeHtml(s.name)} — bấm để xem chi tiết"><span class="nc-nm">${nameHtml(s.name)}</span></button>`;
+                return `<button class="nc ${st(s)}" onclick="openStuCard(${s.id})" title="${escapeHtml(s.name)} — bấm để xem chi tiết"><span class="nc-nm">${nameHtml(s.name)}</span><span class="nc-pick" data-l="${a || ''}">${a ? `Chọn <b>${a}</b>` : 'Chưa trả lời'}</span></button>`;
             }).join('') || '<div style="grid-column:1/-1;color:var(--text-muted);font-size:13px;padding:10px">Không có em nào trong nhóm này.</div>';
             mathIn(byId('res-qtext')); mathIn(byId('res-correct-legend'));
         }
