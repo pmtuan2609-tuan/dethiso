@@ -15,20 +15,27 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='8' y='2' width='44' height='54' rx='8' fill='%232563EB' opacity='0.15'/%3E%3Crect x='4' y='6' width='44' height='54' rx='8' fill='%232563EB'/%3E%3Ccircle cx='42' cy='50' r='16' fill='%2310B981'/%3E%3Cpath d='M34 50 L40 56 L51 44' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 
     <style>
-        :root {
+:root {
             --font-sans: 'Nunito', 'Inter', system-ui, -apple-system, sans-serif;
             --primary: #2563eb;
             --primary-dark: #1d4ed8;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --bg-surface: #334155;
-            --border: #334155;
-            --border-light: rgba(255, 255, 255, 0.1);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --primary-light: #eff6ff;
+            --success: #059669;
+            --success-light: #ecfdf5;
+            --warning: #d97706;
+            --warning-light: #fffbeb;
+            --danger: #dc2626;
+            --danger-light: #fef2f2;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-surface: #f1f5f9;
+            --border: #e2e8f0;
+            --border-light: #f1f5f9;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.03);
         }
 
         * {
@@ -39,21 +46,21 @@
 
         body {
             font-family: var(--font-sans);
-            background: var(--bg-dark);
+            background: var(--bg-body);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Nav Header */
+        /* Header (Clean White Light Theme) */
         header {
             position: sticky;
             top: 0;
             z-index: 50;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-light);
+            background: #ffffff;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             padding: 10px 20px;
         }
         .header-inner {
@@ -70,15 +77,15 @@
             gap: 10px;
             font-size: 20px;
             font-weight: 800;
-            color: #fff;
+            color: #1e293b;
             text-decoration: none;
             cursor: pointer;
         }
         .nav-tabs {
             display: flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(30, 41, 59, 0.8);
+            gap: 4px;
+            background: #f1f5f9;
             padding: 4px;
             border-radius: 12px;
             border: 1px solid var(--border);
@@ -86,7 +93,7 @@
         .tab-btn {
             background: transparent;
             border: none;
-            color: var(--text-muted);
+            color: #475569;
             font-family: inherit;
             font-size: 14px;
             font-weight: 700;
@@ -99,13 +106,13 @@
             transition: all 0.2s;
         }
         .tab-btn:hover {
-            color: #fff;
-            background: rgba(255, 255, 255, 0.05);
+            color: #0f172a;
+            background: #e2e8f0;
         }
         .tab-btn.active {
             background: var(--primary);
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
         }
         .header-actions {
             display: flex;
@@ -131,42 +138,50 @@
         }
         .btn-primary {
             background: var(--primary);
-            color: #fff;
+            color: #ffffff;
+            box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
         }
         .btn-primary:hover {
             background: var(--primary-dark);
             transform: translateY(-1px);
         }
         .btn-success {
-            background: var(--success);
-            color: #064e3b;
+            background: #10b981;
+            color: #ffffff;
             font-weight: 800;
+            box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
         }
         .btn-success:hover {
             background: #059669;
-            color: #fff;
+            color: #ffffff;
         }
         .btn-warning {
-            background: var(--warning);
-            color: #451a03;
+            background: #f59e0b;
+            color: #ffffff;
             font-weight: 800;
         }
+        .btn-warning:hover {
+            background: #d97706;
+        }
         .btn-outline {
-            background: rgba(255, 255, 255, 0.06);
-            color: #fff;
-            border: 1px solid var(--border-light);
+            background: #ffffff;
+            color: #334155;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
         }
         .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.12);
+            background: #f8fafc;
+            color: #0f172a;
+            border-color: #cbd5e1;
         }
         .btn-danger {
-            background: rgba(239, 68, 68, 0.15);
-            color: #fca5a5;
-            border: 1px solid rgba(239, 68, 68, 0.3);
+            background: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
         }
         .btn-danger:hover {
-            background: var(--danger);
-            color: #fff;
+            background: #ef4444;
+            color: #ffffff;
         }
 
         /* Main View Container */
@@ -189,13 +204,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Cards & Grid */
+        /* Cards (White Light Theme) */
         .card {
-            background: var(--bg-card);
+            background: #ffffff;
             border: 1px solid var(--border);
             border-radius: 16px;
             padding: 24px;
             margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
         }
         .card-header {
             display: flex;
@@ -203,12 +219,12 @@
             justify-content: space-between;
             margin-bottom: 20px;
             padding-bottom: 14px;
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 1px solid var(--border);
         }
         .card-title {
             font-size: 20px;
             font-weight: 800;
-            color: #fff;
+            color: #0f172a;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -222,20 +238,21 @@
             margin-bottom: 24px;
         }
         .stat-card {
-            background: var(--bg-card);
+            background: #ffffff;
             border: 1px solid var(--border);
             border-radius: 14px;
             padding: 20px;
             display: flex;
             align-items: center;
             gap: 16px;
+            box-shadow: var(--shadow-sm);
         }
         .stat-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            background: rgba(37, 99, 235, 0.15);
-            color: #60a5fa;
+            width: 50px;
+            height: 50px;
+            border-radius: 14px;
+            background: #eff6ff;
+            color: #2563eb;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -245,7 +262,7 @@
         .stat-val {
             font-size: 28px;
             font-weight: 900;
-            color: #fff;
+            color: #0f172a;
             line-height: 1;
         }
         .stat-label {
@@ -257,38 +274,40 @@
         /* Inputs & Forms */
         input, textarea, select {
             width: 100%;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid var(--border);
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
             border-radius: 10px;
             padding: 10px 14px;
             font-family: inherit;
             font-size: 14px;
-            color: #fff;
+            color: #0f172a;
             outline: none;
-            transition: border-color 0.2s;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
         input:focus, textarea:focus, select:focus {
             border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
         label {
             display: block;
             font-size: 13px;
             font-weight: 700;
-            color: var(--text-muted);
+            color: #334155;
             margin-bottom: 6px;
         }
 
         /* Question Item */
         .question-card {
-            background: rgba(15, 23, 42, 0.6);
+            background: #f8fafc;
             border: 1px solid var(--border);
-            border-radius: 12px;
+            border-radius: 14px;
             padding: 18px;
             margin-bottom: 14px;
             transition: all 0.2s;
         }
         .question-card:hover {
-            border-color: rgba(96, 165, 250, 0.4);
+            border-color: #94a3b8;
+            box-shadow: var(--shadow-sm);
         }
         .question-top {
             display: flex;
@@ -298,8 +317,9 @@
             margin-bottom: 12px;
         }
         .q-badge {
-            background: rgba(37, 99, 235, 0.2);
-            color: #93c5fd;
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
             font-weight: 800;
             font-size: 13px;
             padding: 4px 10px;
@@ -309,56 +329,87 @@
         .q-text {
             font-size: 16px;
             font-weight: 700;
+            color: #0f172a;
             flex: 1;
+            line-height: 1.6;
         }
         .options-list {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 8px;
+            gap: 10px;
             margin-top: 10px;
         }
         .option-item {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding: 8px 12px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 14px;
+            border-radius: 10px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             font-size: 14px;
+            color: #1e293b;
         }
         .option-item.correct {
-            background: rgba(16, 185, 129, 0.15);
-            border-color: rgba(16, 185, 129, 0.4);
-            color: #6ee7b7;
+            background: #ecfdf5;
+            border-color: #10b981;
+            color: #065f46;
             font-weight: 700;
         }
         .opt-letter {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             border-radius: 6px;
-            background: rgba(255, 255, 255, 0.1);
+            background: #f1f5f9;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 12px;
             font-weight: 800;
+            color: #334155;
+            flex-shrink: 0;
         }
         .option-item.correct .opt-letter {
-            background: var(--success);
-            color: #064e3b;
+            background: #10b981;
+            color: #ffffff;
         }
 
-        /* PRESENTATION / SLIDE MODE */
+        /* Tables (Clean Light Theme) */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+            background: #ffffff;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th {
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 800;
+            border-bottom: 2px solid var(--border);
+            padding: 12px 14px;
+        }
+        td {
+            padding: 12px 14px;
+            color: #1e293b;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        /* PRESENTATION / SLIDE MODE (Clean Projector Light Theme) */
         .presentation-container {
             position: fixed;
             inset: 0;
-            background: #090d16;
+            background: #f8fafc;
             z-index: 1000;
             display: none;
             flex-direction: column;
             justify-content: space-between;
-            padding: 30px 48px;
+            padding: 24px 48px;
             overflow: hidden;
         }
         .presentation-container.active {
@@ -372,16 +423,16 @@
         .pres-title {
             font-size: 18px;
             font-weight: 800;
-            color: var(--text-muted);
+            color: #475569;
             display: flex;
             align-items: center;
             gap: 12px;
         }
         .pres-counter {
-            background: rgba(37, 99, 235, 0.2);
-            color: #60a5fa;
-            border: 1px solid rgba(37, 99, 235, 0.4);
-            padding: 6px 16px;
+            background: #eff6ff;
+            color: #2563eb;
+            border: 1px solid #bfdbfe;
+            padding: 6px 18px;
             border-radius: 30px;
             font-size: 16px;
             font-weight: 800;
@@ -395,8 +446,8 @@
         .pres-question {
             font-size: 34px;
             font-weight: 800;
-            line-height: 1.35;
-            color: #fff;
+            line-height: 1.4;
+            color: #0f172a;
             margin-bottom: 36px;
         }
         .pres-options {
@@ -405,7 +456,7 @@
             gap: 18px;
         }
         .pres-opt-card {
-            background: rgba(30, 41, 59, 0.85);
+            background: #ffffff;
             border: 2px solid var(--border);
             border-radius: 16px;
             padding: 20px 24px;
@@ -414,19 +465,21 @@
             gap: 18px;
             font-size: 22px;
             font-weight: 700;
-            color: #e2e8f0;
-            transition: all 0.25s ease;
+            color: #1e293b;
+            transition: all 0.2s ease;
             cursor: pointer;
+            box-shadow: var(--shadow-sm);
         }
         .pres-opt-card:hover {
-            border-color: #60a5fa;
+            border-color: #3b82f6;
             transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
         .pres-opt-card.correct-revealed {
-            background: rgba(16, 185, 129, 0.25) !important;
+            background: #ecfdf5 !important;
             border-color: #10b981 !important;
-            color: #a7f3d0 !important;
-            box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
+            color: #065f46 !important;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.3) !important;
         }
         .pres-opt-card.dimmed {
             opacity: 0.35;
@@ -435,8 +488,7 @@
             width: 44px;
             height: 44px;
             border-radius: 12px;
-            background: #3b82f6;
-            color: #fff;
+            color: #ffffff;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -454,12 +506,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid var(--border);
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
             border-radius: 20px;
             padding: 12px 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(16px);
+            box-shadow: var(--shadow-lg);
         }
         .scanned-status {
             display: flex;
@@ -467,20 +518,20 @@
             gap: 10px;
             font-size: 16px;
             font-weight: 800;
-            color: #facc15;
+            color: #d97706;
         }
 
-        /* Camera Scanner Modal / Picture in Picture */
+        /* Camera Scanner Modal (PiP) */
         .scanner-modal {
             position: fixed;
             bottom: 90px;
             right: 40px;
             width: 380px;
-            background: #0f172a;
+            background: #ffffff;
             border: 2px solid var(--primary);
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            box-shadow: var(--shadow-lg);
             z-index: 1100;
             display: none;
             flex-direction: column;
@@ -489,13 +540,15 @@
             display: flex;
         }
         .scanner-header {
-            background: #1e293b;
+            background: #f8fafc;
             padding: 10px 16px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             font-size: 14px;
             font-weight: 800;
+            border-bottom: 1px solid var(--border);
+            color: #0f172a;
         }
         .scanner-video-box {
             position: relative;
@@ -517,18 +570,19 @@
         }
         .scanner-footer {
             padding: 12px 16px;
-            background: #1e293b;
+            background: #f8fafc;
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 8px;
+            border-top: 1px solid var(--border);
         }
 
         /* Chart Modal */
         .chart-modal {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(8px);
             z-index: 1200;
             display: none;
@@ -540,13 +594,14 @@
             display: flex;
         }
         .chart-box {
-            background: var(--bg-card);
+            background: #ffffff;
             border: 1px solid var(--border);
             border-radius: 20px;
             width: 100%;
             max-width: 680px;
             padding: 28px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+            box-shadow: var(--shadow-lg);
+            color: #0f172a;
         }
         .chart-bars {
             display: grid;
@@ -586,6 +641,7 @@
             margin-top: 10px;
             font-size: 18px;
             font-weight: 900;
+            color: #0f172a;
         }
 
         /* Printable Cards CSS */
@@ -654,6 +710,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 
+    <!-- SheetJS -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
 
@@ -788,10 +846,17 @@
 
         <!-- 3. CLASSROOM & PRINT CARDS VIEW -->
         <section id="view-classroom" class="view-section">
+            <!-- Hidden file input for Excel / CSV / TXT upload -->
+            <input type="file" id="class-file-upload" accept=".xlsx,.xls,.csv,.txt" style="display: none;" onchange="handleClassFileUpload(event)">
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">👥 Quản lý lớp học &amp; Danh sách học sinh</div>
-                    <button class="btn btn-success" onclick="printStudentCards()">🖨️ In Bộ Thẻ Giấy Cho Cả Lớp</button>
+                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                        <button class="btn btn-success" onclick="printStudentCards()">🖨️ In Bộ Thẻ Giấy Cho Cả Lớp</button>
+                        <button class="btn btn-primary" onclick="document.getElementById('class-file-upload').click()">📁 Tải file Danh Sách (Excel / CSV / TXT)</button>
+                        <button class="btn btn-danger" onclick="clearClassList()">🗑️ Xóa toàn bộ danh sách lớp</button>
+                        <button class="btn btn-outline" onclick="restoreDefaultClass()">🔄 Khôi phục danh sách mẫu</button>
+                    </div>
                 </div>
                 <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
                     Mỗi học sinh sở hữu một mã thẻ số tương ứng. Khi in ra giấy, 4 cạnh thẻ là 4 đáp án A, B, C, D. Học sinh giơ thẻ hướng nào lên trên thì hệ thống ghi nhận đáp án đó.
@@ -809,6 +874,11 @@
                             </thead>
                             <tbody id="student-table-body"></tbody>
                         </table>
+                        <div id="empty-class-alert" style="display: none; padding: 36px 20px; text-align: center; color: var(--text-muted);">
+                            <div style="font-size: 36px; margin-bottom: 8px;">📋</div>
+                            <h4 style="font-size: 16px; color: #0f172a; margin-bottom: 4px;">Danh sách lớp học hiện đang trống</h4>
+                            <p style="font-size: 13px;">Hãy bấm nút <strong>"Tải file Danh Sách"</strong> (chọn file Excel/CSV) hoặc dán tên học sinh vào ô bên phải.</p>
+                        </div>
                     </div>
 
                     <div style="background: rgba(15, 23, 42, 0.6); padding: 18px; border-radius: 12px; border: 1px solid var(--border); height: fit-content;">
@@ -822,7 +892,13 @@
                         <hr style="border: 0; border-top: 1px solid var(--border); margin-bottom: 14px;">
                         <h4 style="font-size: 15px; margin-bottom: 8px;">Nhập hàng loạt từ Excel</h4>
                         <textarea id="bulk-students" rows="5" placeholder="Dán danh sách tên học sinh (mỗi em 1 dòng)..."></textarea>
-                        <button class="btn btn-outline" style="width: 100%; margin-top: 8px;" onclick="importBulkStudents()">Nhập cả lớp</button>
+                        <div style="margin: 10px 0; display: flex; align-items: center; gap: 8px;">
+                            <input type="checkbox" id="replace-class-checkbox" checked style="width: 16px; height: 16px; cursor: pointer;">
+                            <label for="replace-class-checkbox" style="font-size: 13px; color: #334155; margin: 0; cursor: pointer;">
+                                Xóa danh sách cũ và thay thế bằng danh sách này
+                            </label>
+                        </div>
+                        <button class="btn btn-success" style="width: 100%;" onclick="importBulkStudents()">⚡ Nhập danh sách này</button>
                     </div>
                 </div>
             </div>
@@ -1381,63 +1457,135 @@ D. Do môi trường sống thay đổi
             alert("Đã khôi phục bộ đề mẫu Sinh học 12!");
         }
 
-        // Classroom Rendering
+        
+        // CLASSROOM & EXCEL UPLOAD LOGIC
         function renderClassroom() {
             const tbody = document.getElementById('student-table-body');
-            tbody.innerHTML = students.map(s => `
-                <tr style="border-bottom: 1px solid var(--border);">
-                    <td style="padding: 10px;">
-                        <span style="display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 6px; background: rgba(37,99,235,0.2); color: #60a5fa; font-weight: 800;">
-                            ${s.id}
-                        </span>
-                    </td>
-                    <td style="padding: 10px; font-weight: 700;">${escapeHtml(s.name)}</td>
-                    <td style="padding: 10px;">
-                        <span style="font-size: 12px; color: #a7f3d0; background: rgba(16,185,129,0.15); padding: 3px 8px; border-radius: 4px;">
-                            Mã vạch QR #${s.id}
-                        </span>
-                    </td>
-                    <td style="padding: 10px; text-align: right;">
-                        <button style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 13px;" onclick="deleteStudent(${s.id})">Xoá</button>
-                    </td>
-                </tr>
-            `).join('');
+            const alertEmpty = document.getElementById('empty-class-alert');
+
+            if (students.length === 0) {
+                tbody.innerHTML = '';
+                if (alertEmpty) alertEmpty.style.display = 'block';
+            } else {
+                if (alertEmpty) alertEmpty.style.display = 'none';
+                tbody.innerHTML = students.map(s => `
+                    <tr>
+                        <td style="padding: 10px;">
+                            <span style="display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 6px; background: #eff6ff; color: #2563eb; font-weight: 800; border: 1px solid #bfdbfe;">
+                                ${s.id}
+                            </span>
+                        </td>
+                        <td style="padding: 10px; font-weight: 700; color: #0f172a;">${escapeHtml(s.name)}</td>
+                        <td style="padding: 10px;">
+                            <span style="font-size: 12px; color: #065f46; background: #ecfdf5; padding: 4px 10px; border-radius: 6px; border: 1px solid #a7f3d0; font-weight: 700;">
+                                Thẻ số #${s.id}
+                            </span>
+                        </td>
+                        <td style="padding: 10px; text-align: right;">
+                            <button style="background: none; border: none; color: #dc2626; cursor: pointer; font-size: 13px; font-weight: 700;" onclick="deleteStudent(${s.id})">Xoá</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
             saveStudents();
+            document.getElementById('stat-student-count').textContent = students.length;
         }
 
-        function saveStudents() {
-            localStorage.setItem(STORAGE_KEY_CLASS, JSON.stringify(students));
+        function clearClassList() {
+            if (confirm("⚠️ Bạn có chắc chắn muốn XÓA TOÀN BỘ danh sách lớp hiện tại để bắt đầu lớp mới không?")) {
+                students = [];
+                sessionResults = {};
+                localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults));
+                renderClassroom();
+                renderDashboard();
+                renderReports();
+                alert("Đã xóa danh sách lớp thành công! Bây giờ bạn có thể tải file Excel hoặc dán danh sách học sinh mới.");
+            }
         }
 
-        function addSingleStudent() {
-            const input = document.getElementById('new-student-name');
-            const name = input.value.trim();
-            if (!name) return;
-            const nextId = students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1;
-            students.push({ id: nextId, name });
-            input.value = '';
+        function restoreDefaultClass() {
+            students = DEFAULT_CLASS;
             renderClassroom();
             renderDashboard();
+            alert("Đã khôi phục danh sách lớp mẫu 24 học sinh!");
         }
 
-        function importBulkStudents() {
-            const raw = document.getElementById('bulk-students').value.trim();
-            if (!raw) return;
-            const lines = raw.split('\\n').map(l => l.trim()).filter(l => l);
-            let nextId = students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1;
+        function handleClassFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
 
-            lines.forEach(line => {
-                // remove leading numbers like "1. Nguyễn Văn A"
-                const cleaned = line.replace(/^\d+[\.\-\s]+/, '').trim();
-                if (cleaned) {
-                    students.push({ id: nextId++, name: cleaned });
-                }
+            const fileName = file.name.toLowerCase();
+            if (fileName.endsWith('.xlsx') || fileName.endsWith('.xls')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, {type: 'array'});
+                        const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                        const rows = XLSX.utils.sheet_to_json(firstSheet, {header: 1});
+                        
+                        const extracted = [];
+                        rows.forEach(r => {
+                            if (Array.isArray(r)) {
+                                for (let cell of r) {
+                                    if (typeof cell === 'string') {
+                                        const trimmed = cell.trim();
+                                        if (trimmed.length > 2 && !/^(stt|số thứ tự|họ và tên|họ tên|danh sách|lớp|năm học)/i.test(trimmed) && !/^\d+$/.test(trimmed)) {
+                                            extracted.push(trimmed.replace(/^\d+[\.\-\s]+/, ''));
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        });
+
+                        if (extracted.length > 0) {
+                            applyNewStudentList(extracted);
+                        } else {
+                            alert("Không tìm thấy cột họ tên trong file Excel! Bạn hãy copy cột họ tên rồi dán vào ô bên cạnh.");
+                        }
+                    } catch(err) {
+                        alert("Lỗi khi đọc file Excel: " + err.message);
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            } else {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const lines = e.target.result.split(/\r?\n/).map(l => l.trim()).filter(l => l);
+                    const extracted = lines.map(line => {
+                        return line.split(',')[0].replace(/^["']|["']$/g, '').replace(/^\d+[\.\-\s]+/, '').trim();
+                    }).filter(n => n.length > 1 && !/^(stt|họ và tên|họ tên)/i.test(n));
+
+                    if (extracted.length > 0) {
+                        applyNewStudentList(extracted);
+                    } else {
+                        alert("Không tìm thấy danh sách tên học sinh trong file!");
+                    }
+                };
+                reader.readAsText(file, 'UTF-8');
+            }
+            event.target.value = '';
+        }
+
+        function applyNewStudentList(nameList) {
+            const replaceCheckbox = document.getElementById('replace-class-checkbox');
+            const replaceOld = replaceCheckbox ? replaceCheckbox.checked : true;
+            let startId = 1;
+            if (!replaceOld) {
+                startId = students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1;
+            } else {
+                students = [];
+            }
+
+            nameList.forEach(name => {
+                students.push({ id: startId++, name: name });
             });
 
-            document.getElementById('bulk-students').value = '';
             renderClassroom();
             renderDashboard();
-            alert(`Đã thêm ${lines.length} học sinh vào lớp!`);
+            renderReports();
+            alert("🎉 Đã nạp thành công " + nameList.length + " học sinh vào danh sách lớp!");
         }
 
         function deleteStudent(id) {
