@@ -703,6 +703,223 @@
                 width: auto;
             }
         }
+    
+        /* ===== Quy trình 10 bước (theo video hướng dẫn) ===== */
+        .flow-card { margin-bottom: 20px; padding: 0; overflow: hidden; border: 1px solid var(--border); }
+        .flow-head { background: linear-gradient(135deg, #0f1b4d 0%, #1e2f7a 100%); padding: 18px 22px 14px; color: #fff; }
+        .flow-head h3 { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+        .flow-head p { font-size: 13px; color: #cbd5e1; }
+        .flow-pills { display: flex; gap: 6px; overflow-x: auto; padding: 12px 16px; background: #0b1437; scrollbar-width: thin; }
+        .flow-pill { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; border: none; cursor: pointer; font-family: inherit; font-size: 12.5px; font-weight: 800; color: #cbd5e1; background: rgba(255,255,255,0.08); padding: 7px 12px; border-radius: 999px; transition: all .2s; }
+        .flow-pill i { font-style: normal; width: 20px; height: 20px; border-radius: 50%; background: rgba(255,255,255,0.15); display: inline-flex; align-items: center; justify-content: center; font-size: 11px; }
+        .flow-pill.done { color: #fff; } .flow-pill.done i { background: #10b981; }
+        .flow-pill.active { background: #facc15; color: #1e293b; } .flow-pill.active i { background: #1e293b; color: #facc15; }
+        .flow-body { padding: 22px; }
+        .flow-step { display: none; animation: flowIn .25s ease; }
+        .flow-step.active { display: block; }
+        @keyframes flowIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+        .flow-step h4 { font-size: 20px; font-weight: 900; color: #0f172a; margin-bottom: 4px; }
+        .flow-step .flow-sub { color: var(--text-muted); font-size: 14px; margin-bottom: 14px; }
+        .flow-list { list-style: none; counter-reset: fl; display: grid; gap: 10px; }
+        .flow-list li { counter-increment: fl; position: relative; padding: 12px 14px 12px 48px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; font-size: 14.5px; line-height: 1.6; color: #1e293b; }
+        .flow-list li::before { content: counter(fl); position: absolute; left: 14px; top: 12px; width: 24px; height: 24px; border-radius: 50%; background: var(--primary); color: #fff; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+        .flow-list b { color: #b45309; }
+        .flow-tip { margin-top: 14px; display: inline-flex; align-items: center; gap: 8px; background: #0f1b4d; color: #fff; font-weight: 800; font-size: 13.5px; padding: 9px 16px; border-radius: 999px; }
+        .flow-nav { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 14px 22px; border-top: 1px solid var(--border); background: #fafbfd; }
+        .flow-count { font-size: 13px; font-weight: 800; color: var(--text-muted); }
+        .flow-recap { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 12px; }
+        .flow-recap div { background: #0f1b4d; color: #fff; text-align: center; border-radius: 12px; padding: 12px 8px; font-weight: 800; font-size: 13px; }
+        .flow-recap div span { display: block; font-size: 22px; margin-bottom: 4px; }
+
+        /* ===== Bảng kết quả theo video: biểu đồ + từng em đúng/sai ===== */
+        .res-box { max-width: 1120px; max-height: 92vh; overflow: auto; padding: 22px; }
+        .res-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+        .res-qno { display: inline-block; background: #0f1b4d; color: #fff; font-weight: 800; font-size: 13px; padding: 4px 12px; border-radius: 8px; margin-bottom: 6px; }
+        .res-qtext { font-size: 16px; font-weight: 800; line-height: 1.5; color: #0f172a; max-width: 760px; }
+        .res-grid { display: grid; grid-template-columns: minmax(320px, 420px) 1fr; gap: 18px; }
+        @media (max-width: 860px) { .res-grid { grid-template-columns: 1fr; } }
+        .res-panel { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; }
+        .res-pct { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
+        .res-ring { width: 74px; height: 74px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 18px; color: #0f172a; flex: 0 0 auto; }
+        .res-ring span { background: var(--bg-surface); width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .res-stats { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+        .res-chip { font-size: 12.5px; font-weight: 800; padding: 4px 10px; border-radius: 999px; border: 1px solid transparent; cursor: pointer; font-family: inherit; background: #fff; color: #475569; border-color: var(--border); }
+        .res-chip.ok { color: #047857; background: #d1fae5; } .res-chip.bad { color: #b91c1c; background: #fee2e2; } .res-chip.none { color: #64748b; background: #e2e8f0; }
+        .res-chip.on { outline: 2px solid var(--primary); }
+        .res-bars { height: 190px; margin: 16px 0 4px; padding: 0 6px 8px; gap: 12px; }
+        .res-bars .chart-bar-fill { width: 56px; font-size: 12px; padding-top: 6px; white-space: nowrap; overflow: visible; }
+        .res-bars .is-right { box-shadow: 0 0 0 3px #fff, 0 0 0 6px #10b981; }
+        .res-students { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; max-height: 52vh; overflow: auto; padding: 2px; }
+        .stu-tile { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: 10px; border: 1.5px solid transparent; cursor: pointer; font-family: inherit; text-align: left; font-size: 13px; font-weight: 700; transition: transform .12s; }
+        .stu-tile:hover { transform: translateY(-1px); }
+        .stu-tile .no { font-size: 11px; font-weight: 900; opacity: .7; min-width: 20px; }
+        .stu-tile .nm { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .stu-tile .ans { min-width: 24px; height: 24px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; font-weight: 900; font-size: 13px; background: rgba(255,255,255,.75); }
+        .stu-tile.ok { background: #d1fae5; color: #065f46; border-color: #6ee7b7; }
+        .stu-tile.bad { background: #fee2e2; color: #991b1b; border-color: #fca5a5; }
+        .stu-tile.none { background: #f1f5f9; color: #94a3b8; border-color: #e2e8f0; }
+        .res-hint { font-size: 12.5px; color: var(--text-muted); margin-top: 8px; }
+        .res-foot { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+        /* Ma trận xem lại trong tab Báo cáo */
+        .mx-wrap { overflow: auto; max-height: 68vh; border: 1px solid var(--border); border-radius: 12px; }
+        .mx { border-collapse: separate; border-spacing: 0; font-size: 13px; width: max-content; min-width: 100%; }
+        .mx th, .mx td { padding: 7px 9px; border-bottom: 1px solid var(--border); text-align: center; white-space: nowrap; }
+        .mx thead th { position: sticky; top: 0; background: #0f1b4d; color: #fff; z-index: 2; font-weight: 800; }
+        .mx .sticky-l { position: sticky; left: 0; background: #fff; text-align: left; z-index: 1; font-weight: 800; min-width: 190px; }
+        .mx thead .sticky-l { background: #0f1b4d; z-index: 3; }
+        .mx td.c-ok { background: #d1fae5; color: #047857; font-weight: 800; cursor: pointer; }
+        .mx td.c-bad { background: #fee2e2; color: #b91c1c; font-weight: 800; cursor: pointer; }
+        .mx td.c-none { background: #f8fafc; color: #cbd5e1; cursor: pointer; }
+        .mx tfoot td { background: #fffbeb; font-weight: 800; color: #92400e; position: sticky; bottom: 0; }
+        .mx tfoot .sticky-l { background: #fffbeb; }
+        .mx .score { font-weight: 900; color: #1d4ed8; }
+
+        /* =====================================================
+           GIAO DIỆN V2 — cân đối, dễ nhìn (ghi đè lên style cũ)
+           ===================================================== */
+        :root { --text-muted: #566377; --radius: 16px; --gap: 20px; }
+        body { background: #f4f6fb; font-size: 15px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+        main { max-width: 1180px; padding: 28px 24px 48px; }
+        h4 { color: #0f172a; }
+
+        /* Header: một hàng gọn */
+        header { padding: 10px 24px; }
+        .header-inner { max-width: 1180px; gap: 20px; }
+        .brand { flex: none; gap: 10px; white-space: nowrap; }
+        .brand-name { font-size: 19px; font-weight: 900; letter-spacing: .3px; color: #1e293b; white-space: nowrap; }
+        .nav-tabs { flex: none; padding: 4px; gap: 2px; }
+        .tab-btn { white-space: nowrap; padding: 8px 14px; font-size: 14px; gap: 6px; }
+        .tab-btn .ti { font-size: 15px; line-height: 1; }
+        .header-actions { flex: none; gap: 8px; }
+        .btn { white-space: nowrap; line-height: 1.2; }
+        .btn-sm { padding: 7px 12px; font-size: 13px; border-radius: 9px; }
+        .btn-ghost { background: transparent; color: #475569; border: 1px solid transparent; }
+        .btn-ghost:hover { background: #eef2f7; color: #0f172a; }
+
+        /* Thẻ & tiêu đề: nhịp thống nhất */
+        .card { border-radius: var(--radius); padding: 24px; margin-bottom: var(--gap); border-color: #e6eaf2; box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 4px 14px rgba(15,23,42,.03); }
+        .card-header { flex-wrap: wrap; gap: 12px 16px; margin-bottom: 18px; padding-bottom: 16px; }
+        .card-title { font-size: 18px; line-height: 1.3; }
+        .card-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .card > p, .card-header + p { max-width: 78ch; line-height: 1.65; }
+
+        /* Thống kê */
+        .stat-grid { grid-template-columns: repeat(4, 1fr); gap: var(--gap); margin-bottom: var(--gap); }
+        .stat-card { padding: 18px 20px; gap: 14px; border-color: #e6eaf2; }
+        .stat-icon { width: 46px; height: 46px; font-size: 22px; border-radius: 12px; }
+        .stat-val { font-size: 26px; }
+        .stat-label { font-size: 13px; margin-top: 5px; }
+
+        /* Khởi động nhanh */
+        .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
+        .step-card { position: relative; background: #f8fafc; border: 1px solid #e6eaf2; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px; }
+        .step-card h4 { font-size: 16.5px; font-weight: 800; }
+        .step-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; flex: 1; margin-bottom: 12px; }
+        .step-card .btn { width: 100%; }
+        .step-num { width: 30px; height: 30px; border-radius: 50%; background: #dbeafe; color: #1d4ed8; font-weight: 900; font-size: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
+        .step-main { background: linear-gradient(160deg, #eff6ff 0%, #ecfdf5 100%); border-color: #bfdbfe; }
+        .step-main .step-num { background: #10b981; color: #fff; }
+
+        .prev-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid #e6eaf2; background: #f8fafc; border-radius: 12px; margin-bottom: 8px; }
+        .prev-no { flex: none; font-weight: 800; font-size: 12.5px; color: #1d4ed8; background: #dbeafe; padding: 3px 10px; border-radius: 6px; }
+        .prev-text { flex: 1; min-width: 0; color: #1e293b; font-weight: 600; font-size: 14.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .prev-ans { flex: none; font-weight: 800; font-size: 12.5px; color: #047857; background: #d1fae5; padding: 3px 10px; border-radius: 6px; }
+
+        /* Bảng chung */
+        th { font-size: 12.5px; text-transform: uppercase; letter-spacing: .04em; color: #64748b; background: #f8fafc; padding: 11px 14px; }
+        td { vertical-align: middle; }
+        .tbl-scroll { overflow-x: auto; border: 1px solid #e6eaf2; border-radius: 12px; max-height: 70vh; overflow-y: auto; }
+        .stu-table { border-radius: 0; }
+        .stu-table thead th { position: sticky; top: 0; z-index: 1; }
+        .stu-table td, .stu-table th { padding: 9px 12px; }
+        .class-grid { display: grid; grid-template-columns: minmax(0, 1fr) 330px; gap: var(--gap); align-items: start; }
+        .side-panel { background: #f8fafc; border: 1px solid #e6eaf2; border-radius: 14px; padding: 18px; position: sticky; top: 84px; }
+        .side-panel h4 { margin-bottom: 10px; }
+        .side-panel label { font-weight: 700; }
+
+        /* Danh sách câu hỏi */
+        .question-card { background: #fff; border-color: #e6eaf2; padding: 18px 20px; }
+        .q-text { font-size: 15.5px; }
+
+        /* Hướng dẫn */
+        .kbd { display: inline-block; min-width: 30px; text-align: center; background: #f1f5f9; border: 1px solid #cbd5e1; border-bottom-width: 2px; padding: 1px 9px; border-radius: 6px; color: #0f172a; font-size: 12.5px; font-weight: 800; font-family: inherit; margin-right: 4px; }
+        #view-guide .card { margin-bottom: var(--gap); }
+        #view-guide .card-title { margin-bottom: 4px; }
+
+        /* Trình chiếu: thanh công cụ gọn, không xuống dòng chữ */
+        .presentation-container { padding: 20px 40px 24px; }
+        .pres-toolbar { gap: 12px 16px; padding: 10px 14px; border-radius: 18px; flex-wrap: wrap; justify-content: center; }
+        .pres-toolbar .btn { padding: 9px 14px; font-size: 14px; }
+        .pres-toolbar > div { flex-wrap: wrap; justify-content: center; }
+        .scanned-status { gap: 8px; font-size: 15px; background: #fffbeb; border: 1px solid #fde68a; padding: 7px 14px; border-radius: 12px; white-space: nowrap; }
+        .scan-label { font-size: 13px; color: #92400e; }
+        .pres-question { font-size: 32px; }
+        .pres-opt-card { padding: 18px 22px; font-size: 21px; }
+
+        /* Bảng kết quả (modal) gọn hơn */
+        .res-box { padding: 20px; }
+
+        /* Máy tính bảng & điện thoại */
+        @media (max-width: 1100px) {
+            .stat-grid { grid-template-columns: repeat(2, 1fr); }
+            .steps-grid { grid-template-columns: 1fr; }
+            .class-grid { grid-template-columns: 1fr; }
+            .side-panel { position: static; }
+            .hide-sm { display: none; }
+        }
+        @media (max-width: 900px) {
+            body { padding-bottom: 76px; }
+            header { padding: 10px 14px; }
+            .header-inner { gap: 10px; }
+            main { padding: 16px 14px 28px; }
+            .card { padding: 16px; border-radius: 14px; }
+            .card-title { font-size: 16.5px; }
+            .nav-tabs { display: flex !important; position: fixed; left: 0; right: 0; bottom: 0; z-index: 60; border-radius: 0; border: none; border-top: 1px solid #e2e8f0; background: #fff; padding: 6px 6px calc(6px + env(safe-area-inset-bottom, 0px)); justify-content: space-around; gap: 2px; box-shadow: 0 -4px 16px rgba(15,23,42,.06); }
+            .tab-btn { flex: 1; flex-direction: column; gap: 2px; padding: 6px 2px; font-size: 11.5px; border-radius: 10px; min-width: 0; }
+            .tab-btn .ti { font-size: 20px; }
+            .tab-btn.active { box-shadow: none; background: #eff6ff; color: #1d4ed8; }
+            .header-inner > .brand + .nav-tabs { order: 3; }
+            .header-actions { margin-left: auto; }
+            .stat-grid { gap: 12px; }
+            .stat-card { padding: 14px; flex-direction: column; align-items: flex-start; gap: 10px; }
+            .stat-val { font-size: 24px; }
+            .presentation-container { padding: 14px; }
+            .pres-question { font-size: 22px; margin-bottom: 22px; }
+            .pres-opt-card { font-size: 17px; padding: 14px 16px; }
+            .pres-header { margin-bottom: 8px; }
+            .pres-toolbar .btn { padding: 8px 11px; font-size: 13px; }
+            .prev-row { flex-wrap: wrap; }
+            .prev-text { flex-basis: 100%; order: 3; white-space: normal; }
+            .scanner-modal { bottom: 150px; }
+        }
+        @media (max-width: 480px) {
+            .brand-name { font-size: 16px; }
+            .stat-grid { grid-template-columns: 1fr 1fr; }
+            .res-students { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+            .flow-nav { flex-wrap: wrap; }
+        }
+
+        /* Tinh chỉnh bổ sung */
+        .stu-table th { white-space: nowrap; }
+        .pres-counter { white-space: nowrap; }
+        @media (max-width: 600px) {
+            .stu-table .col-card, .stu-table td:nth-child(4) { display: none; }
+            .stu-table td:nth-child(3) { font-size: 14px; }
+            .pres-title { display: none; }
+            .pres-header { justify-content: space-between; }
+            .card-actions .btn { flex: 1 1 auto; justify-content: center; }
+        }
+
+        .card.flow-card { padding: 0; }
+        @media (max-width: 600px) {
+            .stu-table th, .stu-table td { padding: 8px 6px; }
+            .stu-table th:nth-child(1) { width: 34px !important; }
+            .stu-table th:nth-child(2) { width: 58px !important; }
+            .stu-table th:nth-child(5) { width: 64px !important; }
+            .stu-table th { font-size: 11px; letter-spacing: 0; }
+            .flow-body { padding: 16px; }
+            .flow-nav { padding: 12px 16px; }
+        }
     </style>
 
     <!-- KaTeX for Math / LaTeX rendering -->
@@ -711,6 +928,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 
     <!-- SheetJS -->
+    <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
@@ -725,21 +944,21 @@
                     <circle cx="42" cy="50" r="16" fill="#10B981"/>
                     <path d="M34 50 L40 56 L51 44" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span style="font-size: 21px; font-weight: 900; letter-spacing: 0.5px; color: #1e293b;">ĐỀ THI SỐ</span>
+                <span class="brand-name">ĐỀ THI SỐ</span>
             </div>
 
             <nav class="nav-tabs">
-                <button class="tab-btn active" onclick="switchTab('dashboard')" id="tab-dashboard">📊 Tổng quan</button>
-                <button class="tab-btn" onclick="switchTab('quizzes')" id="tab-quizzes">📝 Đề thi</button>
-                <button class="tab-btn" onclick="switchTab('classroom')" id="tab-classroom">👥 Lớp &amp; Thẻ giấy</button>
-                <button class="tab-btn" onclick="switchTab('reports')" id="tab-reports">📈 Báo cáo kết quả</button>
-                <button class="tab-btn" onclick="switchTab('guide')" id="tab-guide">📖 Hướng dẫn &amp; Lưu ý</button>
+                <button class="tab-btn active" onclick="switchTab('dashboard')" id="tab-dashboard"><span class="ti">📊</span><span class="tl">Tổng quan</span></button>
+                <button class="tab-btn" onclick="switchTab('quizzes')" id="tab-quizzes"><span class="ti">📝</span><span class="tl">Đề thi</span></button>
+                <button class="tab-btn" onclick="switchTab('classroom')" id="tab-classroom"><span class="ti">👥</span><span class="tl">Lớp &amp; Thẻ</span></button>
+                <button class="tab-btn" onclick="switchTab('reports')" id="tab-reports"><span class="ti">📈</span><span class="tl">Kết quả</span></button>
+                <button class="tab-btn" onclick="switchTab('guide')" id="tab-guide"><span class="ti">📖</span><span class="tl">Hướng dẫn</span></button>
             </nav>
 
             <div class="header-actions">
-                <button class="btn btn-outline" onclick="openQrModal()" style="border-color: #2563eb; color: #2563eb; background: #eff6ff;">📱 Quét mã điện thoại</button>
-                <button class="btn btn-outline" onclick="openVideoModal()">🎬 Video mẫu</button>
-                <button class="btn btn-success" onclick="startPresentation()">🚀 Trình chiếu ngay</button>
+                <button class="btn btn-ghost hide-sm" onclick="openQrModal()" title="Kết nối điện thoại để quét thẻ">📱 Kết nối ĐT</button>
+                <button class="btn btn-ghost hide-sm" onclick="openVideoModal()">🎬 Video</button>
+                <button class="btn btn-success" onclick="startPresentation()">▶ Trình chiếu</button>
             </div>
         </div>
     </header>
@@ -782,31 +1001,27 @@
                 <div class="card-header">
                     <div class="card-title">🚀 Khởi động nhanh tiết học tương tác</div>
                 </div>
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
-                    <div style="background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
-                        <h4 style="font-size: 17px; margin-bottom: 8px;">1. Soạn &amp; Tải Đề Thi</h4>
-                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
-                            Nhập từ file Word hoặc tự tạo câu hỏi trắc nghiệm A, B, C, D kèm đáp án đúng.
-                        </p>
-                        <button class="btn btn-outline" style="width: 100%;" onclick="switchTab('quizzes')">Soạn đề thi</button>
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-num">1</div>
+                        <h4>Soạn &amp; tải đề thi</h4>
+                        <p>Nhập từ file Word hoặc tự tạo câu hỏi trắc nghiệm A, B, C, D kèm đáp án đúng.</p>
+                        <button class="btn btn-outline" onclick="switchTab('quizzes')">Soạn đề thi</button>
                     </div>
-
-                    <div style="background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
-                        <h4 style="font-size: 17px; margin-bottom: 8px;">2. In Bộ Thẻ Cho Lớp</h4>
-                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
-                            Tạo file in A4 chứa mã thẻ 4 hướng cho từng học sinh. In 1 lần dùng cả năm!
-                        </p>
-                        <button class="btn btn-outline" style="width: 100%;" onclick="switchTab('classroom')">Xem &amp; In thẻ</button>
+                    <div class="step-card">
+                        <div class="step-num">2</div>
+                        <h4>In bộ thẻ cho lớp</h4>
+                        <p>Tạo file in A4 chứa thẻ 4 hướng cho từng học sinh. In một lần dùng cả năm.</p>
+                        <button class="btn btn-outline" onclick="switchTab('classroom')">Xem &amp; in thẻ</button>
                     </div>
-
-                    <div style="background: rgba(37, 99, 235, 0.15); padding: 20px; border-radius: 12px; border: 1px solid rgba(37, 99, 235, 0.4);">
-                        <h4 style="font-size: 17px; margin-bottom: 8px; color: #93c5fd;">3. Bắt Đầu Trình Chiếu</h4>
-                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
-                            Chiếu slide lên màn hình/TV, mở camera lia qua lớp và xem phổ điểm trực tiếp.
-                        </p>
-                        <button class="btn btn-primary" style="width: 100%;" onclick="startPresentation()">Bật Trình Chiếu</button>
+                    <div class="step-card step-main">
+                        <div class="step-num">3</div>
+                        <h4>Bắt đầu trình chiếu</h4>
+                        <p>Chiếu câu hỏi lên màn hình, học sinh giơ thẻ, thầy cô quét và xem kết quả từng em.</p>
+                        <button class="btn btn-success" onclick="startPresentation()">▶ Bật trình chiếu</button>
                     </div>
                 </div>
+            
             </div>
 
             <div class="card">
@@ -822,10 +1037,12 @@
         <section id="view-quizzes" class="view-section">
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">📥 Nhập đề thi nhanh từ Word hoặc Văn bản</div>
-                    <button class="btn btn-warning" onclick="loadExTestSample()">📐 Dán mẫu LaTeX (gói ex_test)</button>
-                        <button class="btn btn-outline" onclick="loadMathSampleQuiz()">📐 Đề mẫu Toán</button>
-                    <button class="btn btn-outline" onclick="loadSampleWordText()">Dán mẫu Word</button>
+                    <div class="card-title">📥 Nhập đề thi từ Word hoặc văn bản</div>
+                    <div class="card-actions">
+                        <button class="btn btn-outline btn-sm" onclick="loadSampleWordText()">Dán mẫu Word</button>
+                        <button class="btn btn-outline btn-sm" onclick="loadMathSampleQuiz()">📐 Đề mẫu Toán</button>
+                        <button class="btn btn-warning btn-sm" onclick="loadExTestSample()">📐 Mẫu LaTeX (ex_test)</button>
+                    </div>
                 </div>
                 <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 12px;">
                     Dán nội dung câu hỏi dạng "Câu 1. ... A. ... B. ... C. ... D. ... Đáp án: A". Hệ thống sẽ tự động bóc tách thành danh sách câu hỏi.
@@ -853,30 +1070,31 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">👥 Quản lý lớp học &amp; Danh sách học sinh</div>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button class="btn btn-success" onclick="printStudentCards()">🖨️ In Bộ Thẻ Giấy Cho Cả Lớp</button>
-                        <button class="btn btn-primary" onclick="document.getElementById('class-file-upload').click()">📁 Tải lên file Excel (.xlsx / .xls)</button>
-                        <button class="btn btn-danger" id="btn-batch-delete" onclick="batchDeleteSelectedStudents()" style="display: none;">🗑️ Xóa học sinh đã chọn (<span id="batch-delete-count">0</span>)</button>
-                        <button class="btn btn-danger" onclick="clearClassList()">🗑️ Xóa toàn bộ danh sách lớp</button>
-                        <button class="btn btn-outline" onclick="restoreDefaultClass()">🔄 Khôi phục danh sách mẫu</button>
+                    <div class="card-actions">
+                        <button class="btn btn-success" onclick="printStudentCards()">🖨️ In thẻ cả lớp</button>
+                        <button class="btn btn-primary" onclick="document.getElementById('class-file-upload').click()">📁 Tải file Excel</button>
+                        <button class="btn btn-danger" id="btn-batch-delete" onclick="batchDeleteSelectedStudents()" style="display: none;">🗑️ Xóa đã chọn (<span id="batch-delete-count">0</span>)</button>
+                        <button class="btn btn-outline btn-sm" onclick="restoreDefaultClass()">🔄 Lớp mẫu</button>
+                        <button class="btn btn-danger btn-sm" onclick="clearClassList()">🗑️ Xóa cả lớp</button>
                     </div>
                 </div>
                 <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
                     Mỗi học sinh sở hữu một mã thẻ số tương ứng. Khi in ra giấy, 4 cạnh thẻ là 4 đáp án A, B, C, D. Học sinh giơ thẻ hướng nào lên trên thì hệ thống ghi nhận đáp án đó.
                 </p>
-                <div style="display: grid; grid-template-columns: 1fr 340px; gap: 24px;">
+                <div class="class-grid">
                     <div>
-                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+                        <div class="tbl-scroll"><table class="stu-table">
                             <thead>
-                                <tr style="border-bottom: 1px solid var(--border); color: var(--text-muted);">
-                                    <th style="padding: 10px;">Số thẻ</th>
-                                    <th style="padding: 10px;">Họ và tên học sinh</th>
-                                    <th style="padding: 10px;">Xem mẫu thẻ</th>
-                                    <th style="padding: 10px; text-align: right;">Thao tác</th>
+                                <tr>
+                                    <th style="width: 44px; text-align: center;"><input type="checkbox" title="Chọn tất cả" onchange="toggleSelectAllStudents(this)" style="width: 16px; height: 16px; cursor: pointer;"></th>
+                                    <th style="width: 84px;">Số thẻ</th>
+                                    <th>Họ và tên học sinh</th>
+                                    <th class="col-card" style="width: 120px;">Thẻ</th>
+                                    <th style="width: 96px; text-align: right;">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody id="student-table-body"></tbody>
-                        </table>
+                        </table></div>
                         <div id="empty-class-alert" style="display: none; padding: 36px 20px; text-align: center; color: var(--text-muted);">
                             <div style="font-size: 36px; margin-bottom: 8px;">📋</div>
                             <h4 style="font-size: 16px; color: #0f172a; margin-bottom: 4px;">Danh sách lớp học hiện đang trống</h4>
@@ -884,7 +1102,7 @@
                         </div>
                     </div>
 
-                    <div style="background: rgba(15, 23, 42, 0.6); padding: 18px; border-radius: 12px; border: 1px solid var(--border); height: fit-content;">
+                    <div class="side-panel">
                         <h4 style="font-size: 16px; margin-bottom: 12px;">Thêm học sinh mới</h4>
                         <div style="margin-bottom: 12px;">
                             <label>Họ và tên</label>
@@ -895,7 +1113,7 @@
                         <hr style="border: 0; border-top: 1px solid var(--border); margin-bottom: 14px;">
                         <h4 style="font-size: 15px; margin-bottom: 8px;">Nhập hàng loạt từ Excel</h4>
                         <textarea id="bulk-students" rows="5" placeholder="Dán danh sách tên học sinh (mỗi em 1 dòng)..."></textarea>
-                        <div style="margin: 10px 0; display: flex; align-items: center; gap: 8px;">
+                        <div style="margin: 10px 0; display: flex; align-items: flex-start; gap: 8px;">
                             <input type="checkbox" id="replace-class-checkbox" checked style="width: 16px; height: 16px; cursor: pointer;">
                             <label for="replace-class-checkbox" style="font-size: 13px; color: #334155; margin: 0; cursor: pointer;">
                                 Xóa danh sách cũ và thay thế bằng danh sách này
@@ -912,28 +1130,17 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">📈 Báo cáo kết quả kiểm tra</div>
-                    <div style="display: flex; gap: 10px;">
+                    <div class="card-actions">
                         <button class="btn btn-primary" onclick="exportExcelCSV()">📥 Xuất file Excel (.csv)</button>
                         <button class="btn btn-danger" onclick="resetAllScores()">Làm mới điểm</button>
                     </div>
                 </div>
                 <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
-                    Dữ liệu chấm điểm được tổng hợp tự động theo thời gian thực từ các lượt quét camera hoặc mô phỏng.
+                    Xem lại từng em làm đúng hay sai ở mọi câu. Dữ liệu được tổng hợp từ các lượt quét thẻ (hoặc nhập tay) trong lúc trình chiếu.
                 </p>
-                <div style="overflow-x: auto;">
-                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
-                        <thead>
-                            <tr style="border-bottom: 2px solid var(--border); color: #fff;">
-                                <th style="padding: 12px;">STT / Số thẻ</th>
-                                <th style="padding: 12px;">Họ tên học sinh</th>
-                                <th style="padding: 12px;">Số câu đúng</th>
-                                <th style="padding: 12px;">Điểm số (Thang 10)</th>
-                                <th style="padding: 12px;">Chi tiết đáp án</th>
-                            </tr>
-                        </thead>
-                        <tbody id="report-table-body"></tbody>
-                    </table>
-                </div>
+                <div id="report-summary" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;"></div>
+                <div class="mx-wrap" id="report-matrix"></div>
+                <p style="color: var(--text-muted); font-size: 12.5px; margin-top: 8px;">Xanh = đúng · Đỏ = sai · Xám = chưa có đáp án. Bấm vào một ô để sửa đáp án của em đó. Hàng cuối cho biết tỉ lệ cả lớp làm đúng từng câu.</p>
             </div>
         </section>
     
@@ -949,8 +1156,27 @@
                 </p>
             </div>
 
+
+            <!-- Quy trình 10 bước theo video hướng dẫn -->
+            <div class="card flow-card" id="flow-card">
+                <div class="flow-head">
+                    <h3>🎬 Làm cùng thầy cô — từ con số 0 qua 10 bước</h3>
+                    <p>Đi theo đúng thứ tự trong video hướng dẫn. Bấm từng bước hoặc dùng nút Tiếp / Trước.</p>
+                </div>
+                <div class="flow-pills" id="flow-pills"><button class="flow-pill" data-i="0" onclick="flowGo(0)"><i>1</i>Tài khoản</button><button class="flow-pill" data-i="1" onclick="flowGo(1)"><i>2</i>Tạo đề</button><button class="flow-pill" data-i="2" onclick="flowGo(2)"><i>3</i>Tạo lớp</button><button class="flow-pill" data-i="3" onclick="flowGo(3)"><i>4</i>Tải về</button><button class="flow-pill" data-i="4" onclick="flowGo(4)"><i>5</i>Cài đặt</button><button class="flow-pill" data-i="5" onclick="flowGo(5)"><i>6</i>Chèn câu</button><button class="flow-pill" data-i="6" onclick="flowGo(6)"><i>7</i>Trình chiếu</button><button class="flow-pill" data-i="7" onclick="flowGo(7)"><i>8</i>Điện thoại</button><button class="flow-pill" data-i="8" onclick="flowGo(8)"><i>9</i>Thu thẻ</button><button class="flow-pill" data-i="9" onclick="flowGo(9)"><i>10</i>Xem lại</button></div>
+                <div class="flow-body"><div class="flow-step" data-i="0"><h4>🔑 Bước 1: Tạo tài khoản giáo viên</h4><div class="flow-sub">Mở trang dethiso.vn rồi đăng ký — chỉ mất một phút.</div><ol class="flow-list"><li>Mở <b>dethiso.vn</b>, bấm <b>Đăng ký</b>.</li><li>Chọn vai trò <b>Giáo viên</b>.</li><li>Điền họ tên, email, <b>mật khẩu từ 6 ký tự trở lên</b>, số điện thoại, trường và môn dạy.</li><li>Bấm <b>Đăng ký</b>. Lần đầu vào, trang sẽ hiện hướng dẫn tạo đề ba bước.</li></ol><div class="flow-tip">🔑 Mật khẩu ≥ 6 ký tự</div></div><div class="flow-step" data-i="1"><h4>📝 Bước 2: Tạo đề từ file Word</h4><div class="flow-sub">Soạn đề như bình thường trong Word, hệ thống tự tách câu hỏi và đáp án.</div><ol class="flow-list"><li>Vào mục <b>Đề thi</b>, bấm <b>Tạo đề thi</b> (hoặc <b>Đã hiểu → Tạo đề ngay</b>).</li><li>Chọn môn học, chọn <b>Chọn đề thi Word hoặc PDF</b> rồi bấm <b>Tiếp tục</b>.</li><li>Tải lên file đúng định dạng: <b>Câu 1: …</b>, các phương án <b>A. B. C. D.</b>, <b>gạch chân chữ cái của đáp án đúng</b>.</li><li>Chỉ vài giây là nhận dạng xong (ví dụ <b>28 câu</b>). Bấm <b>Soạn đề ngay</b> để soát lại, rồi bấm <b>Lưu</b>.</li></ol><div class="flow-tip">✅ 28 câu · vài giây</div></div><div class="flow-step" data-i="2"><h4>👥 Bước 3: Tạo lớp và nhập danh sách học sinh</h4><div class="flow-sub">Số thứ tự của em chính là số trên thẻ giấy.</div><ol class="flow-list"><li>Vào <b>Lớp học</b>, mở lớp (ví dụ 12A1), chọn thẻ <b>Học sinh</b>.</li><li>Bấm <b>Nhập danh sách</b>, dán tên (mỗi em một dòng) hoặc tải file Excel/CSV.</li><li>Kiểm tra lớp đã đủ sĩ số (ví dụ <b>48 em</b>).</li><li>Phát thẻ giấy theo đúng <b>số thứ tự</b> của từng em.</li></ol><div class="flow-tip">🔢 Số thứ tự = số trên thẻ</div></div><div class="flow-step" data-i="3"><h4>⬇️ Bước 4: Tải phần mềm cho PowerPoint</h4><div class="flow-sub">Chỉ làm một lần trên máy dùng để giảng.</div><ol class="flow-list"><li>Vào <b>dethiso.vn/powerpoint</b>, bấm <b>Tải về</b>.</li><li>Yêu cầu: <b>Windows 10/11</b>, PowerPoint 2016 trở lên hoặc Microsoft 365.</li><li>Không dùng được trên Mac, PowerPoint bản web và WPS.</li></ol><div class="flow-tip">💻 Windows 10/11 + PowerPoint 2016+</div></div><div class="flow-step" data-i="4"><h4>🛠️ Bước 5: Cài đặt — một lần duy nhất</h4><div class="flow-sub">Windows có thể hiện bảng xanh cảnh báo, đây là bình thường.</div><ol class="flow-list"><li>Mở tệp vừa tải. Khi Windows hiện bảng xanh <b>“Windows protected your PC”</b>, bấm dòng <b>More info (Thông tin thêm)</b> rồi bấm <b>Vẫn chạy</b>.</li><li>Hộp thoại hỏi <b>cài thẻ “Đề Thi Số” vào PowerPoint?</b> → bấm <b>OK</b>.</li><li>Thấy thông báo <b>“Đã cài xong!”</b> là xong. Mở PowerPoint, thẻ <b>Đề Thi Số</b> nằm ngay cạnh thẻ Home.</li></ol><div class="flow-tip">🎉 Đã cài xong!</div></div><div class="flow-step" data-i="5"><h4>📌 Bước 6: Chèn câu hỏi vào slide</h4><div class="flow-sub">Không cần tài khoản Microsoft — dùng tài khoản Đề Thi Số.</div><ol class="flow-list"><li>Trong PowerPoint, mở thẻ <b>Đề Thi Số → Chèn câu hỏi</b>. Lần đầu dùng, cửa sổ mời đăng nhập hiện ra: nhập email và mật khẩu Đề Thi Số.</li><li>Chọn đề vừa tạo trên dethiso.vn.</li><li>Máy tự lọc sẵn các câu trắc nghiệm <b>A, B, C, D</b> kèm đáp án. Tick các câu cần chèn rồi bấm chèn.</li><li>Đáp án đúng được ghi trong phần ghi chú — chỉ thầy cô thấy, học sinh không nhìn thấy.</li></ol><div class="flow-tip">👀 Đáp án đúng · chỉ thầy cô thấy</div></div><div class="flow-step" data-i="6"><h4>▶️ Bước 7: Trình chiếu như bình thường</h4><div class="flow-sub">Slide bài giảng vẫn chiếu bình thường, thêm một thanh nhỏ của Đề Thi Số.</div><ol class="flow-list"><li>Nhấn <b>F5</b> để trình chiếu.</li><li>Tới slide câu hỏi, góc dưới bên phải hiện thanh <b>Đề Thi Số</b>.</li><li>Lần đầu, bấm <b>Chọn lớp để thu thẻ</b> rồi chọn lớp (ví dụ <b>12A1</b>).</li></ol><div class="flow-tip">✨ Thanh Đề Thi Số — góc dưới phải</div></div><div class="flow-step" data-i="7"><h4>📱 Bước 8: Nối điện thoại để quét thẻ</h4><div class="flow-sub">Chọn một lần, dùng cho cả buổi.</div><ol class="flow-list"><li>Bấm <b>biểu tượng điện thoại</b> trên thanh Đề Thi Số.</li><li>Dùng <b>Camera hoặc Zalo</b> quét mã QR, rồi đăng nhập cùng tài khoản.</li><li>Điện thoại tự vào đúng buổi đang chiếu, sẵn sàng quét.</li></ol><div class="flow-tip">📲 Quét mã → đăng nhập → xong</div></div><div class="flow-step" data-i="8"><h4>🙌 Bước 9: Thu thẻ và xem kết quả</h4><div class="flow-sub">Học sinh xoay thẻ, giơ cao — thầy cô lia điện thoại.</div><ol class="flow-list"><li>Học sinh <b>xoay chữ đáp án mình chọn lên trên cùng</b> rồi giơ cao.</li><li>Trên điện thoại bấm <b>Bật camera</b>, lia chậm qua từng dãy bàn. <b>Khung xanh = đã ghi nhận</b>, kèm số thẻ và đáp án.</li><li>Thanh trình chiếu báo số em đã giơ thẻ (ví dụ <b>46 / 48</b>).</li><li>Bấm <b>Kết quả</b>: biểu đồ bốn đáp án và danh sách từng em (xanh đúng, đỏ sai). Bấm <b>Slide tiếp</b> để sang câu sau.</li></ol><div class="flow-tip">✅ Khung xanh = đã ghi nhận</div></div><div class="flow-step" data-i="9"><h4>📊 Bước 10: Xem lại và tải bảng điểm</h4><div class="flow-sub">Kết thúc buổi, lấy kết quả về máy.</div><ol class="flow-list"><li>Vào <b>Thẻ trả lời</b> của đề, bấm <b>Tải kết quả</b> để lấy bảng điểm mở bằng Excel.</li><li>Tóm lại 6 việc: <b>tạo đề → tạo lớp → tải & cài → chèn câu vào slide → trình chiếu → quét thẻ</b>.</li></ol><div class="flow-recap"><div><span>📄</span>Tạo đề</div><div><span>👥</span>Tạo lớp</div><div><span>💻</span>Tải &amp; cài</div><div><span>📌</span>Chèn câu</div><div><span>▶️</span>Trình chiếu</div><div><span>🙌</span>Quét thẻ</div></div><div class="flow-tip">🎓 Chúc thầy cô những tiết học thật sôi nổi!</div></div></div>
+                <div class="flow-nav">
+                    <button class="btn btn-outline" onclick="flowGo(flowIdx-1)">← Trước</button>
+                    <span class="flow-count" id="flow-count">Bước 1 / 10</span>
+                    <div style="display:flex; gap:8px;">
+                        <button class="btn btn-outline" onclick="openVideoModal()">🎬 Xem video</button>
+                        <button class="btn btn-primary" onclick="flowGo(flowIdx+1)">Tiếp →</button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Grid of 4 Key Guides -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px;">
                 <!-- Section 1: Soạn đề Toán & LaTeX -->
                 <div class="card" style="margin-bottom: 0;">
                     <div class="card-title" style="font-size: 17px; margin-bottom: 12px; color: #60a5fa;">
@@ -959,7 +1185,7 @@
                     <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 12px;">
                         Để công thức hiển thị chuẩn đẹp, bạn chỉ cần kẹp công thức vào giữa 2 dấu đô la <code>$...$</code>:
                     </p>
-                    <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-family: monospace; font-size: 13px; color: #a7f3d0; margin-bottom: 12px;">
+                    <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 14px; font-family: monospace; line-height: 1.7; font-size: 13px; color: #a7f3d0; margin-bottom: 12px;">
                         Câu 1: Cho hàm số $y = \frac{2x+1}{x-1}$.<br>
                         A. $y' = -\frac{3}{(x-1)^2}$<br>
                         B. $y' = \frac{3}{(x-1)^2}$<br>
@@ -1006,12 +1232,12 @@
                         ⌨️ 4. Phím Tắt Nhanh Khi Trình Chiếu (F5)
                     </div>
                     <div style="font-size: 14px; color: var(--text-muted); line-height: 1.8;">
-                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">Space</kbd> hoặc <kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">➡</kbd>: Chuyển sang câu hỏi kế tiếp</p>
-                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">⬅</kbd>: Quay lại câu hỏi trước</p>
-                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">Phím A</kbd>: Bật sáng đáp án chính xác (tô xanh đáp án đúng)</p>
-                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">Phím R</kbd>: Bật / Tắt cửa sổ biểu đồ phổ điểm</p>
-                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">Phím C</kbd>: Mở / Đóng cửa sổ camera quét thẻ</p>
-                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">Phím Esc</kbd>: Thoát chế độ trình chiếu</p>
+                        <p><kbd class="kbd">Space</kbd> hoặc <kbd class="kbd">➡</kbd>: Chuyển sang câu hỏi kế tiếp</p>
+                        <p><kbd class="kbd">⬅</kbd>: Quay lại câu hỏi trước</p>
+                        <p><kbd class="kbd">Phím A</kbd>: Bật sáng đáp án chính xác (tô xanh đáp án đúng)</p>
+                        <p><kbd class="kbd">Phím R</kbd>: Bật / Tắt cửa sổ biểu đồ phổ điểm</p>
+                        <p><kbd class="kbd">Phím C</kbd>: Mở / Đóng cửa sổ camera quét thẻ</p>
+                        <p><kbd class="kbd">Phím Esc</kbd>: Thoát chế độ trình chiếu</p>
                     </div>
                 </div>
             </div>
@@ -1042,17 +1268,17 @@
 
         <div class="pres-toolbar">
             <div class="scanned-status">
-                <span>📱 Đã thu:</span>
+                <span class="scan-label">Đã thu</span>
                 <span id="pres-scanned-count" style="font-size: 20px; color: #10b981;">0</span>
                 <span style="color: var(--text-muted);">/ <span id="pres-total-students">24</span> em</span>
             </div>
 
             <div style="display: flex; gap: 10px; align-items: center;">
-                <button class="btn btn-outline" onclick="openQrModal()" style="color: #2563eb; border-color: #93c5fd; background: #eff6ff;">📱 Kết nối điện thoại</button>
-                <button class="btn btn-outline" onclick="toggleScannerModal()">📷 Mở Camera Quét</button>
-                <button class="btn btn-warning" onclick="simulateClassroomScan()">🎲 Mô phỏng cả lớp giơ thẻ</button>
-                <button class="btn btn-outline" onclick="revealCorrectAnswer()">👁️ Hiện đáp án đúng</button>
-                <button class="btn btn-primary" onclick="showChartModal()">📊 Xem biểu đồ</button>
+                <button class="btn btn-outline" onclick="openQrModal()" style="color: #2563eb; border-color: #93c5fd; background: #eff6ff;">📱 Kết nối ĐT</button>
+                <button class="btn btn-outline" onclick="toggleScannerModal()">📷 Camera</button>
+                <button class="btn btn-warning" onclick="simulateClassroomScan()">🎲 Mô phỏng</button>
+                <button class="btn btn-outline" onclick="revealCorrectAnswer()">👁️ Đáp án đúng</button>
+                <button class="btn btn-primary" onclick="showResultModal()">📊 Kết quả</button>
             </div>
 
             <div style="display: flex; gap: 8px;">
@@ -1078,11 +1304,64 @@
         </div>
     </div>
 
+
+    <!-- Results Modal: biểu đồ + từng em đúng/sai (theo video) -->
+    <div id="result-modal" class="chart-modal" onclick="closeResultModal()">
+        <div class="chart-box res-box" onclick="event.stopPropagation()">
+            <div class="res-top">
+                <div>
+                    <span class="res-qno" id="res-qno">Câu 1</span>
+                    <div class="res-qtext" id="res-qtext"></div>
+                </div>
+                <button style="background: none; border: none; color: #64748b; font-size: 22px; cursor: pointer;" onclick="closeResultModal()">✕</button>
+            </div>
+            <div class="res-grid">
+                <div class="res-panel">
+                    <div class="res-pct">
+                        <div class="res-ring" id="res-ring"><span id="res-pct-text">0%</span></div>
+                        <div>
+                            <div style="font-weight: 900; font-size: 15px;" id="res-summary">0 / 0 em trả lời đúng</div>
+                            <div class="res-stats">
+                                <button class="res-chip ok" id="chip-ok" onclick="setResultFilter('ok')">✓ Đúng 0</button>
+                                <button class="res-chip bad" id="chip-bad" onclick="setResultFilter('bad')">✗ Sai 0</button>
+                                <button class="res-chip none" id="chip-none" onclick="setResultFilter('none')">… Chưa trả lời 0</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-bars res-bars">
+                        <div class="chart-col"><div class="chart-bar-fill bar-a" id="rb-a">0</div><div class="chart-letter">A</div></div>
+                        <div class="chart-col"><div class="chart-bar-fill bar-b" id="rb-b">0</div><div class="chart-letter">B</div></div>
+                        <div class="chart-col"><div class="chart-bar-fill bar-c" id="rb-c">0</div><div class="chart-letter">C</div></div>
+                        <div class="chart-col"><div class="chart-bar-fill bar-d" id="rb-d">0</div><div class="chart-letter">D</div></div>
+                    </div>
+                    <div style="text-align: center; font-weight: 800; color: #059669; font-size: 14px;" id="res-correct-legend"></div>
+                </div>
+                <div class="res-panel">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; gap: 8px; flex-wrap: wrap;">
+                        <strong style="font-size: 15px;">Kết quả từng em</strong>
+                        <div class="res-stats" style="margin: 0;">
+                            <button class="res-chip" id="chip-all" onclick="setResultFilter('all')">Tất cả</button>
+                        </div>
+                    </div>
+                    <div class="res-students" id="res-students"></div>
+                    <div class="res-hint">Xanh = đúng · Đỏ = sai · Xám = chưa trả lời. Bấm vào tên một em để sửa đáp án (A → B → C → D → bỏ trống) khi camera đọc sai hoặc nhập tay.</div>
+                </div>
+            </div>
+            <div class="res-foot">
+                <button class="btn btn-outline" onclick="resultStep(-1)">⬅ Câu trước</button>
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-outline" onclick="openReviewFromResult()">📈 Xem lại cả lớp (bảng đầy đủ)</button>
+                    <button class="btn btn-primary" onclick="resultStep(1)">Câu tiếp ➡</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Chart Modal -->
     <div id="chart-modal" class="chart-modal" onclick="closeChartModal(event)">
         <div class="chart-box" onclick="event.stopPropagation()">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h3 style="font-size: 22px; font-weight: 800; color: #fff;">📊 Phổ Điểm Đáp Án Câu Hiện Tại</h3>
+                <h3 style="font-size: 22px; font-weight: 800; color: #0f172a;">📊 Phổ Điểm Đáp Án Câu Hiện Tại</h3>
                 <button style="background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer;" onclick="closeChartModal()">✕</button>
             </div>
             <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;" id="chart-subtitle">
@@ -1118,7 +1397,7 @@
     <div id="video-modal" class="chart-modal" onclick="closeVideoModal(event)">
         <div class="chart-box" style="max-width: 860px; padding: 16px;" onclick="event.stopPropagation()">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 8px;">
-                <h3 style="font-size: 18px; font-weight: 800; color: #fff;">🎬 Video Hướng Dẫn Sử Dụng Đề Thi Số</h3>
+                <h3 style="font-size: 18px; font-weight: 800; color: #0f172a;">🎬 Video Hướng Dẫn Sử Dụng Đề Thi Số</h3>
                 <button style="background: none; border: none; color: #94a3b8; font-size: 22px; cursor: pointer;" onclick="closeVideoModal()">✕</button>
             </div>
             <div style="width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden;">
@@ -1134,73 +1413,21 @@
     <!-- Phone QR Code Login & Remote Scanner Modal -->
     <div id="qr-modal" class="chart-modal" onclick="closeQrModal(event)">
         <div class="chart-box" style="max-width: 540px; text-align: center;" onclick="event.stopPropagation()">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <h3 style="font-size: 20px; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 8px;">
-                    📱 Quét Mã Kết Nối Camera Điện Thoại
-                </h3>
-                <button style="background: none; border: none; color: #94a3b8; font-size: 22px; cursor: pointer;" onclick="closeQrModal()">✕</button>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <h3 style="font-size:20px;font-weight:900;color:#0f172a;">📱 Quét mã để đăng nhập điện thoại</h3>
+                <button style="background:none;border:none;color:#94a3b8;font-size:22px;cursor:pointer;" onclick="closeQrModal()">✕</button>
             </div>
-            
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
-                Dùng camera điện thoại của giáo viên quét mã QR bên dưới để biến điện thoại thành <strong>thiết bị quét thẻ từ xa</strong> (không cần cài app).
-            </p>
-
-            <!-- Dynamic QR Code Container -->
-            <div style="display: inline-block; background: #ffffff; padding: 18px; border-radius: 16px; border: 2px solid #e2e8f0; box-shadow: var(--shadow-md); margin-bottom: 16px;">
-                <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect width="200" height="200" fill="white"/>
-                    <rect x="15" y="15" width="50" height="50" rx="6" fill="#0f172a"/>
-                    <rect x="23" y="23" width="34" height="34" rx="4" fill="white"/>
-                    <rect x="31" y="31" width="18" height="18" rx="2" fill="#2563eb"/>
-                    <rect x="135" y="15" width="50" height="50" rx="6" fill="#0f172a"/>
-                    <rect x="143" y="23" width="34" height="34" rx="4" fill="white"/>
-                    <rect x="151" y="31" width="18" height="18" rx="2" fill="#2563eb"/>
-                    <rect x="15" y="135" width="50" height="50" rx="6" fill="#0f172a"/>
-                    <rect x="23" y="143" width="34" height="34" rx="4" fill="white"/>
-                    <rect x="31" y="151" width="18" height="18" rx="2" fill="#2563eb"/>
-                    <rect x="75" y="20" width="12" height="12" fill="#0f172a"/>
-                    <rect x="95" y="20" width="12" height="12" fill="#0f172a"/>
-                    <rect x="115" y="20" width="12" height="12" fill="#0f172a"/>
-                    <rect x="75" y="40" width="12" height="12" fill="#2563eb"/>
-                    <rect x="105" y="40" width="12" height="12" fill="#0f172a"/>
-                    <rect x="85" y="60" width="12" height="12" fill="#0f172a"/>
-                    <rect x="105" y="60" width="12" height="12" fill="#2563eb"/>
-                    <circle cx="100" cy="100" r="24" fill="#2563eb"/>
-                    <path d="M93 90h14a3 3 0 013 3v18a3 3 0 01-3 3H93a3 3 0 01-3-3V93a3 3 0 013-3z" stroke="white" stroke-width="2"/>
-                    <circle cx="100" cy="110" r="1.5" fill="white"/>
-                    <rect x="75" y="135" width="12" height="12" fill="#0f172a"/>
-                    <rect x="95" y="135" width="12" height="12" fill="#0f172a"/>
-                    <rect x="115" y="135" width="12" height="12" fill="#2563eb"/>
-                    <rect x="135" y="75" width="12" height="12" fill="#0f172a"/>
-                    <rect x="155" y="75" width="12" height="12" fill="#0f172a"/>
-                    <rect x="145" y="105" width="12" height="12" fill="#0f172a"/>
-                    <rect x="165" y="105" width="12" height="12" fill="#2563eb"/>
-                    <rect x="145" y="145" width="12" height="12" fill="#0f172a"/>
-                    <rect x="165" y="165" width="12" height="12" fill="#0f172a"/>
-                </svg>
+            <p style="color:var(--text-muted);font-size:14px;margin-bottom:14px;">Mở camera điện thoại, quét mã QR này → điện thoại tự đăng nhập và trở thành <strong>máy quét thẻ học sinh</strong> (không cần cài app).</p>
+            <div id="qr-box" style="display:inline-block;background:#fff;padding:14px;border-radius:16px;border:2px solid #e2e8f0;margin-bottom:12px;min-width:200px;min-height:200px;"></div>
+            <div style="text-align:left;margin-bottom:12px;">
+                <label style="font-size:12px;color:var(--text-muted);">Địa chỉ trang (HTTPS, đã đưa lên hosting) — điện thoại sẽ mở địa chỉ này</label>
+                <input id="qr-base" onchange="saveQrBase()" style="width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;font-size:13px;">
             </div>
-
-            <!-- Connection Status & PIN -->
-            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                    <span style="font-size: 13px; color: var(--text-muted);">Trạng thái kết nối:</span>
-                    <span id="phone-connection-status" style="font-size: 13px; font-weight: 800; color: #d97706; display: flex; align-items: center; gap: 6px;">
-                        <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></span>
-                        Đang chờ điện thoại quét...
-                    </span>
-                </div>
-                <div style="font-size: 14px; font-weight: 800; color: #0f172a;">
-                    Mã PIN phòng thi: <span style="font-family: monospace; font-size: 18px; color: #2563eb; letter-spacing: 2px;">DTS-8492</span>
-                </div>
+            <div style="background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;">
+                <span style="color:var(--text-muted);">Trạng thái: </span>
+                <span id="phone-connection-status" style="font-weight:800;color:#d97706;">Đang chờ điện thoại quét...</span>
             </div>
-
-            <!-- Actions -->
-            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                <button class="btn btn-primary" onclick="simulatePhoneConnected()">
-                    ⚡ Kết nối nhanh (Mô phỏng điện thoại)
-                </button>
-                <button class="btn btn-outline" onclick="closeQrModal()">Đóng cửa sổ</button>
-            </div>
+            <button class="btn btn-outline" onclick="closeQrModal()">Đóng cửa sổ</button>
         </div>
     </div>
 
@@ -1311,6 +1538,10 @@
             renderReports();
         });
 
+        function saveStudents() {
+            try { localStorage.setItem(STORAGE_KEY_CLASS, JSON.stringify(students)); } catch (e) {}
+        }
+
         // Tab Switching
         function switchTab(tabName) {
             document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
@@ -1383,14 +1614,10 @@
 
             const preview = document.getElementById('dashboard-quiz-preview');
             preview.innerHTML = questions.slice(0, 3).map((q, idx) => `
-                <div style="background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <strong style="color: #60a5fa; margin-right: 8px;">Câu ${idx + 1}:</strong>
-                        <span>${q.question.length > 80 ? q.question.substring(0, 80) + '...' : q.question}</span>
-                    </div>
-                    <span style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7; font-weight: 800; font-size: 12px; padding: 3px 8px; border-radius: 6px;">
-                        Đáp án: ${q.answer}
-                    </span>
+                <div class="prev-row">
+                    <span class="prev-no">Câu ${idx + 1}</span>
+                    <span class="prev-text">${escapeHtml(q.question.length > 90 ? q.question.substring(0, 90) + '…' : q.question)}</span>
+                    <span class="prev-ans">Đáp án ${q.answer}</span>
                 </div>
             `).join('');
         }
@@ -1697,27 +1924,57 @@ D. Do môi trường sống thay đổi
         // QUÉT MÃ KẾT NỐI CAMERA ĐIỆN THOẠI
         // ==========================================
         let isPhoneConnected = false;
-
+        let hostPeer = null, phoneConn = null;
+        const QR_BASE_KEY = 'dethiso_base_v1';
+        function setQrStatus(t, c) { const e = document.getElementById('phone-connection-status'); if (e) { e.textContent = t; e.style.color = c; } }
+        function saveQrBase() { try { localStorage.setItem(QR_BASE_KEY, document.getElementById('qr-base').value.trim()); } catch (e) {} drawQr(); }
         function openQrModal() {
             document.getElementById('qr-modal').classList.add('active');
+            const saved = localStorage.getItem(QR_BASE_KEY);
+            document.getElementById('qr-base').value = saved || location.href.split('#')[0];
+            if (!/^https?:/.test(location.protocol) && !saved) setQrStatus('⚠️ Trang đang mở từ file trên máy: hãy đưa index.html lên hosting HTTPS (GitHub Pages/Netlify) rồi dán địa chỉ vào ô trên.', '#d97706');
+            if (!hostPeer) initHost(); else drawQr();
         }
-
-        function closeQrModal() {
-            document.getElementById('qr-modal').classList.remove('active');
+        function closeQrModal() { document.getElementById('qr-modal').classList.remove('active'); }
+        function initHost() {
+            if (typeof Peer === 'undefined') { setQrStatus('Không tải được thư viện kết nối (cần Internet).', '#dc2626'); return; }
+            hostPeer = new Peer();
+            hostPeer.on('open', drawQr);
+            hostPeer.on('connection', c => {
+                phoneConn = c;
+                c.on('open', () => { isPhoneConnected = true; setQrStatus('✅ Đã kết nối điện thoại', '#059669'); playBeep(880); pushState(); setTimeout(closeQrModal, 900); });
+                c.on('data', onPhoneMsg);
+                c.on('close', () => { isPhoneConnected = false; setQrStatus('Điện thoại đã ngắt kết nối — quét lại mã QR', '#d97706'); });
+            });
+            hostPeer.on('disconnected', () => { try { hostPeer.reconnect(); } catch (e) {} });
+            hostPeer.on('error', e => setQrStatus('Lỗi kết nối: ' + e.type, '#dc2626'));
         }
-
-        function simulatePhoneConnected() {
-            isPhoneConnected = true;
-            const statusEl = document.getElementById('phone-connection-status');
-            if (statusEl) {
-                statusEl.innerHTML = '<span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span> ✅ Đã kết nối điện thoại (Camera sẵn sàng)';
-                statusEl.style.color = '#059669';
-            }
-            playBeep(880);
-            setTimeout(() => {
-                closeQrModal();
-                alert("🎉 Điện thoại của giáo viên đã kết nối thành công! Bạn có thể bắt đầu quét thẻ từ xa trên lớp.");
-            }, 600);
+        function drawQr() {
+            if (!hostPeer || !hostPeer.id) return;
+            if (typeof qrcode === 'undefined') { setQrStatus('Không tải được thư viện tạo QR.', '#dc2626'); return; }
+            const base = (document.getElementById('qr-base').value || location.href).split('#')[0];
+            const q = qrcode(0, 'M'); q.addData(base + '#phone=' + hostPeer.id); q.make();
+            const box = document.getElementById('qr-box');
+            box.innerHTML = q.createImgTag(6, 0);
+            const im = box.querySelector('img'); if (im) { im.style.width = '220px'; im.style.imageRendering = 'pixelated'; }
+        }
+        function pushState() {
+            if (!phoneConn || !phoneConn.open) return;
+            const q = questions[currentQuestionIndex];
+            const n = q && sessionResults[q.id] ? Object.keys(sessionResults[q.id]).length : 0;
+            phoneConn.send({ t: 's', qi: currentQuestionIndex, total: questions.length, n, all: students.length });
+        }
+        const _rcs = renderCurrentSlide; renderCurrentSlide = function () { _rcs.apply(this, arguments); pushState(); };
+        const _usp = updateScannedProgress; updateScannedProgress = function () { _usp.apply(this, arguments); pushState(); };
+        function onPhoneMsg(m) {
+            if (!m || m.t !== 'v') return;
+            const q = questions[currentQuestionIndex], L = MK().list.length;
+            const s = students.find(x => (x.id - 1) % L === m.idx);
+            if (!q || !s || m.qi !== currentQuestionIndex) return;
+            (sessionResults[q.id] = sessionResults[q.id] || {})[s.id] = m.ans;
+            try { localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults)); } catch (e) {}
+            updateScannedProgress(); playBeep(880);
+            phoneConn.send({ t: 'ok', name: s.name, ans: m.ans });
         }
 
         // CLASSROOM & EXCEL UPLOAD LOGIC
@@ -1990,6 +2247,107 @@ D. Do môi trường sống thay đổi
             }
         }
 
+
+        // ===== BẢNG KẾT QUẢ (theo video): biểu đồ + từng em đúng / sai =====
+        let resultFilter = 'all';
+
+        function cycleAnswer(qid, sid) {
+            const order = [null, 'A', 'B', 'C', 'D'];
+            if (!sessionResults[qid]) sessionResults[qid] = {};
+            const cur = sessionResults[qid][sid] || null;
+            const next = order[(order.indexOf(cur) + 1) % order.length];
+            if (next) sessionResults[qid][sid] = next; else delete sessionResults[qid][sid];
+            localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults));
+        }
+
+        function showResultModal() {
+            if (!questions[currentQuestionIndex]) return;
+            resultFilter = 'all';
+            renderResultModal();
+            document.getElementById('result-modal').classList.add('active');
+        }
+
+        function closeResultModal() {
+            document.getElementById('result-modal').classList.remove('active');
+            if (document.getElementById('presentation-container').classList.contains('active')) updateScannedProgress();
+        }
+
+        function resultStep(d) {
+            const i = currentQuestionIndex + d;
+            if (i < 0 || i >= questions.length) return;
+            currentQuestionIndex = i;
+            renderCurrentSlide();
+            renderResultModal();
+        }
+
+        function setResultFilter(f) {
+            resultFilter = (resultFilter === f) ? 'all' : f;
+            renderResultModal();
+        }
+
+        function toggleStudentAnswer(sid) {
+            const q = questions[currentQuestionIndex];
+            if (!q) return;
+            cycleAnswer(q.id, sid);
+            renderResultModal();
+        }
+
+        function renderResultModal() {
+            const q = questions[currentQuestionIndex];
+            if (!q) return;
+            const votes = sessionResults[q.id] || {};
+            const counts = { A: 0, B: 0, C: 0, D: 0 };
+            let ok = 0, bad = 0;
+            students.forEach(s => {
+                const a = votes[s.id];
+                if (a && counts[a] !== undefined) counts[a]++;
+                if (a === q.answer) ok++; else if (a) bad++;
+            });
+            const none = students.length - ok - bad;
+            const answered = ok + bad;
+            const pct = answered ? Math.round(ok / answered * 100) : 0;
+
+            document.getElementById('res-qno').textContent = `Câu ${currentQuestionIndex + 1} / ${questions.length}`;
+            document.getElementById('res-qtext').textContent = q.question;
+            document.getElementById('res-pct-text').textContent = pct + '%';
+            document.getElementById('res-ring').style.background = `conic-gradient(#10b981 ${pct * 3.6}deg, #fecaca 0deg)`;
+            document.getElementById('res-summary').textContent = `${ok} / ${answered} em trả lời đúng (${answered}/${students.length} em đã giơ thẻ)`;
+            document.getElementById('chip-ok').textContent = `✓ Đúng ${ok}`;
+            document.getElementById('chip-bad').textContent = `✗ Sai ${bad}`;
+            document.getElementById('chip-none').textContent = `… Chưa trả lời ${none}`;
+            ['ok', 'bad', 'none', 'all'].forEach(k => {
+                const el = document.getElementById('chip-' + k);
+                if (el) el.classList.toggle('on', resultFilter === k);
+            });
+
+            const maxVal = Math.max(...Object.values(counts), 1);
+            ['A', 'B', 'C', 'D'].forEach(L => {
+                const el = document.getElementById('rb-' + L.toLowerCase());
+                el.style.height = Math.max(26, Math.round(counts[L] / maxVal * 150)) + 'px';
+                el.textContent = answered ? `${counts[L]} (${Math.round(counts[L] / answered * 100)}%)` : counts[L];
+                el.classList.toggle('is-right', L === q.answer);
+            });
+            document.getElementById('res-correct-legend').textContent = `Đáp án đúng: ${q.answer}${q.options && q.options[q.answer] ? ' — ' + q.options[q.answer] : ''}`;
+
+            const tiles = students.filter(s => {
+                const a = votes[s.id];
+                const st = a === q.answer ? 'ok' : (a ? 'bad' : 'none');
+                return resultFilter === 'all' || resultFilter === st;
+            }).map(s => {
+                const a = votes[s.id];
+                const st = a === q.answer ? 'ok' : (a ? 'bad' : 'none');
+                return `<button class="stu-tile ${st}" onclick="toggleStudentAnswer(${s.id})" title="Bấm để sửa đáp án"><span class="no">${s.id}</span><span class="nm">${escapeHtml(s.name)}</span><span class="ans">${a || '–'}</span></button>`;
+            }).join('');
+            document.getElementById('res-students').innerHTML = tiles || '<div style="grid-column:1/-1; color:var(--text-muted); font-size:13px; padding:10px;">Không có em nào trong nhóm này.</div>';
+            renderAllMath();
+        }
+
+        function openReviewFromResult() {
+            closeResultModal();
+            exitPresentation();
+            switchTab('reports');
+        }
+
         // CHART MODAL LOGIC
         function showChartModal() {
             const q = questions[currentQuestionIndex];
@@ -2122,70 +2480,57 @@ D. Do môi trường sống thay đổi
                 <div style="font-size: 26px; font-weight: 900; letter-spacing: 2px;">▲ A ▲</div>
                 <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
                     <div style="font-size: 26px; font-weight: 900; writing-mode: vertical-rl; transform: rotate(180deg);">◀ D ◀</div>
-                    
-                    <!-- High Contrast Fiducial Marker -->
-                    <div style="width: 220px; height: 220px; border: 18px solid #000; background: #fff; display: flex; align-items: center; justify-content: center; position: relative;">
-                        <!-- Unique Pattern Grid -->
-                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); width: 160px; height: 160px; gap: 4px; background: #000; padding: 4px;">
-                            ${generateMarkerCells(student.id)}
-                        </div>
-                        <div style="position: absolute; font-size: 20px; font-weight: 900; background: #fff; padding: 2px 8px; border: 2px solid #000;">
-                            #${student.id}
-                        </div>
-                    </div>
-
+                    ${markerHTML(student.id)}
                     <div style="font-size: 26px; font-weight: 900; writing-mode: vertical-rl;">▶ B ▶</div>
                 </div>
                 <div style="font-size: 26px; font-weight: 900; letter-spacing: 2px;">▼ C ▼</div>
-                
                 <div style="text-align: center; margin-top: 10px; border-top: 1px solid #ccc; width: 100%; padding-top: 8px;">
                     <strong style="font-size: 16px;">Học sinh #${student.id}: ${escapeHtml(student.name)}</strong>
                     <div style="font-size: 11px; color: #555;">(Xoay chữ cái đáp án bạn chọn lên trên cùng khi giơ thẻ)</div>
-                </div>
-            `;
+                </div>`;
             return card;
-        }
-
-        function generateMarkerCells(seed) {
-            let cells = '';
-            for (let i = 0; i < 16; i++) {
-                const isBlack = ((seed * 17 + i * 31) % 5) !== 0;
-                cells += `<div style="background: ${isBlack ? '#000' : '#fff'};"></div>`;
-            }
-            return cells;
         }
 
         // REPORTS & EXCEL EXPORT
         function renderReports() {
-            const tbody = document.getElementById('report-table-body');
-            tbody.innerHTML = students.map((s, idx) => {
-                let correctCount = 0;
-                let details = '';
+            const wrap = document.getElementById('report-matrix');
+            if (!wrap) return;
+            const n = questions.length;
+            let totalCorrect = 0, answeredStudents = 0;
+            const colCorrect = new Array(n).fill(0), colAnswered = new Array(n).fill(0);
 
-                questions.forEach((q, qIdx) => {
+            const rows = students.map(s => {
+                let correct = 0, answered = 0;
+                const cells = questions.map((q, i) => {
                     const ans = sessionResults[q.id] ? sessionResults[q.id][s.id] : null;
-                    if (ans === q.answer) {
-                        correctCount++;
-                        details += `<span style="display:inline-block; margin-right:4px; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:#6ee7b7; font-size:11px; font-weight:700;">C${qIdx+1}:${ans}✓</span>`;
-                    } else if (ans) {
-                        details += `<span style="display:inline-block; margin-right:4px; padding:2px 6px; border-radius:4px; background:rgba(239,68,68,0.2); color:#fca5a5; font-size:11px;">C${qIdx+1}:${ans}✗</span>`;
-                    } else {
-                        details += `<span style="display:inline-block; margin-right:4px; padding:2px 6px; border-radius:4px; background:rgba(255,255,255,0.05); color:#64748b; font-size:11px;">C${qIdx+1}:-</span>`;
-                    }
-                });
-
-                const score = questions.length > 0 ? ((correctCount / questions.length) * 10).toFixed(1) : '0.0';
-
-                return `
-                    <tr style="border-bottom: 1px solid var(--border);">
-                        <td style="padding: 10px;">${s.id}</td>
-                        <td style="padding: 10px; font-weight: 700;">${escapeHtml(s.name)}</td>
-                        <td style="padding: 10px;"><strong style="color: #60a5fa;">${correctCount}</strong> / ${questions.length}</td>
-                        <td style="padding: 10px;"><strong style="color: #10b981; font-size: 15px;">${score}</strong></td>
-                        <td style="padding: 10px;">${details}</td>
-                    </tr>
-                `;
+                    if (ans) { answered++; colAnswered[i]++; }
+                    let cls = 'c-none', txt = '–';
+                    if (ans === q.answer) { cls = 'c-ok'; txt = ans + ' ✓'; correct++; colCorrect[i]++; }
+                    else if (ans) { cls = 'c-bad'; txt = ans + ' ✗'; }
+                    return `<td class="${cls}" title="Đáp án đúng: ${q.answer}" onclick="editAnswerFromReport(${q.id}, ${s.id})">${txt}</td>`;
+                }).join('');
+                totalCorrect += correct;
+                if (answered) answeredStudents++;
+                const score = n > 0 ? ((correct / n) * 10).toFixed(1) : '0.0';
+                return `<tr><td class="sticky-l"><span style="opacity:.55; margin-right:6px;">${s.id}</span>${escapeHtml(s.name)}</td>${cells}<td><strong>${correct}</strong> / ${n}</td><td class="score">${score}</td></tr>`;
             }).join('');
+
+            const head = `<tr><th class="sticky-l">Số thẻ · Họ tên</th>${questions.map((q, i) => `<th title="${escapeHtml(q.question).slice(0, 120)}">Câu ${i + 1}<br><small style="opacity:.7">ĐA ${q.answer}</small></th>`).join('')}<th>Số câu đúng</th><th>Điểm /10</th></tr>`;
+            const foot = `<tr><td class="sticky-l">Tỉ lệ làm đúng cả lớp</td>${questions.map((q, i) => `<td>${colAnswered[i] ? Math.round(colCorrect[i] / colAnswered[i] * 100) + '%' : '–'}</td>`).join('')}<td></td><td></td></tr>`;
+            wrap.innerHTML = students.length
+                ? `<table class="mx"><thead>${head}</thead><tbody>${rows}</tbody><tfoot>${foot}</tfoot></table>`
+                : '<div style="padding:30px; text-align:center; color:var(--text-muted);">Chưa có học sinh trong lớp.</div>';
+
+            const sum = document.getElementById('report-summary');
+            if (sum) {
+                const avg = (answeredStudents && n) ? (totalCorrect / answeredStudents / n * 10).toFixed(1) : '–';
+                sum.innerHTML = `<span class="res-chip ok" style="cursor:default">Điểm trung bình: ${avg}</span><span class="res-chip" style="cursor:default">${answeredStudents} / ${students.length} em đã có bài</span><span class="res-chip" style="cursor:default">${n} câu</span>`;
+            }
+        }
+
+        function editAnswerFromReport(qid, sid) {
+            cycleAnswer(qid, sid);
+            renderReports();
         }
 
         function exportExcelCSV() {
@@ -2218,6 +2563,26 @@ D. Do môi trường sống thay đổi
         }
 
         // VIDEO MODAL
+
+        // ===== Quy trình 10 bước (theo video) =====
+        let flowIdx = 0;
+        function flowGo(i) {
+            const total = document.querySelectorAll('#flow-card .flow-step').length;
+            if (!total) return;
+            flowIdx = Math.max(0, Math.min(total - 1, i));
+            document.querySelectorAll('#flow-card .flow-step').forEach(el => el.classList.toggle('active', +el.dataset.i === flowIdx));
+            document.querySelectorAll('#flow-pills .flow-pill').forEach(el => {
+                const n = +el.dataset.i;
+                el.classList.toggle('active', n === flowIdx);
+                el.classList.toggle('done', n < flowIdx);
+            });
+            const c = document.getElementById('flow-count');
+            if (c) c.textContent = 'Bước ' + (flowIdx + 1) + ' / ' + total;
+            const act = document.querySelector('#flow-pills .flow-pill.active');
+            if (act && act.scrollIntoView) act.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+        }
+        document.addEventListener('DOMContentLoaded', () => flowGo(0));
+
         function openVideoModal() {
             document.getElementById('video-modal').classList.add('active');
             const v = document.getElementById('modal-video');
@@ -2235,6 +2600,12 @@ D. Do môi trường sống thay đổi
             const pres = document.getElementById('presentation-container');
             if (!pres.classList.contains('active')) return;
 
+            if (document.getElementById('result-modal').classList.contains('active')) {
+                if (e.key === 'Escape') { closeResultModal(); }
+                else if (e.key === 'ArrowRight') { e.preventDefault(); resultStep(1); }
+                else if (e.key === 'ArrowLeft') { e.preventDefault(); resultStep(-1); }
+                return;
+            }
             if (e.key === 'ArrowRight' || e.key === ' ') {
                 e.preventDefault();
                 nextQuestion();
@@ -2246,7 +2617,7 @@ D. Do môi trường sống thay đổi
             } else if (e.key.toLowerCase() === 'a') {
                 revealCorrectAnswer();
             } else if (e.key.toLowerCase() === 'r') {
-                showChartModal();
+                showResultModal();
             } else if (e.key.toLowerCase() === 'c') {
                 toggleScannerModal();
             }
@@ -2258,6 +2629,145 @@ D. Do môi trường sống thay đổi
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
             }[s]));
         }
+
+        // ===== THẺ MARKER 6x6 (viền đen + 4x4 bit), nhận diện xoay 4 hướng =====
+        let _mk;
+        function MK() {
+            if (_mk) return _mk;
+            const pc = new Uint8Array(65536); for (let i = 1; i < 65536; i++) pc[i] = pc[i >> 1] + (i & 1);
+            const rot = c => { let o = 0; for (let r = 0; r < 4; r++) for (let k = 0; k < 4; k++) if (c >> (r * 4 + k) & 1) o |= 1 << (k * 4 + 3 - r); return o; };
+            const list = [], all = [], map = new Map();
+            for (let c = 1; c < 65535 && list.length < 150; c++) {
+                if (pc[c] < 5 || pc[c] > 11) continue;
+                const r1 = rot(c), r2 = rot(r1), r3 = rot(r2), rs = [c, r1, r2, r3];
+                if ([[0,1],[0,2],[0,3],[1,2],[1,3],[2,3]].some(p => pc[rs[p[0]] ^ rs[p[1]]] < 3)) continue;
+                if (all.some(a => rs.some(b => pc[a ^ b] < 3))) continue;
+                list.push(c); all.push(...rs);
+            }
+            list.forEach((c, i) => { let x = c; for (let j = 0; j < 4; j++) { map.set(x, [i, j]); x = rot(x); } });
+            return (_mk = { list, map });
+        }
+        function markerHTML(sid) {
+            const code = MK().list[(sid - 1) % MK().list.length]; let h = '';
+            for (let r = 0; r < 6; r++) for (let c = 0; c < 6; c++) {
+                const b = r % 5 === 0 || c % 5 === 0 || (code >> ((r - 1) * 4 + c - 1) & 1);
+                h += `<div style="background:${b ? '#000' : '#fff'}"></div>`;
+            }
+            return `<div style="padding:16px;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact"><div style="display:grid;grid-template-columns:repeat(6,1fr);width:200px;height:200px;">${h}</div></div>`;
+        }
+        function mkLookup(g) {
+            const m = MK().map; let r = m.get(g); if (r) return r;
+            for (let b = 0; b < 16; b++) { r = m.get(g ^ (1 << b)); if (r) return r; }
+            return null;
+        }
+        let _B = {};
+        function detectMarkers(img, W, H) {
+            const N = W * H, d = img.data;
+            if (_B.W !== W || _B.H !== H) _B = { W, H, g: new Uint8Array(N), I: new Int32Array((W + 1) * (H + 1)), bin: new Uint8Array(N), vis: new Uint8Array(N), st: new Int32Array(N) };
+            const { g, I, bin, vis, st } = _B; vis.fill(0);
+            for (let i = 0, j = 0; i < N; i++, j += 4) g[i] = (d[j] * 77 + d[j + 1] * 150 + d[j + 2] * 29) >> 8;
+            const W1 = W + 1;
+            for (let y = 0; y < H; y++) { let s = 0; for (let x = 0; x < W; x++) { s += g[y * W + x]; I[(y + 1) * W1 + x + 1] = I[y * W1 + x + 1] + s; } }
+            const R = W >> 3;
+            for (let y = 0; y < H; y++) {
+                const y0 = Math.max(0, y - R), y1 = Math.min(H, y + R + 1);
+                for (let x = 0; x < W; x++) {
+                    const x0 = Math.max(0, x - R), x1 = Math.min(W, x + R + 1);
+                    const a = (I[y1 * W1 + x1] - I[y0 * W1 + x1] - I[y1 * W1 + x0] + I[y0 * W1 + x0]) / ((x1 - x0) * (y1 - y0));
+                    bin[y * W + x] = g[y * W + x] < a * 0.75 ? 1 : 0;
+                }
+            }
+            const out = [];
+            for (let s0 = 0; s0 < N; s0++) {
+                if (!bin[s0] || vis[s0]) continue;
+                let sp = 0, n = 0, ms = 1e9, Ms = -1e9, md = 1e9, Md = -1e9, TL = s0, BR = s0, TR = s0, BL = s0;
+                st[sp++] = s0; vis[s0] = 1;
+                while (sp) {
+                    const p = st[--sp], x = p % W, y = (p - x) / W, sm = x + y, df = x - y; n++;
+                    if (sm < ms) { ms = sm; TL = p; } if (sm > Ms) { Ms = sm; BR = p; }
+                    if (df > Md) { Md = df; TR = p; } if (df < md) { md = df; BL = p; }
+                    if (x > 0 && bin[p - 1] && !vis[p - 1]) { vis[p - 1] = 1; st[sp++] = p - 1; }
+                    if (x < W - 1 && bin[p + 1] && !vis[p + 1]) { vis[p + 1] = 1; st[sp++] = p + 1; }
+                    if (y > 0 && bin[p - W] && !vis[p - W]) { vis[p - W] = 1; st[sp++] = p - W; }
+                    if (y < H - 1 && bin[p + W] && !vis[p + W]) { vis[p + W] = 1; st[sp++] = p + W; }
+                }
+                if (n < 120 || n > N / 2) continue;
+                const P = [TL, TR, BR, BL].map(p => [p % W, (p / W) | 0]);
+                const sd = P.map((q, i) => Math.hypot(q[0] - P[(i + 1) % 4][0], q[1] - P[(i + 1) % 4][1]));
+                const mn = Math.min(...sd), mx = Math.max(...sd);
+                if (mn < 14 || mx / mn > 1.8) continue;
+                let ar = 0; for (let i = 0; i < 4; i++) ar += P[i][0] * P[(i + 1) % 4][1] - P[(i + 1) % 4][0] * P[i][1];
+                if (n < Math.abs(ar) / 2 * 0.4) continue;
+                const rad = Math.max(1, Math.round(mn / 24)), cell = (c, r) => {
+                    const u = (c + .5) / 6, v = (r + .5) / 6;
+                    const cx = (1 - v) * ((1 - u) * P[0][0] + u * P[1][0]) + v * ((1 - u) * P[3][0] + u * P[2][0]);
+                    const cy = (1 - v) * ((1 - u) * P[0][1] + u * P[1][1]) + v * ((1 - u) * P[3][1] + u * P[2][1]);
+                    let k = 0;
+                    for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+                        const X = Math.round(cx + dx * rad), Y = Math.round(cy + dy * rad);
+                        if (X >= 0 && X < W && Y >= 0 && Y < H && bin[Y * W + X]) k++;
+                    }
+                    return k >= 5 ? 1 : 0;
+                };
+                let bd = 0, gc = 0;
+                for (let r = 0; r < 6; r++) for (let c = 0; c < 6; c++) {
+                    const v = cell(c, r);
+                    if (r % 5 === 0 || c % 5 === 0) bd += v; else gc |= v << ((r - 1) * 4 + c - 1);
+                }
+                if (bd < 18) continue;
+                const m = mkLookup(gc); if (!m) continue;
+                out.push({ P, idx: m[0], ans: 'ABCD'[(4 - m[1]) & 3] });
+            }
+            return out;
+        }
+
+        // ===== CHẾ ĐỘ ĐIỆN THOẠI (mở bằng QR: ...#phone=<mã>) =====
+        function initPhone(hostId) {
+            [...document.body.children].forEach(e => e.style.display = 'none');
+            const ov = document.createElement('div');
+            ov.style.cssText = 'position:fixed;inset:0;background:#000;color:#fff;font-family:var(--font-sans);display:flex;flex-direction:column;z-index:99999';
+            ov.innerHTML = `<div id="ph-top" style="padding:10px 14px;background:#0f172a;font-weight:800;font-size:15px">⏳ Đang kết nối máy tính...</div>
+                <canvas id="ph-cv" style="flex:1;min-height:0;width:100%;object-fit:contain"></canvas>
+                <div id="ph-bot" style="padding:12px 14px;background:#0f172a;font-size:16px;font-weight:800;min-height:48px">Hướng camera vào thẻ học sinh</div>
+                <video id="ph-v" playsinline muted style="position:absolute;width:1px;height:1px;opacity:0"></video>`;
+            document.body.appendChild(ov);
+            const $ = i => document.getElementById(i), top = t => $('ph-top').textContent = t, bot = t => $('ph-bot').textContent = t;
+            if (typeof Peer === 'undefined') { top('❌ Không tải được thư viện kết nối'); return; }
+            let conn, qi = -1, sent = {}, seen = {};
+            const peer = new Peer();
+            peer.on('open', () => {
+                conn = peer.connect(hostId, { reliable: true });
+                conn.on('open', () => top('✅ Đã kết nối máy tính'));
+                conn.on('data', m => {
+                    if (m.t === 's') { if (m.qi !== qi) { qi = m.qi; sent = {}; seen = {}; } top(`✅ Câu ${m.qi + 1}/${m.total} · đã thu ${m.n}/${m.all}`); }
+                    if (m.t === 'ok') { bot(`✓ ${m.name} → ${m.ans}`); playBeep(880); }
+                });
+                conn.on('close', () => top('❌ Mất kết nối — hãy quét lại QR'));
+            });
+            peer.on('error', e => top('❌ Lỗi: ' + e.type));
+            const v = $('ph-v'), cv = $('ph-cv'), cx = cv.getContext('2d', { willReadFrequently: true });
+            function loop() {
+                if (v.videoWidth) {
+                    const W = Math.min(960, v.videoWidth), H = Math.round(W * v.videoHeight / v.videoWidth);
+                    cv.width = W; cv.height = H; cx.drawImage(v, 0, 0, W, H);
+                    const dets = detectMarkers(cx.getImageData(0, 0, W, H), W, H);
+                    cx.lineWidth = 4; cx.font = 'bold 30px sans-serif';
+                    dets.forEach(dt => {
+                        cx.strokeStyle = '#10b981'; cx.beginPath();
+                        dt.P.forEach((p, i) => i ? cx.lineTo(p[0], p[1]) : cx.moveTo(p[0], p[1])); cx.closePath(); cx.stroke();
+                        cx.fillStyle = '#fde047'; cx.fillText(dt.ans, dt.P[0][0], dt.P[0][1] - 6);
+                        const s = seen[dt.idx]; if (s && s.a === dt.ans) s.n++; else seen[dt.idx] = { a: dt.ans, n: 1 };
+                        if (seen[dt.idx].n >= 2 && sent[dt.idx] !== dt.ans && conn && conn.open && qi >= 0) { sent[dt.idx] = dt.ans; conn.send({ t: 'v', idx: dt.idx, ans: dt.ans, qi }); }
+                    });
+                }
+                setTimeout(loop, 80);
+            }
+            navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment', width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false })
+                .then(st => { v.srcObject = st; v.play(); loop(); })
+                .catch(e => bot('Không mở được camera (' + e.name + '). Cần mở bằng HTTPS và cho phép camera.'));
+            try { navigator.wakeLock && navigator.wakeLock.request('screen').catch(() => {}); } catch (e) {}
+        }
+        document.addEventListener('DOMContentLoaded', () => { if (location.hash.startsWith('#phone=')) initPhone(location.hash.slice(7)); });
     </script>
 </body>
 </html>
