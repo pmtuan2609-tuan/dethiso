@@ -994,10 +994,26 @@
             </nav>
 
             <div class="header-actions">
-                <button class="btn btn-ghost hide-sm" onclick="openQrModal()" title="Kết nối điện thoại để quét thẻ">📱 Kết nối ĐT</button>
-                <button class="btn btn-ghost hide-sm" onclick="openVideoModal()">🎬 Video</button>
-                <label class="tm-box" title="Thời gian mỗi câu (0 = không đếm giờ)">⏱ <input type="number" class="tm-in" min="0" max="3600" step="5" oninput="setTimerSec(this.value)"> giây/câu</label>
-                <button class="btn btn-success" onclick="startPresentation()">▶ Trình chiếu</button>
+                <button class="btn btn-ghost icon-btn hide-sm" onclick="openQrModal()" title="Kết nối điện thoại để quét thẻ">📱<span class="ib-l"> Điện thoại</span></button>
+                <button class="btn btn-ghost icon-btn hide-sm" onclick="openVideoModal()" title="Video hướng dẫn">🎬<span class="ib-l"> Video</span></button>
+                <span class="hdr-sep hide-sm"></span>
+                <div class="sess-wrap">
+                    <button class="sess-pill" onclick="toggleSess(event)" title="Thiết lập lớp và thời gian mỗi câu">
+                        <span class="s-c" id="s-c">🏫 Lớp 1</span><span class="s-t" id="s-t">⏱ Tắt</span><span class="s-a">▾</span>
+                    </button>
+                    <div class="sess-pop" id="sess-pop" onclick="event.stopPropagation()">
+                        <div class="sp-title">⚙️ Thiết lập phiên trình chiếu</div>
+                        <label class="sp-lb">Lớp</label>
+                        <select class="cls-sel sp-sel" onchange="clsSwitch(this.value)"></select>
+                        <label class="sp-lb">Thời gian mỗi câu</label>
+                        <div class="sp-chips" id="sp-chips">
+                            <button data-v="0" onclick="setTimerSec(0)">Tắt</button><button data-v="30" onclick="setTimerSec(30)">30s</button><button data-v="60" onclick="setTimerSec(60)">1 phút</button><button data-v="90" onclick="setTimerSec(90)">90s</button><button data-v="120" onclick="setTimerSec(120)">2 phút</button>
+                        </div>
+                        <div class="sp-row">Tuỳ chỉnh: <input type="number" class="tm-in" min="0" max="3600" step="5" oninput="setTimerSec(this.value)"> giây (0 = tắt)</div>
+                        <button class="btn btn-outline sp-manage" onclick="closeSess();switchTab('classroom')">🏫 Quản lý lớp &amp; học sinh…</button>
+                    </div>
+                </div>
+                <button class="btn btn-success start-btn" onclick="startPresentation()">▶ Trình chiếu</button>
             </div>
         </div>
     </header>
@@ -1111,7 +1127,8 @@
                 <div class="card-header">
                     <div class="card-title">👥 Quản lý lớp học &amp; Danh sách học sinh</div>
                     <div class="card-actions">
-                        <button class="btn btn-success" onclick="printStudentCards()">🖨️ In thẻ cả lớp</button>
+                        <button class="btn btn-success" onclick="printStudentCards('a5')" title="Chọn khổ giấy A5 trong hộp thoại in; 1 thẻ mỗi trang">🖨️ In thẻ A5 (1 thẻ/trang)</button>
+                        <button class="btn btn-outline" onclick="printStudentCards('a4')" title="Giấy A4 nằm ngang, mỗi tờ 2 thẻ A5, cắt đôi theo nét đứt">✂️ A4 ngang: 2 thẻ/tờ</button>
                         <button class="btn btn-primary" onclick="document.getElementById('class-file-upload').click()">📁 Tải file Excel</button>
                         <button class="btn btn-danger" id="btn-batch-delete" onclick="batchDeleteSelectedStudents()" style="display: none;">🗑️ Xóa đã chọn (<span id="batch-delete-count">0</span>)</button>
                         <button class="btn btn-outline btn-sm" onclick="restoreDefaultClass()">🔄 Lớp mẫu</button>
@@ -3058,7 +3075,59 @@ D. Do môi trường sống thay đổi
             document.getElementById('stu-detail').classList.add('active');
         }
         function closeStu(id) { document.getElementById(id).classList.remove('active'); }
-        document.head.insertAdjacentHTML('beforeend', '<style>.stu-t{width:100%;border-collapse:collapse;font-size:15px}.stu-t th,.stu-t td{padding:8px 10px;border-bottom:1px solid #e2e8f0;text-align:left}.stu-t th{color:#64748b;font-size:13px}.stu-t tr.rw{cursor:pointer}.stu-t tr.rw:hover{background:#eff6ff}.cls-sel{padding:8px 10px;border:1px solid var(--border);border-radius:12px;font:800 14px var(--font-sans);background:#fff;margin-right:8px;max-width:220px}</style>');
+        document.head.insertAdjacentHTML('beforeend', '<style>.stu-t{width:100%;border-collapse:collapse;font-size:15px}.stu-t th,.stu-t td{padding:8px 10px;border-bottom:1px solid #e2e8f0;text-align:left}.stu-t th{color:#64748b;font-size:13px}.stu-t tr.rw{cursor:pointer}.stu-t tr.rw:hover{background:#eff6ff}.cls-sel{padding:8px 10px;border:1px solid var(--border);border-radius:12px;font:800 14px var(--font-sans);background:#fff;margin-right:8px;max-width:220px}
+        /* ===== Thiết kế lại thanh đầu trang ===== */
+        .header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+        .icon-btn { padding: 9px 11px; font-size: 18px; line-height: 1; }
+        .icon-btn .ib-l { display: none; font-size: 14px; font-weight: 700; }
+        .hdr-sep { width: 1px; height: 26px; background: #e2e8f0; margin: 0 4px; }
+        .sess-wrap { position: relative; }
+        .sess-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid #dbe3ef; background: #fff; border-radius: 999px; font: 800 13.5px var(--font-sans); color: #334155; cursor: pointer; white-space: nowrap; transition: border-color .15s, box-shadow .15s; }
+        .sess-pill:hover { border-color: #93c5fd; box-shadow: 0 0 0 3px rgba(59,130,246,.12); }
+        .sess-pill .s-t { color: #2563eb; padding-left: 8px; border-left: 1px solid #e2e8f0; }
+        .sess-pill .s-a { color: #94a3b8; font-size: 11px; }
+        .sess-pop { display: none; position: absolute; right: 0; top: calc(100% + 12px); width: 310px; background: #fff; border: 1px solid #e2e8f0; border-radius: 18px; padding: 16px; box-shadow: 0 24px 48px -12px rgba(15,23,42,.28); z-index: 80; text-align: left; }
+        .sess-pop.open { display: block; }
+        .sp-title { font-weight: 900; color: #0f172a; margin-bottom: 10px; }
+        .sp-lb { display: block; font-size: 12px; font-weight: 800; color: #64748b; margin: 10px 0 5px; text-transform: uppercase; letter-spacing: .4px; }
+        .sp-sel { width: 100%; max-width: none; margin: 0; }
+        .sp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+        .sp-chips button { padding: 6px 11px; border: 1px solid #dbe3ef; background: #f8fafc; border-radius: 999px; font: 800 13px var(--font-sans); color: #475569; cursor: pointer; }
+        .sp-chips button.on { background: #2563eb; border-color: #2563eb; color: #fff; }
+        .sp-row { margin-top: 10px; font-size: 13px; color: #64748b; display: flex; align-items: center; gap: 6px; }
+        .sp-manage { width: 100%; margin-top: 14px; justify-content: center; }
+        .start-btn { padding: 10px 18px; border-radius: 999px; font-weight: 900; box-shadow: 0 8px 18px -8px rgba(16,185,129,.7); }
+        @media (min-width: 1025px) {
+            .header-inner { max-width: 1360px; gap: 14px; }
+            .brand-name { font-size: 18px; }
+            .tab-btn { padding: 8px 12px; }
+        }
+        @media (min-width: 1500px) { .icon-btn .ib-l { display: inline; } }
+        @media (max-width: 1200px) { .sess-pill .s-c { display: none; } .sess-pill .s-t { border: none; padding: 0; } }
+        @media (max-width: 860px) { .sess-pop { position: fixed; left: 12px; right: 12px; top: 64px; width: auto; } }
+    
+        /* ===== Thẻ học sinh khổ A5 ===== */
+        .pc { width: 100%; height: 100%; box-sizing: border-box; padding: 7mm 6mm 6mm; display: flex; flex-direction: column; justify-content: space-between; align-items: center; color: #000; font-family: var(--font-sans); }
+        .pc-top, .pc-bot { height: 19mm; display: flex; align-items: center; justify-content: center; }
+        .pc-mid { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+        .pc-L { width: 16mm; height: 16mm; display: flex; align-items: center; justify-content: center; font-size: 13mm; font-weight: 900; line-height: 1; border: 1.1mm solid #000; border-radius: 4mm; box-sizing: border-box; }
+        .pc-foot { width: 100%; text-align: center; border-top: .4mm solid #888; padding-top: 4mm; }
+        .pc-name { font-weight: 900; line-height: 1.15; }
+        .pc-meta { font-size: 4mm; color: #333; margin-top: 1.5mm; font-weight: 700; }
+        .pc-tip { font-size: 3.4mm; color: #555; margin-top: 3mm; }
+        @media print {
+            body.printing-cards > *:not(#printable-cards-container) { display: none !important; }
+            body.printing-cards { margin: 0; background: #fff !important; }
+            .printable-cards-container, .printable-cards-container * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .printable-cards-container .print-page { display: block; padding: 0; gap: 0; margin: 0; height: auto; break-after: page; page-break-after: always; }
+            .printable-cards-container .print-card { border: none; padding: 0; display: block; }
+            .pm-a5 .print-page { width: 148mm; height: 210mm; }
+            .pm-a5 .print-card { width: 148mm; height: 210mm; }
+            .pm-a4 .print-page { width: 297mm; height: 210mm; display: flex; }
+            .pm-a4 .print-card { width: 148.5mm; height: 210mm; flex: none; }
+            .pm-a4 .print-card:first-child { border-right: .3mm dashed #888; }
+        }
+    </style>');
         const mkModal = (id, t, b) => `<div id="${id}" class="chart-modal" onclick="closeStu('${id}')"><div class="chart-box" style="max-width:760px;width:94vw;max-height:88vh;overflow:auto;padding:20px;text-align:left" onclick="event.stopPropagation()"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 id="${t}" style="font-size:20px;font-weight:900;color:#0f172a"></h3><button style="background:none;border:none;font-size:22px;cursor:pointer;color:#94a3b8" onclick="closeStu('${id}')">✕</button></div><div id="${b}"></div></div></div>`;
         document.body.insertAdjacentHTML('beforeend', mkModal('stu-list', 'stu-title', 'stu-body') + mkModal('stu-detail', 'sd-title', 'sd-body'));
         document.getElementById('view-classroom').insertAdjacentHTML('afterbegin', '<div class="card" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;margin-bottom:16px"><b>🏫 Lớp:</b><select class="cls-sel" onchange="clsSwitch(this.value)"></select><button class="btn btn-outline" onclick="clsAdd()">＋ Lớp mới</button><button class="btn btn-outline" onclick="clsRename()">✎ Đổi tên</button><button class="btn btn-outline" onclick="clsDel()">🗑 Xoá lớp</button><button class="btn btn-primary" onclick="openStuList()" style="margin-left:auto">📋 Bài làm học sinh</button></div>');
@@ -3069,6 +3138,64 @@ D. Do môi trường sống thay đổi
         updateScannedProgress = function () { _usp3.apply(this, arguments); if (document.getElementById('stu-list').classList.contains('active')) renderStuList(); };
         clsSave();
         document.addEventListener('DOMContentLoaded', clsRefresh);
+
+        // ===== Thanh đầu trang: popover thiết lập lớp + giờ =====
+        function toggleSess(e) { e.stopPropagation(); document.getElementById('sess-pop').classList.toggle('open'); }
+        function closeSess() { document.getElementById('sess-pop').classList.remove('open'); }
+        document.addEventListener('click', closeSess);
+        function sessSum() {
+            const c = CLS.list.find(x => x.id === CLS.cur);
+            document.getElementById('s-c').textContent = '🏫 ' + (c ? c.name : '') + ' (' + students.length + ')';
+            document.getElementById('s-t').textContent = tmSec ? '⏱ ' + (tmSec % 60 ? tmSec + 's' : (tmSec / 60) + ' phút') : '⏱ Tắt';
+            document.querySelectorAll('#sp-chips button').forEach(b => b.classList.toggle('on', +b.dataset.v === tmSec));
+        }
+        const _cr = clsRefresh; clsRefresh = function () { _cr.apply(this, arguments); sessSum(); };
+        const _sts = setTimerSec; setTimerSec = function () { _sts.apply(this, arguments); sessSum(); };
+        document.addEventListener('DOMContentLoaded', () => { clsRefresh(); });
+        clsRefresh();
+
+        // ===== Thẻ A5: marker lớn, chữ A/B/C/D xoay theo từng cạnh =====
+        markerHTML = function (sid, gridCss, padCss) {
+            const code = MK().list[(sid - 1) % MK().list.length]; let h = '';
+            for (let r = 0; r < 6; r++) for (let c = 0; c < 6; c++) {
+                const b = r % 5 === 0 || c % 5 === 0 || (code >> ((r - 1) * 4 + c - 1) & 1);
+                h += `<div style="background:${b ? '#000' : '#fff'}"></div>`;
+            }
+            const g = gridCss || '200px';
+            return `<div style="padding:${padCss || '16px'};background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact"><div style="display:grid;grid-template-columns:repeat(6,1fr);width:${g};height:${g};">${h}</div></div>`;
+        };
+        createPrintCardElement = function (student) {
+            const card = document.createElement('div'); card.className = 'print-card';
+            const c = CLS.list.find(x => x.id === CLS.cur), nm = String(student.name);
+            card.innerHTML = `<div class="pc">
+                <div class="pc-top"><span class="pc-L">A</span></div>
+                <div class="pc-mid"><span class="pc-L" style="transform:rotate(-90deg)">D</span>${markerHTML(student.id, '92mm', '5mm')}<span class="pc-L" style="transform:rotate(90deg)">B</span></div>
+                <div class="pc-bot"><span class="pc-L" style="transform:rotate(180deg)">C</span></div>
+                <div class="pc-foot">
+                    <div class="pc-name" style="font-size:${nm.length > 24 ? 5 : 6.8}mm">${escapeHtml(nm)}</div>
+                    <div class="pc-meta">${c ? escapeHtml(c.name) + ' · ' : ''}Thẻ số ${student.id}</div>
+                    <div class="pc-tip">Giơ thẻ sao cho chữ cái đáp án bạn chọn nằm ở phía trên</div>
+                </div></div>`;
+            return card;
+        };
+        printStudentCards = function (mode) {
+            if (!students.length) { alert('Lớp chưa có học sinh.'); return; }
+            mode = mode === 'a4' ? 'a4' : 'a5';
+            const c = document.getElementById('printable-cards-container');
+            c.className = 'printable-cards-container pm-' + mode; c.innerHTML = '';
+            const per = mode === 'a4' ? 2 : 1;
+            for (let i = 0; i < students.length; i += per) {
+                const pg = document.createElement('div'); pg.className = 'print-page';
+                for (let j = 0; j < per && students[i + j]; j++) pg.appendChild(createPrintCardElement(students[i + j]));
+                c.appendChild(pg);
+            }
+            let st = document.getElementById('pg-style');
+            if (!st) { st = document.createElement('style'); st.id = 'pg-style'; document.head.appendChild(st); }
+            st.textContent = mode === 'a4' ? '@page{size:A4 landscape;margin:0}' : '@page{size:A5 portrait;margin:0}';
+            document.body.classList.add('printing-cards');
+            window.print();
+        };
+        window.addEventListener('afterprint', () => document.body.classList.remove('printing-cards'));
     </script>
 </body>
 </html>
