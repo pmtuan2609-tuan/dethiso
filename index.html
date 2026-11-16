@@ -1,0 +1,1707 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
+    <title>Đề Thi Số — Trình Chiếu PowerPoint & Quét Thẻ Giấy Học Sinh</title>
+    <meta name="description" content="Nền tảng kiểm tra trắc nghiệm tương tác lớp học: Trình chiếu câu hỏi, học sinh giơ thẻ giấy A/B/C/D, giáo viên quét camera trực tiếp và thống kê phổ điểm thời gian thực." />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg width='64' height='64' viewBox='0 0 64 64' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='8' y='2' width='44' height='54' rx='8' fill='%232563EB' opacity='0.15'/%3E%3Crect x='4' y='6' width='44' height='54' rx='8' fill='%232563EB'/%3E%3Ccircle cx='42' cy='50' r='16' fill='%2310B981'/%3E%3Cpath d='M34 50 L40 56 L51 44' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+    <style>
+        :root {
+            --font-sans: 'Nunito', 'Inter', system-ui, -apple-system, sans-serif;
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --bg-surface: #334155;
+            --border: #334155;
+            --border-light: rgba(255, 255, 255, 0.1);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background: var(--bg-dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Nav Header */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-light);
+            padding: 10px 20px;
+        }
+        .header-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .nav-tabs {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(30, 41, 59, 0.8);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .tab-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 9px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        .btn-success {
+            background: var(--success);
+            color: #064e3b;
+            font-weight: 800;
+        }
+        .btn-success:hover {
+            background: #059669;
+            color: #fff;
+        }
+        .btn-warning {
+            background: var(--warning);
+            color: #451a03;
+            font-weight: 800;
+        }
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border: 1px solid var(--border-light);
+        }
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+        .btn-danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .btn-danger:hover {
+            background: var(--danger);
+            color: #fff;
+        }
+
+        /* Main View Container */
+        main {
+            flex: 1;
+            max-width: 1300px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 24px 20px;
+        }
+        .view-section {
+            display: none;
+        }
+        .view-section.active {
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards & Grid */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .card-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Stat Grid */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(37, 99, 235, 0.15);
+            color: #60a5fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        .stat-val {
+            font-size: 28px;
+            font-weight: 900;
+            color: #fff;
+            line-height: 1;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Inputs & Forms */
+        input, textarea, select {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-family: inherit;
+            font-size: 14px;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--primary);
+        }
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        /* Question Item */
+        .question-card {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 14px;
+            transition: all 0.2s;
+        }
+        .question-card:hover {
+            border-color: rgba(96, 165, 250, 0.4);
+        }
+        .question-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        .q-badge {
+            background: rgba(37, 99, 235, 0.2);
+            color: #93c5fd;
+            font-weight: 800;
+            font-size: 13px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+        .q-text {
+            font-size: 16px;
+            font-weight: 700;
+            flex: 1;
+        }
+        .options-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .option-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 14px;
+        }
+        .option-item.correct {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: rgba(16, 185, 129, 0.4);
+            color: #6ee7b7;
+            font-weight: 700;
+        }
+        .opt-letter {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 800;
+        }
+        .option-item.correct .opt-letter {
+            background: var(--success);
+            color: #064e3b;
+        }
+
+        /* PRESENTATION / SLIDE MODE */
+        .presentation-container {
+            position: fixed;
+            inset: 0;
+            background: #090d16;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px 48px;
+            overflow: hidden;
+        }
+        .presentation-container.active {
+            display: flex;
+        }
+        .pres-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .pres-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .pres-counter {
+            background: rgba(37, 99, 235, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(37, 99, 235, 0.4);
+            padding: 6px 16px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: 800;
+        }
+        .pres-body {
+            max-width: 1100px;
+            width: 100%;
+            margin: auto;
+            text-align: left;
+        }
+        .pres-question {
+            font-size: 34px;
+            font-weight: 800;
+            line-height: 1.35;
+            color: #fff;
+            margin-bottom: 36px;
+        }
+        .pres-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+        .pres-opt-card {
+            background: rgba(30, 41, 59, 0.85);
+            border: 2px solid var(--border);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #e2e8f0;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+        .pres-opt-card:hover {
+            border-color: #60a5fa;
+            transform: translateY(-2px);
+        }
+        .pres-opt-card.correct-revealed {
+            background: rgba(16, 185, 129, 0.25) !important;
+            border-color: #10b981 !important;
+            color: #a7f3d0 !important;
+            box-shadow: 0 0 25px rgba(16, 185, 129, 0.35);
+        }
+        .pres-opt-card.dimmed {
+            opacity: 0.35;
+        }
+        .pres-letter {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: #3b82f6;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 900;
+            flex-shrink: 0;
+        }
+        .pres-opt-card:nth-child(1) .pres-letter { background: #ef4444; }
+        .pres-opt-card:nth-child(2) .pres-letter { background: #3b82f6; }
+        .pres-opt-card:nth-child(3) .pres-letter { background: #f59e0b; }
+        .pres-opt-card:nth-child(4) .pres-letter { background: #10b981; }
+
+        /* Floating Controls in Presentation */
+        .pres-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 12px 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(16px);
+        }
+        .scanned-status {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 800;
+            color: #facc15;
+        }
+
+        /* Camera Scanner Modal / Picture in Picture */
+        .scanner-modal {
+            position: fixed;
+            bottom: 90px;
+            right: 40px;
+            width: 380px;
+            background: #0f172a;
+            border: 2px solid var(--primary);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            z-index: 1100;
+            display: none;
+            flex-direction: column;
+        }
+        .scanner-modal.active {
+            display: flex;
+        }
+        .scanner-header {
+            background: #1e293b;
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 800;
+        }
+        .scanner-video-box {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            background: #000;
+        }
+        #scanner-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        #scanner-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .scanner-footer {
+            padding: 12px 16px;
+            background: #1e293b;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        /* Chart Modal */
+        .chart-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1200;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .chart-modal.active {
+            display: flex;
+        }
+        .chart-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            width: 100%;
+            max-width: 680px;
+            padding: 28px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+        }
+        .chart-bars {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            height: 240px;
+            align-items: flex-end;
+            margin: 30px 0 20px;
+            padding: 0 20px 10px;
+            border-bottom: 2px solid var(--border);
+        }
+        .chart-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            justify-content: flex-end;
+            position: relative;
+        }
+        .chart-bar-fill {
+            width: 64px;
+            border-radius: 12px 12px 4px 4px;
+            transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 8px;
+            font-weight: 800;
+            color: #fff;
+            font-size: 16px;
+        }
+        .bar-a { background: #ef4444; }
+        .bar-b { background: #3b82f6; }
+        .bar-c { background: #f59e0b; }
+        .bar-d { background: #10b981; }
+        .chart-letter {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        /* Printable Cards CSS */
+        .printable-cards-container {
+            display: none;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .printable-cards-container, .printable-cards-container * {
+                visibility: visible;
+            }
+            .printable-cards-container {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: #fff;
+                color: #000;
+            }
+            .print-page {
+                page-break-after: always;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20mm;
+                padding: 15mm;
+                box-sizing: border-box;
+                height: 297mm;
+            }
+            .print-card {
+                border: 2px dashed #999;
+                padding: 15px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: space-between;
+                box-sizing: border-box;
+                position: relative;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .nav-tabs {
+                display: none;
+            }
+            .options-list, .pres-options {
+                grid-template-columns: 1fr;
+            }
+            .pres-question {
+                font-size: 24px;
+            }
+            .scanner-modal {
+                right: 10px;
+                left: 10px;
+                bottom: 80px;
+                width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <div class="header-inner">
+            <div class="brand" onclick="switchTab('dashboard')">
+                <svg width="34" height="34" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="8" y="2" width="44" height="54" rx="8" fill="#2563EB" opacity="0.2"/>
+                    <rect x="4" y="6" width="44" height="54" rx="8" fill="#2563EB"/>
+                    <circle cx="42" cy="50" r="16" fill="#10B981"/>
+                    <path d="M34 50 L40 56 L51 44" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Đề Thi Số</span>
+            </div>
+
+            <nav class="nav-tabs">
+                <button class="tab-btn active" onclick="switchTab('dashboard')" id="tab-dashboard">📊 Tổng quan</button>
+                <button class="tab-btn" onclick="switchTab('quizzes')" id="tab-quizzes">📝 Đề thi</button>
+                <button class="tab-btn" onclick="switchTab('classroom')" id="tab-classroom">👥 Lớp &amp; Thẻ giấy</button>
+                <button class="tab-btn" onclick="switchTab('reports')" id="tab-reports">📈 Báo cáo kết quả</button>
+            </nav>
+
+            <div class="header-actions">
+                <button class="btn btn-outline" onclick="openVideoModal()">🎬 Video mẫu</button>
+                <button class="btn btn-success" onclick="startPresentation()">🚀 Trình chiếu ngay</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 1. DASHBOARD VIEW -->
+        <section id="view-dashboard" class="view-section active">
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div>
+                        <div class="stat-val" id="stat-quiz-count">1</div>
+                        <div class="stat-label">Đề thi sẵn sàng</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎓</div>
+                    <div>
+                        <div class="stat-val" id="stat-student-count">24</div>
+                        <div class="stat-label">Học sinh trong lớp</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div>
+                        <div class="stat-val">3s</div>
+                        <div class="stat-label">Tốc độ quét cả lớp</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📄</div>
+                    <div>
+                        <div class="stat-val">100%</div>
+                        <div class="stat-label">Thẻ giấy không tốn pin</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">🚀 Khởi động nhanh tiết học tương tác</div>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                    <div style="background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
+                        <h4 style="font-size: 17px; margin-bottom: 8px;">1. Soạn &amp; Tải Đề Thi</h4>
+                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
+                            Nhập từ file Word hoặc tự tạo câu hỏi trắc nghiệm A, B, C, D kèm đáp án đúng.
+                        </p>
+                        <button class="btn btn-outline" style="width: 100%;" onclick="switchTab('quizzes')">Soạn đề thi</button>
+                    </div>
+
+                    <div style="background: rgba(15, 23, 42, 0.6); padding: 20px; border-radius: 12px; border: 1px solid var(--border);">
+                        <h4 style="font-size: 17px; margin-bottom: 8px;">2. In Bộ Thẻ Cho Lớp</h4>
+                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
+                            Tạo file in A4 chứa mã thẻ 4 hướng cho từng học sinh. In 1 lần dùng cả năm!
+                        </p>
+                        <button class="btn btn-outline" style="width: 100%;" onclick="switchTab('classroom')">Xem &amp; In thẻ</button>
+                    </div>
+
+                    <div style="background: rgba(37, 99, 235, 0.15); padding: 20px; border-radius: 12px; border: 1px solid rgba(37, 99, 235, 0.4);">
+                        <h4 style="font-size: 17px; margin-bottom: 8px; color: #93c5fd;">3. Bắt Đầu Trình Chiếu</h4>
+                        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
+                            Chiếu slide lên màn hình/TV, mở camera lia qua lớp và xem phổ điểm trực tiếp.
+                        </p>
+                        <button class="btn btn-primary" style="width: 100%;" onclick="startPresentation()">Bật Trình Chiếu</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">📖 Đề thi hiện có trong hệ thống</div>
+                    <button class="btn btn-outline" onclick="loadSampleQuiz()">Tải lại đề mẫu</button>
+                </div>
+                <div id="dashboard-quiz-preview"></div>
+            </div>
+        </section>
+
+        <!-- 2. QUIZZES VIEW -->
+        <section id="view-quizzes" class="view-section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">📥 Nhập đề thi nhanh từ Word hoặc Văn bản</div>
+                    <button class="btn btn-outline" onclick="loadSampleWordText()">Dán mẫu Word</button>
+                </div>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 12px;">
+                    Dán nội dung câu hỏi dạng "Câu 1. ... A. ... B. ... C. ... D. ... Đáp án: A". Hệ thống sẽ tự động bóc tách thành danh sách câu hỏi.
+                </p>
+                <textarea id="import-text" rows="6" placeholder="Dán văn bản câu hỏi vào đây..."></textarea>
+                <div style="margin-top: 12px; display: flex; gap: 10px;">
+                    <button class="btn btn-primary" onclick="parseAndImportText()">⚡ Bóc tách &amp; Thêm vào đề</button>
+                    <button class="btn btn-outline" onclick="document.getElementById('import-text').value=''">Xoá ô nhập</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">📋 Danh sách câu hỏi (<span id="quiz-total-badge">0</span> câu)</div>
+                    <button class="btn btn-primary" onclick="addNewEmptyQuestion()">+ Thêm câu hỏi thủ công</button>
+                </div>
+                <div id="questions-list-container"></div>
+            </div>
+        </section>
+
+        <!-- 3. CLASSROOM & PRINT CARDS VIEW -->
+        <section id="view-classroom" class="view-section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">👥 Quản lý lớp học &amp; Danh sách học sinh</div>
+                    <button class="btn btn-success" onclick="printStudentCards()">🖨️ In Bộ Thẻ Giấy Cho Cả Lớp</button>
+                </div>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
+                    Mỗi học sinh sở hữu một mã thẻ số tương ứng. Khi in ra giấy, 4 cạnh thẻ là 4 đáp án A, B, C, D. Học sinh giơ thẻ hướng nào lên trên thì hệ thống ghi nhận đáp án đó.
+                </p>
+                <div style="display: grid; grid-template-columns: 1fr 340px; gap: 24px;">
+                    <div>
+                        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid var(--border); color: var(--text-muted);">
+                                    <th style="padding: 10px;">Số thẻ</th>
+                                    <th style="padding: 10px;">Họ và tên học sinh</th>
+                                    <th style="padding: 10px;">Xem mẫu thẻ</th>
+                                    <th style="padding: 10px; text-align: right;">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="student-table-body"></tbody>
+                        </table>
+                    </div>
+
+                    <div style="background: rgba(15, 23, 42, 0.6); padding: 18px; border-radius: 12px; border: 1px solid var(--border); height: fit-content;">
+                        <h4 style="font-size: 16px; margin-bottom: 12px;">Thêm học sinh mới</h4>
+                        <div style="margin-bottom: 12px;">
+                            <label>Họ và tên</label>
+                            <input type="text" id="new-student-name" placeholder="Ví dụ: Hoàng Tuấn Anh">
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%; margin-bottom: 16px;" onclick="addSingleStudent()">+ Thêm học sinh</button>
+                        
+                        <hr style="border: 0; border-top: 1px solid var(--border); margin-bottom: 14px;">
+                        <h4 style="font-size: 15px; margin-bottom: 8px;">Nhập hàng loạt từ Excel</h4>
+                        <textarea id="bulk-students" rows="5" placeholder="Dán danh sách tên học sinh (mỗi em 1 dòng)..."></textarea>
+                        <button class="btn btn-outline" style="width: 100%; margin-top: 8px;" onclick="importBulkStudents()">Nhập cả lớp</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. REPORTS VIEW -->
+        <section id="view-reports" class="view-section">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">📈 Báo cáo kết quả kiểm tra</div>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="exportExcelCSV()">📥 Xuất file Excel (.csv)</button>
+                        <button class="btn btn-danger" onclick="resetAllScores()">Làm mới điểm</button>
+                    </div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
+                    Dữ liệu chấm điểm được tổng hợp tự động theo thời gian thực từ các lượt quét camera hoặc mô phỏng.
+                </p>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border); color: #fff;">
+                                <th style="padding: 12px;">STT / Số thẻ</th>
+                                <th style="padding: 12px;">Họ tên học sinh</th>
+                                <th style="padding: 12px;">Số câu đúng</th>
+                                <th style="padding: 12px;">Điểm số (Thang 10)</th>
+                                <th style="padding: 12px;">Chi tiết đáp án</th>
+                            </tr>
+                        </thead>
+                        <tbody id="report-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FULLSCREEN PRESENTATION MODE -->
+    <div id="presentation-container" class="presentation-container">
+        <div class="pres-header">
+            <div class="pres-title">
+                <span id="pres-quiz-name">Đề Thi Số — Trình Chiếu</span>
+            </div>
+            <div class="pres-counter" id="pres-counter">Câu 1 / 4</div>
+            <div>
+                <button class="btn btn-outline" onclick="exitPresentation()">✕ Thoát (Esc)</button>
+            </div>
+        </div>
+
+        <div class="pres-body">
+            <div class="pres-question" id="pres-question-text">
+                Nội dung câu hỏi đang tải...
+            </div>
+            <div class="pres-options" id="pres-options-container">
+                <!-- Dynamically populated options A, B, C, D -->
+            </div>
+        </div>
+
+        <div class="pres-toolbar">
+            <div class="scanned-status">
+                <span>📱 Đã thu:</span>
+                <span id="pres-scanned-count" style="font-size: 20px; color: #10b981;">0</span>
+                <span style="color: var(--text-muted);">/ <span id="pres-total-students">24</span> em</span>
+            </div>
+
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button class="btn btn-outline" onclick="toggleScannerModal()">📷 Mở Camera Quét</button>
+                <button class="btn btn-warning" onclick="simulateClassroomScan()">🎲 Mô phỏng cả lớp giơ thẻ</button>
+                <button class="btn btn-outline" onclick="revealCorrectAnswer()">👁️ Hiện đáp án đúng</button>
+                <button class="btn btn-primary" onclick="showChartModal()">📊 Xem biểu đồ</button>
+            </div>
+
+            <div style="display: flex; gap: 8px;">
+                <button class="btn btn-outline" onclick="prevQuestion()">⬅ Câu trước</button>
+                <button class="btn btn-primary" onclick="nextQuestion()">Câu tiếp ➡</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Scanner Window (PiP Overlay) -->
+    <div id="scanner-modal" class="scanner-modal">
+        <div class="scanner-header">
+            <span>📷 Camera Quét Thẻ Trực Tiếp</span>
+            <button style="background: none; border: none; color: #fff; cursor: pointer;" onclick="toggleScannerModal()">✕</button>
+        </div>
+        <div class="scanner-video-box">
+            <video id="scanner-video" autoplay playsinline muted></video>
+            <canvas id="scanner-canvas"></canvas>
+        </div>
+        <div class="scanner-footer">
+            <span style="font-size: 13px; color: #a7f3d0;" id="scanner-live-status">Đang tìm thẻ...</span>
+            <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;" onclick="simulateClassroomScan()">Quét mẫu</button>
+        </div>
+    </div>
+
+    <!-- Chart Modal -->
+    <div id="chart-modal" class="chart-modal" onclick="closeChartModal(event)">
+        <div class="chart-box" onclick="event.stopPropagation()">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="font-size: 22px; font-weight: 800; color: #fff;">📊 Phổ Điểm Đáp Án Câu Hiện Tại</h3>
+                <button style="background: none; border: none; color: #94a3b8; font-size: 20px; cursor: pointer;" onclick="closeChartModal()">✕</button>
+            </div>
+            <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;" id="chart-subtitle">
+                Thống kê số lượng học sinh lựa chọn từng phương án A, B, C, D
+            </p>
+
+            <div class="chart-bars">
+                <div class="chart-col">
+                    <div class="chart-bar-fill bar-a" id="bar-fill-a" style="height: 10px;">0</div>
+                    <div class="chart-letter" style="color: #ef4444;">A</div>
+                </div>
+                <div class="chart-col">
+                    <div class="chart-bar-fill bar-b" id="bar-fill-b" style="height: 10px;">0</div>
+                    <div class="chart-letter" style="color: #3b82f6;">B</div>
+                </div>
+                <div class="chart-col">
+                    <div class="chart-bar-fill bar-c" id="bar-fill-c" style="height: 10px;">0</div>
+                    <div class="chart-letter" style="color: #f59e0b;">C</div>
+                </div>
+                <div class="chart-col">
+                    <div class="chart-bar-fill bar-d" id="bar-fill-d" style="height: 10px;">0</div>
+                    <div class="chart-letter" style="color: #10b981;">D</div>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 16px;">
+                <span id="chart-correct-legend" style="font-size: 16px; font-weight: 800; color: #34d399;"></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="chart-modal" onclick="closeVideoModal(event)">
+        <div class="chart-box" style="max-width: 860px; padding: 16px;" onclick="event.stopPropagation()">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 8px;">
+                <h3 style="font-size: 18px; font-weight: 800; color: #fff;">🎬 Video Hướng Dẫn Sử Dụng Đề Thi Số</h3>
+                <button style="background: none; border: none; color: #94a3b8; font-size: 22px; cursor: pointer;" onclick="closeVideoModal()">✕</button>
+            </div>
+            <div style="width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden;">
+                <video id="modal-video" controls style="width: 100%; height: 100%;" poster="assets/images/steps/video_poster.jpg">
+                    <source src="dethiso-tutorial.mp4" type="video/mp4">
+                    <source src="1794808967259_1580195966031401650_2208868290436977656.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Printable Cards Section (Appears when printing) -->
+    <div id="printable-cards-container" class="printable-cards-container">
+        <!-- Injected dynamically when printing -->
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // Storage keys
+        const STORAGE_KEY_QUIZ = 'dethiso_quizzes_v1';
+        const STORAGE_KEY_CLASS = 'dethiso_students_v1';
+        const STORAGE_KEY_RESULTS = 'dethiso_results_v1';
+
+        // Default Data
+        const DEFAULT_CLASS = [
+            {"id": 1, "name": "Nguyễn Văn An"},
+            {"id": 2, "name": "Trần Thị Bích"},
+            {"id": 3, "name": "Lê Hoàng Cường"},
+            {"id": 4, "name": "Phạm Minh Dũng"},
+            {"id": 5, "name": "Hoàng Thuỳ Dung"},
+            {"id": 6, "name": "Vũ Đình Đạt"},
+            {"id": 7, "name": "Đặng Ngọc Hải"},
+            {"id": 8, "name": "Bùi Mai Hương"},
+            {"id": 9, "name": "Đỗ Gia Huy"},
+            {"id": 10, "name": "Ngô Quang Khải"},
+            {"id": 11, "name": "Dương Thuỳ Linh"},
+            {"id": 12, "name": "Đinh Hoàng Long"},
+            {"id": 13, "name": "Lý Bảo Minh"},
+            {"id": 14, "name": "Trịnh Tuyết Mai"},
+            {"id": 15, "name": "Mai Thanh Nam"},
+            {"id": 16, "name": "Cao Yến Nhi"},
+            {"id": 17, "name": "Phan Hữu Phước"},
+            {"id": 18, "name": "Tạ Minh Quân"},
+            {"id": 19, "name": "Lưu Ngọc Sơn"},
+            {"id": 20, "name": "Đoàn Phương Thảo"},
+            {"id": 21, "name": "Chu Quốc Thịnh"},
+            {"id": 22, "name": "Hồ Khánh Vân"},
+            {"id": 23, "name": "Lương Anh Vũ"},
+            {"id": 24, "name": "Trương Mỹ Uyên"}
+        ];
+
+        const DEFAULT_QUIZ = [
+            {
+                id: 1,
+                question: "Ở trong hệ sinh thái, nhóm sinh vật nào dưới đây có chức năng biến đổi chất hữu cơ thành chất vô cơ để cung cấp cho sinh vật sản xuất?",
+                options: {
+                    A: "Sinh vật phân giải",
+                    B: "Sinh vật tiêu thụ bậc 1",
+                    C: "Sinh vật tiêu thụ bậc 2",
+                    D: "Thực vật"
+                },
+                answer: "A",
+                explanation: "Sinh vật phân giải (vi khuẩn, nấm...) biến đổi chất hữu cơ thành vô cơ."
+            },
+            {
+                id: 2,
+                question: "Thành phần cấu trúc của hệ sinh thái bao gồm những yếu tố nào sau đây?",
+                options: {
+                    A: "Quần thể sinh vật và môi trường sống",
+                    B: "Thành phần vô sinh và thành phần hữu sinh",
+                    C: "Sinh vật sản xuất và sinh vật phân giải",
+                    D: "Các chất hữu cơ và các chất vô cơ"
+                },
+                answer: "B",
+                explanation: "Hệ sinh thái gồm sinh cảnh (vô sinh) và quần xã (hữu sinh)."
+            },
+            {
+                id: 3,
+                question: "Trong chuỗi thức ăn: Cỏ → Châu chấu → Ếch → Rắn → Diều hâu, bậc dinh dưỡng cấp 3 là sinh vật nào?",
+                options: {
+                    A: "Châu chấu",
+                    B: "Ếch",
+                    C: "Rắn",
+                    D: "Diều hâu"
+                },
+                answer: "B",
+                explanation: "Cỏ (bậc 1) → Châu chấu (bậc 2) → Ếch (bậc 3)."
+            },
+            {
+                id: 4,
+                question: "Hệ sinh thái nào sau đây là hệ sinh thái nhân tạo?",
+                options: {
+                    A: "Đồng rêu hàn đới",
+                    B: "Rừng mưa nhiệt đới",
+                    C: "Đồng ruộng lúa nước",
+                    D: "Rạn san hô biển"
+                },
+                answer: "C",
+                explanation: "Đồng ruộng lúa nước do con người kiến tạo và chăm sóc."
+            }
+        ];
+
+        // State variables
+        let students = JSON.parse(localStorage.getItem(STORAGE_KEY_CLASS)) || DEFAULT_CLASS;
+        let questions = JSON.parse(localStorage.getItem(STORAGE_KEY_QUIZ)) || DEFAULT_QUIZ;
+        let sessionResults = JSON.parse(localStorage.getItem(STORAGE_KEY_RESULTS)) || {};
+        let currentQuestionIndex = 0;
+        let cameraStream = null;
+        let isCameraActive = false;
+
+        // Initialize App
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDashboard();
+            renderQuizzes();
+            renderClassroom();
+            renderReports();
+        });
+
+        // Tab Switching
+        function switchTab(tabName) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            const view = document.getElementById(`view-${tabName}`);
+            const btn = document.getElementById(`tab-${tabName}`);
+            if (view) view.classList.add('active');
+            if (btn) btn.classList.add('active');
+
+            if (tabName === 'reports') renderReports();
+            if (tabName === 'dashboard') renderDashboard();
+        }
+
+        // Dashboard Rendering
+        function renderDashboard() {
+            document.getElementById('stat-quiz-count').textContent = questions.length;
+            document.getElementById('stat-student-count').textContent = students.length;
+
+            const preview = document.getElementById('dashboard-quiz-preview');
+            preview.innerHTML = questions.slice(0, 3).map((q, idx) => `
+                <div style="background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <strong style="color: #60a5fa; margin-right: 8px;">Câu ${idx + 1}:</strong>
+                        <span>${q.question.length > 80 ? q.question.substring(0, 80) + '...' : q.question}</span>
+                    </div>
+                    <span style="background: rgba(16, 185, 129, 0.2); color: #6ee7b7; font-weight: 800; font-size: 12px; padding: 3px 8px; border-radius: 6px;">
+                        Đáp án: ${q.answer}
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        // Quizzes View Rendering
+        function renderQuizzes() {
+            document.getElementById('quiz-total-badge').textContent = questions.length;
+            const container = document.getElementById('questions-list-container');
+            container.innerHTML = questions.map((q, idx) => `
+                <div class="question-card" id="q-card-${q.id}">
+                    <div class="question-top">
+                        <span class="q-badge">Câu ${idx + 1}</span>
+                        <div class="q-text">${escapeHtml(q.question)}</div>
+                        <button class="btn btn-danger" style="padding: 4px 10px; font-size: 12px;" onclick="deleteQuestion(${q.id})">Xoá</button>
+                    </div>
+                    <div class="options-list">
+                        <div class="option-item ${q.answer === 'A' ? 'correct' : ''}">
+                            <span class="opt-letter">A</span> <span>${escapeHtml(q.options.A || '')}</span>
+                        </div>
+                        <div class="option-item ${q.answer === 'B' ? 'correct' : ''}">
+                            <span class="opt-letter">B</span> <span>${escapeHtml(q.options.B || '')}</span>
+                        </div>
+                        <div class="option-item ${q.answer === 'C' ? 'correct' : ''}">
+                            <span class="opt-letter">C</span> <span>${escapeHtml(q.options.C || '')}</span>
+                        </div>
+                        <div class="option-item ${q.answer === 'D' ? 'correct' : ''}">
+                            <span class="opt-letter">D</span> <span>${escapeHtml(q.options.D || '')}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            saveQuestions();
+        }
+
+        function saveQuestions() {
+            localStorage.setItem(STORAGE_KEY_QUIZ, JSON.stringify(questions));
+        }
+
+        function deleteQuestion(id) {
+            questions = questions.filter(q => q.id !== id);
+            renderQuizzes();
+            renderDashboard();
+        }
+
+        function addNewEmptyQuestion() {
+            const newId = Date.now();
+            const text = prompt("Nhập nội dung câu hỏi:");
+            if (!text) return;
+            const optA = prompt("Phương án A:") || "Đáp án A";
+            const optB = prompt("Phương án B:") || "Đáp án B";
+            const optC = prompt("Phương án C:") || "Đáp án C";
+            const optD = prompt("Phương án D:") || "Đáp án D";
+            const ans = (prompt("Đáp án đúng (A, B, C, hoặc D):") || "A").toUpperCase();
+
+            questions.push({
+                id: newId,
+                question: text,
+                options: { A: optA, B: optB, C: optC, D: optD },
+                answer: ['A', 'B', 'C', 'D'].includes(ans) ? ans : 'A'
+            });
+            renderQuizzes();
+            renderDashboard();
+        }
+
+        function loadSampleWordText() {
+            document.getElementById('import-text').value = 
+`Câu 1: Cơ quan hô hấp chủ yếu của các loài chim là gì?
+A. Phổi và hệ thống túi khí
+B. Chỉ có phổi
+C. Da và mang
+D. Hệ thống ống khí
+Đáp án: A
+
+Câu 2: Đột biến gen là những biến đổi như thế nào?
+A. Trong cấu trúc của gen
+B. Về số lượng nhiễm sắc thể
+C. Về hình thái cơ thể
+D. Do môi trường sống thay đổi
+Đáp án: A`;
+        }
+
+        function parseAndImportText() {
+            const raw = document.getElementById('import-text').value.trim();
+            if (!raw) {
+                alert("Vui lòng dán văn bản câu hỏi!");
+                return;
+            }
+
+            const parsed = [];
+            const blocks = raw.split(/(?:Câu\s*\d+[\.:]|^\d+[\.:])/gmi);
+
+            blocks.forEach(block => {
+                const text = block.trim();
+                if (!text || text.length < 10) return;
+
+                const lines = text.split('\\n').map(l => l.trim()).filter(l => l);
+                let qText = lines[0];
+                let optA = '', optB = '', optC = '', optD = '';
+                let ans = 'A';
+
+                lines.forEach(l => {
+                    const matchA = l.match(/^[A][\.:\)]\s*(.*)/i);
+                    const matchB = l.match(/^[B][\.:\)]\s*(.*)/i);
+                    const matchC = l.match(/^[C][\.:\)]\s*(.*)/i);
+                    const matchD = l.match(/^[D][\.:\)]\s*(.*)/i);
+                    const matchAns = l.match(/(?:Đáp án|ĐA|Answer)[:\s]*([ABCD])/i);
+
+                    if (matchA) optA = matchA[1];
+                    if (matchB) optB = matchB[1];
+                    if (matchC) optC = matchC[1];
+                    if (matchD) optD = matchD[1];
+                    if (matchAns) ans = matchAns[1].toUpperCase();
+                });
+
+                if (optA && optB) {
+                    parsed.push({
+                        id: Date.now() + Math.floor(Math.random() * 1000),
+                        question: qText,
+                        options: { A: optA, B: optB, C: optC || '...', D: optD || '...' },
+                        answer: ans
+                    });
+                }
+            });
+
+            if (parsed.length > 0) {
+                questions = questions.concat(parsed);
+                renderQuizzes();
+                renderDashboard();
+                alert(`Đã nhận diện và thêm thành công ${parsed.length} câu hỏi!`);
+                document.getElementById('import-text').value = '';
+            } else {
+                alert("Không nhận diện được định dạng câu hỏi! Hãy chắc chắn có chữ 'Câu 1:', 'A.', 'B.'...");
+            }
+        }
+
+        function loadSampleQuiz() {
+            questions = DEFAULT_QUIZ;
+            saveQuestions();
+            renderQuizzes();
+            renderDashboard();
+            alert("Đã khôi phục bộ đề mẫu Sinh học 12!");
+        }
+
+        // Classroom Rendering
+        function renderClassroom() {
+            const tbody = document.getElementById('student-table-body');
+            tbody.innerHTML = students.map(s => `
+                <tr style="border-bottom: 1px solid var(--border);">
+                    <td style="padding: 10px;">
+                        <span style="display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 6px; background: rgba(37,99,235,0.2); color: #60a5fa; font-weight: 800;">
+                            ${s.id}
+                        </span>
+                    </td>
+                    <td style="padding: 10px; font-weight: 700;">${escapeHtml(s.name)}</td>
+                    <td style="padding: 10px;">
+                        <span style="font-size: 12px; color: #a7f3d0; background: rgba(16,185,129,0.15); padding: 3px 8px; border-radius: 4px;">
+                            Mã vạch QR #${s.id}
+                        </span>
+                    </td>
+                    <td style="padding: 10px; text-align: right;">
+                        <button style="background: none; border: none; color: #f87171; cursor: pointer; font-size: 13px;" onclick="deleteStudent(${s.id})">Xoá</button>
+                    </td>
+                </tr>
+            `).join('');
+            saveStudents();
+        }
+
+        function saveStudents() {
+            localStorage.setItem(STORAGE_KEY_CLASS, JSON.stringify(students));
+        }
+
+        function addSingleStudent() {
+            const input = document.getElementById('new-student-name');
+            const name = input.value.trim();
+            if (!name) return;
+            const nextId = students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1;
+            students.push({ id: nextId, name });
+            input.value = '';
+            renderClassroom();
+            renderDashboard();
+        }
+
+        function importBulkStudents() {
+            const raw = document.getElementById('bulk-students').value.trim();
+            if (!raw) return;
+            const lines = raw.split('\\n').map(l => l.trim()).filter(l => l);
+            let nextId = students.length > 0 ? Math.max(...students.map(s => s.id)) + 1 : 1;
+
+            lines.forEach(line => {
+                // remove leading numbers like "1. Nguyễn Văn A"
+                const cleaned = line.replace(/^\d+[\.\-\s]+/, '').trim();
+                if (cleaned) {
+                    students.push({ id: nextId++, name: cleaned });
+                }
+            });
+
+            document.getElementById('bulk-students').value = '';
+            renderClassroom();
+            renderDashboard();
+            alert(`Đã thêm ${lines.length} học sinh vào lớp!`);
+        }
+
+        function deleteStudent(id) {
+            students = students.filter(s => s.id !== id);
+            renderClassroom();
+            renderDashboard();
+        }
+
+        // PRESENTATION MODE LOGIC
+        function startPresentation() {
+            if (questions.length === 0) {
+                alert("Vui lòng tạo ít nhất 1 câu hỏi trước khi trình chiếu!");
+                switchTab('quizzes');
+                return;
+            }
+            currentQuestionIndex = 0;
+            document.getElementById('presentation-container').classList.add('active');
+            renderCurrentSlide();
+        }
+
+        function exitPresentation() {
+            document.getElementById('presentation-container').classList.remove('active');
+            stopCamera();
+            closeChartModal();
+            renderReports();
+        }
+
+        function renderCurrentSlide() {
+            const q = questions[currentQuestionIndex];
+            if (!q) return;
+
+            document.getElementById('pres-counter').textContent = `Câu ${currentQuestionIndex + 1} / ${questions.length}`;
+            document.getElementById('pres-question-text').textContent = q.question;
+            document.getElementById('pres-total-students').textContent = students.length;
+
+            const optContainer = document.getElementById('pres-options-container');
+            optContainer.innerHTML = ['A', 'B', 'C', 'D'].map(letter => `
+                <div class="pres-opt-card" id="pres-opt-${letter}" onclick="manualVoteOption('${letter}')">
+                    <span class="pres-letter">${letter}</span>
+                    <span>${escapeHtml(q.options[letter] || '')}</span>
+                </div>
+            `).join('');
+
+            updateScannedProgress();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                renderCurrentSlide();
+            } else {
+                alert("Đã đến câu hỏi cuối cùng của đề thi!");
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderCurrentSlide();
+            }
+        }
+
+        function revealCorrectAnswer() {
+            const q = questions[currentQuestionIndex];
+            if (!q) return;
+            ['A', 'B', 'C', 'D'].forEach(letter => {
+                const el = document.getElementById(`pres-opt-${letter}`);
+                if (el) {
+                    if (letter === q.answer) {
+                        el.classList.add('correct-revealed');
+                    } else {
+                        el.classList.add('dimmed');
+                    }
+                }
+            });
+            playBeep(660);
+        }
+
+        function manualVoteOption(letter) {
+            // Teacher can click option to simulate answers
+            simulateSingleVote(letter);
+        }
+
+        function updateScannedProgress() {
+            const qId = questions[currentQuestionIndex].id;
+            const qVotes = sessionResults[qId] || {};
+            const count = Object.keys(qVotes).length;
+            document.getElementById('pres-scanned-count').textContent = count;
+        }
+
+        // SIMULATION LOGIC
+        function simulateClassroomScan() {
+            const q = questions[currentQuestionIndex];
+            if (!q) return;
+
+            if (!sessionResults[q.id]) {
+                sessionResults[q.id] = {};
+            }
+
+            const letters = ['A', 'B', 'C', 'D'];
+            students.forEach(s => {
+                // 70% chance student picks correct answer, 30% others
+                const isCorrect = Math.random() < 0.7;
+                const pick = isCorrect ? q.answer : letters[Math.floor(Math.random() * letters.length)];
+                sessionResults[q.id][s.id] = pick;
+            });
+
+            localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults));
+            updateScannedProgress();
+            playBeep(880);
+
+            const status = document.getElementById('scanner-live-status');
+            if (status) status.textContent = `Đã quét thành công ${students.length} học sinh!`;
+
+            // Flash effect
+            const btn = document.getElementById('pres-scanned-count');
+            btn.style.transform = 'scale(1.3)';
+            setTimeout(() => { btn.style.transform = 'scale(1)'; }, 300);
+        }
+
+        function simulateSingleVote(letter) {
+            const q = questions[currentQuestionIndex];
+            if (!q) return;
+            if (!sessionResults[q.id]) sessionResults[q.id] = {};
+
+            // Pick a student who has not voted
+            const votedIds = Object.keys(sessionResults[q.id]).map(Number);
+            const remaining = students.filter(s => !votedIds.includes(s.id));
+            if (remaining.length > 0) {
+                const s = remaining[0];
+                sessionResults[q.id][s.id] = letter;
+                localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults));
+                updateScannedProgress();
+                playBeep(520);
+            }
+        }
+
+        // CHART MODAL LOGIC
+        function showChartModal() {
+            const q = questions[currentQuestionIndex];
+            if (!q) return;
+
+            const qVotes = sessionResults[q.id] || {};
+            const counts = { A: 0, B: 0, C: 0, D: 0 };
+            Object.values(qVotes).forEach(letter => {
+                if (counts[letter] !== undefined) counts[letter]++;
+            });
+
+            const total = Object.values(counts).reduce((a, b) => a + b, 0);
+            const maxVal = Math.max(...Object.values(counts), 1);
+
+            ['a', 'b', 'c', 'd'].forEach(l => {
+                const upper = l.toUpperCase();
+                const cnt = counts[upper];
+                const pct = total > 0 ? Math.round((cnt / total) * 100) : 0;
+                const fill = document.getElementById(`bar-fill-${l}`);
+                const h = Math.max(15, Math.round((cnt / maxVal) * 180));
+                fill.style.height = `${h}px`;
+                fill.textContent = `${cnt} (${pct}%)`;
+            });
+
+            document.getElementById('chart-correct-legend').textContent = 
+                `Đáp án chính xác: ${q.answer} — ${q.options[q.answer] || ''}`;
+
+            document.getElementById('chart-modal').classList.add('active');
+        }
+
+        function closeChartModal() {
+            document.getElementById('chart-modal').classList.remove('active');
+        }
+
+        // CAMERA SCANNER WEBRTC
+        async function toggleScannerModal() {
+            const modal = document.getElementById('scanner-modal');
+            if (modal.classList.contains('active')) {
+                modal.classList.remove('active');
+                stopCamera();
+            } else {
+                modal.classList.add('active');
+                await startCamera();
+            }
+        }
+
+        async function startCamera() {
+            const video = document.getElementById('scanner-video');
+            try {
+                cameraStream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment', width: { ideal: 640 } }
+                });
+                video.srcObject = cameraStream;
+                isCameraActive = true;
+                requestAnimationFrame(scanVideoLoop);
+            } catch (err) {
+                console.warn("Camera not available:", err);
+                document.getElementById('scanner-live-status').textContent = "Không mở được camera (dùng nút Quét mẫu)";
+            }
+        }
+
+        function stopCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            isCameraActive = false;
+        }
+
+        function scanVideoLoop() {
+            if (!isCameraActive) return;
+            // Draw targeting overlay on canvas
+            const canvas = document.getElementById('scanner-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Draw viewfinder box
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(canvas.width * 0.15, canvas.height * 0.15, canvas.width * 0.7, canvas.height * 0.7);
+
+            requestAnimationFrame(scanVideoLoop);
+        }
+
+        // BEEP SOUND GENERATOR
+        function playBeep(freq = 600) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                gain.gain.setValueAtTime(0.1, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.15);
+            } catch(e) {}
+        }
+
+        // PRINTABLE CARDS GENERATOR
+        function printStudentCards() {
+            const container = document.getElementById('printable-cards-container');
+            container.innerHTML = '';
+
+            // Generate pages: 2 cards per A4 page
+            for (let i = 0; i < students.length; i += 2) {
+                const page = document.createElement('div');
+                page.className = 'print-page';
+
+                const s1 = students[i];
+                const s2 = students[i + 1];
+
+                page.appendChild(createPrintCardElement(s1));
+                if (s2) page.appendChild(createPrintCardElement(s2));
+
+                container.appendChild(page);
+            }
+
+            window.print();
+        }
+
+        function createPrintCardElement(student) {
+            const card = document.createElement('div');
+            card.className = 'print-card';
+            card.innerHTML = `
+                <div style="font-size: 26px; font-weight: 900; letter-spacing: 2px;">▲ A ▲</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                    <div style="font-size: 26px; font-weight: 900; writing-mode: vertical-rl; transform: rotate(180deg);">◀ D ◀</div>
+                    
+                    <!-- High Contrast Fiducial Marker -->
+                    <div style="width: 220px; height: 220px; border: 18px solid #000; background: #fff; display: flex; align-items: center; justify-content: center; position: relative;">
+                        <!-- Unique Pattern Grid -->
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); width: 160px; height: 160px; gap: 4px; background: #000; padding: 4px;">
+                            ${generateMarkerCells(student.id)}
+                        </div>
+                        <div style="position: absolute; font-size: 20px; font-weight: 900; background: #fff; padding: 2px 8px; border: 2px solid #000;">
+                            #${student.id}
+                        </div>
+                    </div>
+
+                    <div style="font-size: 26px; font-weight: 900; writing-mode: vertical-rl;">▶ B ▶</div>
+                </div>
+                <div style="font-size: 26px; font-weight: 900; letter-spacing: 2px;">▼ C ▼</div>
+                
+                <div style="text-align: center; margin-top: 10px; border-top: 1px solid #ccc; width: 100%; padding-top: 8px;">
+                    <strong style="font-size: 16px;">Học sinh #${student.id}: ${escapeHtml(student.name)}</strong>
+                    <div style="font-size: 11px; color: #555;">(Xoay chữ cái đáp án bạn chọn lên trên cùng khi giơ thẻ)</div>
+                </div>
+            `;
+            return card;
+        }
+
+        function generateMarkerCells(seed) {
+            let cells = '';
+            for (let i = 0; i < 16; i++) {
+                const isBlack = ((seed * 17 + i * 31) % 5) !== 0;
+                cells += `<div style="background: ${isBlack ? '#000' : '#fff'};"></div>`;
+            }
+            return cells;
+        }
+
+        // REPORTS & EXCEL EXPORT
+        function renderReports() {
+            const tbody = document.getElementById('report-table-body');
+            tbody.innerHTML = students.map((s, idx) => {
+                let correctCount = 0;
+                let details = '';
+
+                questions.forEach((q, qIdx) => {
+                    const ans = sessionResults[q.id] ? sessionResults[q.id][s.id] : null;
+                    if (ans === q.answer) {
+                        correctCount++;
+                        details += `<span style="display:inline-block; margin-right:4px; padding:2px 6px; border-radius:4px; background:rgba(16,185,129,0.2); color:#6ee7b7; font-size:11px; font-weight:700;">C${qIdx+1}:${ans}✓</span>`;
+                    } else if (ans) {
+                        details += `<span style="display:inline-block; margin-right:4px; padding:2px 6px; border-radius:4px; background:rgba(239,68,68,0.2); color:#fca5a5; font-size:11px;">C${qIdx+1}:${ans}✗</span>`;
+                    } else {
+                        details += `<span style="display:inline-block; margin-right:4px; padding:2px 6px; border-radius:4px; background:rgba(255,255,255,0.05); color:#64748b; font-size:11px;">C${qIdx+1}:-</span>`;
+                    }
+                });
+
+                const score = questions.length > 0 ? ((correctCount / questions.length) * 10).toFixed(1) : '0.0';
+
+                return `
+                    <tr style="border-bottom: 1px solid var(--border);">
+                        <td style="padding: 10px;">${s.id}</td>
+                        <td style="padding: 10px; font-weight: 700;">${escapeHtml(s.name)}</td>
+                        <td style="padding: 10px;"><strong style="color: #60a5fa;">${correctCount}</strong> / ${questions.length}</td>
+                        <td style="padding: 10px;"><strong style="color: #10b981; font-size: 15px;">${score}</strong></td>
+                        <td style="padding: 10px;">${details}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function exportExcelCSV() {
+            let csv = '\uFEFFSố thẻ,Họ và tên học sinh,Số câu đúng,Điểm số (Thang 10)\n';
+            students.forEach(s => {
+                let correctCount = 0;
+                questions.forEach(q => {
+                    const ans = sessionResults[q.id] ? sessionResults[q.id][s.id] : null;
+                    if (ans === q.answer) correctCount++;
+                });
+                const score = questions.length > 0 ? ((correctCount / questions.length) * 10).toFixed(1) : '0.0';
+                csv += `"${s.id}","${s.name}","${correctCount}/${questions.length}","${score}"
+`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `Bang_Diem_DeThiSo_${new Date().toISOString().slice(0,10)}.csv`;
+            link.click();
+        }
+
+        function resetAllScores() {
+            if (confirm("Bạn có chắc chắn muốn làm mới điểm số kiểm tra của cả lớp?")) {
+                sessionResults = {};
+                localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults));
+                renderReports();
+                alert("Đã làm mới điểm kiểm tra!");
+            }
+        }
+
+        // VIDEO MODAL
+        function openVideoModal() {
+            document.getElementById('video-modal').classList.add('active');
+            const v = document.getElementById('modal-video');
+            if (v) v.play();
+        }
+
+        function closeVideoModal() {
+            document.getElementById('video-modal').classList.remove('active');
+            const v = document.getElementById('modal-video');
+            if (v) v.pause();
+        }
+
+        // KEYBOARD SHORTCUTS
+        document.addEventListener('keydown', (e) => {
+            const pres = document.getElementById('presentation-container');
+            if (!pres.classList.contains('active')) return;
+
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextQuestion();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevQuestion();
+            } else if (e.key === 'Escape') {
+                exitPresentation();
+            } else if (e.key.toLowerCase() === 'a') {
+                revealCorrectAnswer();
+            } else if (e.key.toLowerCase() === 'r') {
+                showChartModal();
+            } else if (e.key.toLowerCase() === 'c') {
+                toggleScannerModal();
+            }
+        });
+
+        // Helper
+        function escapeHtml(str) {
+            return String(str).replace(/[&<>"']/g, s => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+            }[s]));
+        }
+    </script>
+</body>
+</html>
