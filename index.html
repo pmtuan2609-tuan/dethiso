@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
-    <title>ĐỀ THI SỐ — Trình Chiếu PowerPoint & Quét Thẻ Giấy Học Sinh</title>
+    <title>ĐỀ THI SỐ</title>
     <meta name="description" content="Nền tảng kiểm tra trắc nghiệm tương tác lớp học: Trình chiếu câu hỏi, học sinh giơ thẻ giấy A/B/C/D, giáo viên quét camera trực tiếp và thống kê phổ điểm thời gian thực." />
     
     <!-- Fonts -->
@@ -1333,6 +1333,68 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 .nc.none{background:#fff;box-shadow:0 0 0 1.5px #e2e8f0 inset,0 2px 5px rgba(15,23,42,.06)}
 .nc.none .nc-pick{background:#f1f5f9;color:#94a3b8}
 @media(max-width:480px){#res-students{grid-template-columns:repeat(3,1fr);gap:8px}}
+
+/* ===== Thiết kế lại: header + 4 bước + danh sách đề ===== */
+.tab-btn .ti{display:inline-flex;align-items:center}
+.ti svg,.icon-btn svg,.start-btn svg{width:1.15em;height:1.15em;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+.tab-btn .ti{font-size:16px}
+.icon-btn{width:38px;height:38px;border-radius:11px;color:#475569}
+.icon-btn svg{width:20px;height:20px}
+.icon-btn:hover{color:#1d4ed8;background:#e0e7ff}
+.sess-pill,.start-btn{height:38px}
+.um-btn{height:38px}
+.start-btn{display:inline-flex;align-items:center;gap:7px;padding:0 16px}
+.start-btn svg{width:13px;height:13px}
+.nav-tabs{flex:0 1 auto;min-width:0}
+.tab-btn{flex:none}
+@media(min-width:901px) and (max-width:1599px){.um-txt,.um-caret{display:none}.um-btn{padding:3px}}
+@media(min-width:1181px) and (max-width:1279px){.tab-btn:not(.active) .tl{display:none}.tab-btn{padding:8px 11px}}
+@media(min-width:901px) and (max-width:1180px){.start-btn{padding:0 12px}}
+
+.how-grid{gap:16px;align-items:stretch}
+.how{position:relative;border:1px solid #e6eaf2;border-top:1px solid #e6eaf2;border-radius:16px;padding:18px 18px 16px;gap:8px;background:#fff;transition:box-shadow .18s,transform .18s,border-color .18s}
+.how:hover{transform:translateY(-2px);box-shadow:0 14px 28px -16px rgba(15,23,42,.28);border-color:var(--hc)}
+.how .hn{position:relative;z-index:2;width:36px;height:36px;font-size:15px;box-shadow:0 0 0 5px color-mix(in srgb,var(--hc) 16%,transparent);margin-bottom:6px}
+.how:not(:last-child)::after{content:"";position:absolute;z-index:1;top:35px;left:66px;width:calc(100% - 38px);height:0;border-top:2px dashed color-mix(in srgb,var(--hc) 45%,transparent)}
+.how h4{font-size:16px;line-height:1.3}
+.how p{flex:0 0 auto;margin:0}
+.how-act{margin-top:auto;padding-top:12px;display:flex;flex-direction:column;gap:8px}
+.how-ctl{display:flex;flex-direction:column;gap:8px}
+.how-ctl .cls-sel{width:100%;max-width:none;margin:0;padding:8px 10px;font-size:13.5px}
+.how-ctl .tm-box{margin:0;width:100%;justify-content:flex-start;font-size:13.5px;padding:5px 10px}
+.how-main{border-color:var(--hc);background:linear-gradient(180deg,color-mix(in srgb,var(--hc) 6%,#fff),#fff 60%)}
+@media(max-width:1100px){.how:not(:last-child)::after{display:none}}
+
+.card-count{display:inline-block;margin-left:8px;padding:2px 10px;border-radius:999px;background:#eef2ff;color:#4f46e5;font-size:12.5px;font-weight:800;vertical-align:2px}
+.prev-row{background:#fff;padding:10px 14px 10px 10px;gap:14px;transition:border-color .15s,background .15s}
+.prev-row:hover{border-color:#c7d2fe;background:#f8faff}
+.prev-no{min-width:62px;text-align:center;padding:5px 10px;border-radius:8px}
+.prev-ans{display:inline-flex;align-items:center;gap:8px;background:none;padding:0;color:#64748b;font-weight:700;font-size:13px}
+.prev-ans b{width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:900;background:#94a3b8}
+.prev-ans b.al-A{background:#ef4444}.prev-ans b.al-B{background:#3b82f6}.prev-ans b.al-C{background:#f59e0b}.prev-ans b.al-D{background:#10b981}
+.prev-more{display:block;width:100%;margin-top:4px;padding:10px;border:1px dashed #cbd5e1;border-radius:12px;background:transparent;color:#4f46e5;font:800 13.5px var(--font-sans);cursor:pointer}
+.prev-more:hover{background:#eef2ff;border-color:#a5b4fc}
+
+.how-hint{padding:9px 12px;border-radius:10px;background:#ecfdf5;color:#047857;font-size:13px;font-weight:800;text-align:center;border:1px dashed #6ee7b7}
+.question-top{flex-wrap:wrap}
+.q-tools{display:flex;align-items:center;gap:8px;margin-left:auto;flex:none}
+.q-time{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border:1px solid var(--border);border-radius:10px;background:#fff;font-size:12.5px;font-weight:800;color:#475569;white-space:nowrap}
+.q-time input{width:100px;border:1px solid #e2e8f0;border-radius:6px;padding:3px 6px;font:700 13px var(--font-sans);text-align:center}
+.q-time input::placeholder{font-weight:600;color:#94a3b8}
+.question-card.editing{border-color:#818cf8;box-shadow:0 0 0 3px rgba(99,102,241,.15)}
+.qe{display:grid;gap:10px;margin-top:12px}
+.qe-lb{font-size:13px;font-weight:800;color:#334155;margin-top:4px}.qe-lb small,.qe-note{font-weight:600;color:#94a3b8}
+.qe textarea,.qe input[type=text]{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font:600 14.5px var(--font-sans);background:#fff}
+.qe textarea:focus,.qe input[type=text]:focus{outline:0;border-color:#6366f1;box-shadow:0 0 0 3px #e0e7ff}
+.qe-opt{display:flex;align-items:center;gap:10px}
+.qe-pick{position:relative;flex:none;cursor:pointer}
+.qe-pick input{position:absolute;opacity:0;pointer-events:none}
+.qe-pick .opt-letter{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;background:#e2e8f0;color:#475569;transition:.15s}
+.qe-pick:hover .opt-letter{background:#c7d2fe}
+.qe-pick input:checked+.opt-letter{background:#10b981;color:#fff;box-shadow:0 0 0 3px rgba(16,185,129,.25)}
+.qe-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.qe-err{color:#dc2626;font-size:13px;font-weight:700;min-height:0}
+.qe-actions{display:flex;gap:10px}
 </style>
 
     <!-- KaTeX for Math / LaTeX rendering -->
@@ -1392,17 +1454,17 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
             </div>
 
             <nav class="nav-tabs">
-                <button class="tab-btn active" onclick="switchTab('dashboard')" id="tab-dashboard"><span class="ti">📊</span><span class="tl">Tổng quan</span></button>
-                <button class="tab-btn" onclick="switchTab('quizzes')" id="tab-quizzes"><span class="ti">📝</span><span class="tl">Đề thi</span></button>
-                <button class="tab-btn" onclick="switchTab('classroom')" id="tab-classroom"><span class="ti">👥</span><span class="tl">Lớp &amp; Thẻ</span></button>
-                <button class="tab-btn" onclick="switchTab('reports')" id="tab-reports"><span class="ti">📈</span><span class="tl">Kết quả</span></button>
-                <button class="tab-btn" onclick="switchTab('guide')" id="tab-guide"><span class="ti">📖</span><span class="tl">Hướng dẫn</span></button>
-                <button class="tab-btn" onclick="switchTab('admin')" id="tab-admin" style="display:none"><span class="ti">👑</span><span class="tl">Quản trị</span></button>
+                <button class="tab-btn active" onclick="switchTab('dashboard')" id="tab-dashboard" title="Tổng quan"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg></span><span class="tl">Tổng quan</span></button>
+                <button class="tab-btn" onclick="switchTab('quizzes')" id="tab-quizzes" title="Đề thi"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span><span class="tl">Đề thi</span></button>
+                <button class="tab-btn" onclick="switchTab('classroom')" id="tab-classroom" title="Lớp & Thẻ"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="tl">Lớp &amp; Thẻ</span></button>
+                <button class="tab-btn" onclick="switchTab('reports')" id="tab-reports" title="Kết quả"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span><span class="tl">Kết quả</span></button>
+                <button class="tab-btn" onclick="switchTab('guide')" id="tab-guide" title="Hướng dẫn"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span class="tl">Hướng dẫn</span></button>
+                <button class="tab-btn" onclick="switchTab('admin')" id="tab-admin" title="Quản trị" style="display:none"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M5 20h14"/></svg></span><span class="tl">Quản trị</span></button>
             </nav>
 
             <div class="header-actions">
-                <button class="btn btn-ghost icon-btn hide-sm" onclick="openQrModal()" title="Kết nối điện thoại để quét thẻ">📱</button>
-                <button class="btn btn-ghost icon-btn hide-sm" onclick="openVideoModal()" title="Video hướng dẫn">🎬</button>
+                <button class="btn btn-ghost icon-btn hide-sm" onclick="openQrModal()" title="Kết nối điện thoại để quét thẻ" aria-label="Kết nối điện thoại"><svg viewBox="0 0 24 24" aria-hidden="true"><rect width="14" height="20" x="5" y="2" rx="2"/><path d="M12 18h.01"/></svg></button>
+                <button class="btn btn-ghost icon-btn hide-sm" onclick="openVideoModal()" title="Video hướng dẫn" aria-label="Video hướng dẫn"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z"/></svg></button>
                 <span class="hdr-sep hide-sm"></span>
                 <div class="um-wrap">
                     <button class="um-btn" onclick="toggleUserMenu(event)" title="Tài khoản"><span class="uc-av" id="uc-av">G</span><span class="um-txt"><b id="uc-name"></b><small id="uc-sub"></small></span><span class="um-caret">▾</span></button>
@@ -1422,7 +1484,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                         <div class="sp-title">⚙️ Thiết lập phiên trình chiếu</div>
                         <label class="sp-lb">Lớp</label>
                         <select class="cls-sel sp-sel" onchange="clsSwitch(this.value)"></select>
-                        <label class="sp-lb">Thời gian mỗi câu</label>
+                        <label class="sp-lb">Thời gian mặc định mỗi câu <small style="font-weight:600;color:#94a3b8">(đặt riêng từng câu ở tab Đề thi)</small></label>
                         <div class="sp-chips" id="sp-chips">
                             <button data-v="0" onclick="setTimerSec(0)">Tắt</button><button data-v="30" onclick="setTimerSec(30)">30s</button><button data-v="60" onclick="setTimerSec(60)">1 phút</button><button data-v="90" onclick="setTimerSec(90)">90s</button><button data-v="120" onclick="setTimerSec(120)">2 phút</button>
                         </div>
@@ -1430,7 +1492,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                         <button class="btn btn-outline sp-manage" onclick="closeSess();switchTab('classroom')">🏫 Quản lý lớp &amp; học sinh…</button>
                     </div>
                 </div>
-                <button class="btn btn-success start-btn" onclick="startPresentation()">▶ Trình chiếu</button>
+                <button class="btn btn-success start-btn" onclick="startPresentation()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 3 14 9-14 9z" fill="currentColor"/></svg>Trình chiếu</button>
             </div>
         </div>
     </header>
@@ -1462,19 +1524,11 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
             <div class="card">
                 <div class="card-header"><div class="card-title">🚀 4 bước cho một tiết kiểm tra</div></div>
                 <div class="how-grid">
-                    <div class="how" style="--hc:#6366f1"><div class="hn">1</div><h4>Soạn đề</h4><p>Dán câu hỏi dạng “Câu 1… A. B. C. D. Đáp án: A” hoặc thêm từng câu.</p><button class="btn btn-outline" onclick="switchTab('quizzes')">Soạn đề thi</button></div>
-                    <div class="how" style="--hc:#0ea5e9"><div class="hn">2</div><h4>Lớp &amp; in thẻ</h4><p>Nhập danh sách học sinh, in thẻ có 4 cạnh A/B/C/D. In một lần dùng cả năm.</p><button class="btn btn-outline" onclick="switchTab('classroom')">Lớp &amp; Thẻ</button></div>
-                    <div class="how" style="--hc:#10b981"><div class="hn">3</div><h4>Trình chiếu &amp; quét thẻ</h4><p>Chiếu câu hỏi, học sinh giơ thẻ, thầy cô quét bằng điện thoại.</p><label class="tm-box" title="Thời gian mỗi câu (0 = không đếm giờ)">⏱ <input type="number" class="tm-in" min="0" max="3600" step="5" oninput="setTimerSec(this.value)"> giây/câu</label><button class="btn btn-success" onclick="startPresentation()">▶ Bật trình chiếu</button></div>
-                    <div class="how" style="--hc:#f59e0b"><div class="hn">4</div><h4>Công bố đáp án</h4><p>Quét xong bấm 🏁 <b>Công bố đáp án</b>, rồi xem kết quả từng em và bảng điểm.</p><button class="btn btn-outline" onclick="switchTab('guide')">Xem hướng dẫn</button></div>
+                    <div class="how" style="--hc:#6366f1"><div class="hn">1</div><h4>Soạn đề</h4><p>Dán câu hỏi dạng “Câu 1… A. B. C. D. Đáp án: A” hoặc thêm từng câu.</p><div class="how-act"><button class="btn btn-outline" onclick="switchTab('quizzes')">Soạn đề thi</button></div></div>
+                    <div class="how" style="--hc:#0ea5e9"><div class="hn">2</div><h4>Lớp &amp; in thẻ</h4><p>Nhập danh sách học sinh, in thẻ có 4 cạnh A/B/C/D. In một lần dùng cả năm.</p><div class="how-act"><button class="btn btn-outline" onclick="switchTab('classroom')">Lớp &amp; Thẻ</button></div></div>
+                    <div class="how how-main" style="--hc:#10b981"><div class="hn">3</div><h4>Trình chiếu &amp; quét thẻ</h4><p>Bấm nút <b>▶ Trình chiếu</b> ở thanh trên cùng. Chiếu câu hỏi, học sinh giơ thẻ, thầy cô quét bằng điện thoại.</p><div class="how-act"><div class="how-hint">↗ Nút Trình chiếu ở góc trên bên phải</div></div></div>
+                    <div class="how" style="--hc:#f59e0b"><div class="hn">4</div><h4>Công bố đáp án</h4><p>Quét xong bấm 🏁 <b>Công bố đáp án</b>, rồi xem kết quả từng em và bảng điểm.</p><div class="how-act"><button class="btn btn-outline" onclick="switchTab('guide')">Xem hướng dẫn</button></div></div>
                 </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">📖 Đề thi hiện có trong hệ thống</div>
-                    <button class="btn btn-outline" onclick="loadSampleQuiz()">Tải lại đề mẫu</button>
-                </div>
-                <div id="dashboard-quiz-preview"></div>
             </div>
         </section>
 
@@ -1702,7 +1756,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
     <div id="presentation-container" class="presentation-container">
         <div class="pres-header">
             <div class="pres-title">
-                <span id="pres-quiz-name" style="font-weight: 900; color: #1e293b;">ĐỀ THI SỐ — Trình Chiếu</span>
+                <span id="pres-quiz-name" style="font-weight: 900; color: #1e293b;">ĐỀ THI SỐ</span>
             </div>
             <div class="pres-counter" id="pres-counter">Câu 1 / 4</div>
             <div>
@@ -1948,7 +2002,38 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
             {"id": 21, "name": "Chu Quốc Thịnh"},
             {"id": 22, "name": "Hồ Khánh Vân"},
             {"id": 23, "name": "Lương Anh Vũ"},
-            {"id": 24, "name": "Trương Mỹ Uyên"}
+            {"id": 24, "name": "Trương Mỹ Uyên"},
+            {"id": 25, "name": "Nguyễn Hà Anh"},
+            {"id": 26, "name": "Trần Quốc Bảo"},
+            {"id": 27, "name": "Lê Ngọc Châu"},
+            {"id": 28, "name": "Phạm Thanh Danh"},
+            {"id": 29, "name": "Hoàng Anh Đức"},
+            {"id": 30, "name": "Vũ Thu Giang"},
+            {"id": 31, "name": "Đặng Minh Hiếu"},
+            {"id": 32, "name": "Bùi Gia Hân"},
+            {"id": 33, "name": "Đỗ Tuấn Hùng"},
+            {"id": 34, "name": "Ngô Bảo Khang"},
+            {"id": 35, "name": "Dương Diệu Linh"},
+            {"id": 36, "name": "Đinh Công Lộc"},
+            {"id": 37, "name": "Lý Hải My"},
+            {"id": 38, "name": "Trịnh Đức Nghĩa"},
+            {"id": 39, "name": "Mai Bích Ngọc"},
+            {"id": 40, "name": "Cao Thành Nhân"},
+            {"id": 41, "name": "Phan Tú Oanh"},
+            {"id": 42, "name": "Tạ Hồng Phúc"},
+            {"id": 43, "name": "Lưu Khánh Quỳnh"},
+            {"id": 44, "name": "Đoàn Trọng Sang"},
+            {"id": 45, "name": "Chu Thảo Tâm"},
+            {"id": 46, "name": "Hồ Đăng Thành"},
+            {"id": 47, "name": "Lương Thị Trang"},
+            {"id": 48, "name": "Trương Quốc Trung"},
+            {"id": 49, "name": "Nguyễn Phúc Tuệ"},
+            {"id": 50, "name": "Trần Anh Tú"},
+            {"id": 51, "name": "Lê Kim Yến"},
+            {"id": 52, "name": "Phạm Hoài Nam"},
+            {"id": 53, "name": "Hoàng Bảo Ngân"},
+            {"id": 54, "name": "Vũ Nhật Quang"},
+            {"id": 55, "name": "Đặng Thiên Ý"}
         ];
 
         const DEFAULT_QUIZ = [
@@ -2093,46 +2178,84 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
             document.getElementById('stat-student-count').textContent = students.length;
 
             const preview = document.getElementById('dashboard-quiz-preview');
-            preview.innerHTML = questions.slice(0, 3).map((q, idx) => `
+            if (preview) preview.innerHTML = questions.slice(0, 3).map((q, idx) => `
                 <div class="prev-row">
                     <span class="prev-no">Câu ${idx + 1}</span>
                     <span class="prev-text">${escapeHtml(q.question.length > 90 ? q.question.substring(0, 90) + '…' : q.question)}</span>
-                    <span class="prev-ans">Đáp án ${q.answer}</span>
+                    <span class="prev-ans">Đáp án <b class="al-${q.answer}">${q.answer}</b></span>
                 </div>
-            `).join('');
+            `).join('') + (questions.length > 3 ? `<button class="prev-more" onclick="switchTab('quizzes')">Xem tất cả ${questions.length} câu →</button>` : '');
+            const dqc = document.getElementById('dash-q-count'); if (dqc) dqc.textContent = questions.length + ' câu';
         }
 
         // Quizzes View Rendering
+        let editingQ = null;
+        function fmtQTime(q) { return (q.time === undefined || q.time === null || q.time === '') ? 'Mặc định' : (+q.time === 0 ? 'Không đếm giờ' : q.time + ' giây'); }
         function renderQuizzes() {
             document.getElementById('quiz-total-badge').textContent = questions.length;
             const container = document.getElementById('questions-list-container');
-            container.innerHTML = questions.map((q, idx) => `
+            const L = ['A', 'B', 'C', 'D'];
+            container.innerHTML = questions.map((q, idx) => {
+                if (q.id === editingQ) {
+                    return `
+                <div class="question-card editing" id="q-card-${q.id}">
+                    <div class="question-top"><span class="q-badge">Câu ${idx + 1}</span><b style="font-size:14px;color:#4f46e5">Đang sửa</b></div>
+                    <div class="qe">
+                        <label class="qe-lb">Nội dung câu hỏi <small>(dùng $...$ cho công thức)</small></label>
+                        <textarea id="qe-q-${q.id}" rows="3">${escapeHtml(q.question)}</textarea>
+                        <label class="qe-lb">Các đáp án <small>— bấm vào chữ cái để chọn đáp án đúng</small></label>
+                        ${L.map(l => `<div class="qe-opt"><label class="qe-pick" title="Chọn làm đáp án đúng"><input type="radio" name="qe-ans-${q.id}" value="${l}" ${q.answer === l ? 'checked' : ''}><span class="opt-letter">${l}</span></label><input type="text" id="qe-${l}-${q.id}" value="${escapeHtml(q.options[l] || '')}" placeholder="Đáp án ${l}"></div>`).join('')}
+                        <div class="qe-row">
+                            <label class="q-time">⏱ Thời gian <input type="number" id="qe-t-${q.id}" min="0" max="3600" step="5" placeholder="Mặc định" value="${q.time === undefined || q.time === null || q.time === '' ? '' : q.time}"> giây</label>
+                            <small class="qe-note">Để trống = theo thời gian mặc định · 0 = không đếm giờ</small>
+                        </div>
+                        <label class="qe-lb">Giải thích <small>(không bắt buộc)</small></label>
+                        <textarea id="qe-e-${q.id}" rows="2">${escapeHtml(q.explanation || '')}</textarea>
+                        <div class="qe-err" id="qe-err-${q.id}"></div>
+                        <div class="qe-actions"><button class="btn btn-primary" onclick="saveEditQ(${q.id})">Lưu câu hỏi</button><button class="btn btn-outline" onclick="cancelEditQ()">Huỷ</button></div>
+                    </div>
+                </div>`;
+                }
+                return `
                 <div class="question-card" id="q-card-${q.id}">
                     <div class="question-top">
                         <span class="q-badge">Câu ${idx + 1}</span>
                         <div class="q-text">${escapeHtml(q.question)}</div>
-                        <button class="btn btn-danger" style="padding: 4px 10px; font-size: 12px;" onclick="deleteQuestion(${q.id})">Xoá</button>
+                        <div class="q-tools">
+                            <label class="q-time" title="Thời gian đếm ngược cho câu này. Để trống = mặc định, 0 = không đếm giờ">⏱ <input type="number" min="0" max="3600" step="5" placeholder="Mặc định" value="${q.time === undefined || q.time === null || q.time === '' ? '' : q.time}" onchange="setQTime(${q.id}, this.value)"> giây</label>
+                            <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;" onclick="startEditQ(${q.id})">✎ Sửa</button>
+                            <button class="btn btn-danger" style="padding: 4px 10px; font-size: 12px;" onclick="deleteQuestion(${q.id})">Xoá</button>
+                        </div>
                     </div>
                     <div class="options-list">
-                        <div class="option-item ${q.answer === 'A' ? 'correct' : ''}">
-                            <span class="opt-letter">A</span> <span>${escapeHtml(q.options.A || '')}</span>
-                        </div>
-                        <div class="option-item ${q.answer === 'B' ? 'correct' : ''}">
-                            <span class="opt-letter">B</span> <span>${escapeHtml(q.options.B || '')}</span>
-                        </div>
-                        <div class="option-item ${q.answer === 'C' ? 'correct' : ''}">
-                            <span class="opt-letter">C</span> <span>${escapeHtml(q.options.C || '')}</span>
-                        </div>
-                        <div class="option-item ${q.answer === 'D' ? 'correct' : ''}">
-                            <span class="opt-letter">D</span> <span>${escapeHtml(q.options.D || '')}</span>
-                        </div>
+                        ${L.map(l => `<div class="option-item ${q.answer === l ? 'correct' : ''}"><span class="opt-letter">${l}</span> <span>${escapeHtml(q.options[l] || '')}</span></div>`).join('')}
                     </div>
-                </div>
-            `).join('');
+                </div>`;
+            }).join('');
             saveQuestions();
             renderAllMath();
         }
-
+        function setQTime(id, v) {
+            const q = questions.find(x => x.id === id); if (!q) return;
+            if (String(v).trim() === '') delete q.time; else q.time = Math.max(0, Math.min(3600, parseInt(v) || 0));
+            saveQuestions();
+        }
+        function startEditQ(id) { editingQ = id; renderQuizzes(); const t = document.getElementById('qe-q-' + id); if (t) t.focus(); }
+        function cancelEditQ() { editingQ = null; renderQuizzes(); }
+        function saveEditQ(id) {
+            const q = questions.find(x => x.id === id); if (!q) return;
+            const g = k => (document.getElementById(`qe-${k}-${id}`) || {}).value || '';
+            const text = g('q').trim(), err = document.getElementById('qe-err-' + id);
+            const opts = {}; ['A', 'B', 'C', 'D'].forEach(l => opts[l] = g(l).trim());
+            const picked = document.querySelector(`input[name="qe-ans-${id}"]:checked`);
+            const ans = picked ? picked.value : q.answer;
+            if (!text) { err.textContent = 'Nhập nội dung câu hỏi.'; return; }
+            if (!opts[ans]) { err.textContent = 'Đáp án đúng (' + ans + ') đang để trống.'; return; }
+            q.question = text; q.options = opts; q.answer = ans;
+            const ex = g('e').trim(); if (ex) q.explanation = ex; else delete q.explanation;
+            const t = g('t').trim(); if (t === '') delete q.time; else q.time = Math.max(0, Math.min(3600, parseInt(t) || 0));
+            editingQ = null; renderQuizzes(); renderDashboard();
+        }
         function saveQuestions() {
             localStorage.setItem(STORAGE_KEY_QUIZ, JSON.stringify(questions));
         }
@@ -2510,7 +2633,7 @@ D. Do môi trường sống thay đổi
             students = DEFAULT_CLASS;
             renderClassroom();
             renderDashboard();
-            alert("Đã khôi phục danh sách lớp mẫu 24 học sinh!");
+            alert("Đã khôi phục danh sách lớp mẫu 55 học sinh!");
         }
 
         function handleClassFileUpload(event) {
@@ -3393,16 +3516,18 @@ D. Do môi trường sống thay đổi
             try { localStorage.setItem(TM_KEY, tmSec); } catch (e) {}
             document.querySelectorAll('.tm-in').forEach(i => { if (i !== document.activeElement) i.value = tmSec; });
         }
+        let tmCur = 0;
+        function qTimeSec(q) { return (q && q.time !== undefined && q.time !== null && q.time !== '' && isFinite(q.time)) ? Math.max(0, parseInt(q.time) || 0) : tmSec; }
         function tmDraw() {
             const e = document.getElementById('pres-timer'); if (!e) return;
-            e.style.display = tmSec ? 'flex' : 'none';
-            e.classList.toggle('low', tmSec > 0 && tmLeft > 0 && tmLeft <= 10);
-            e.classList.toggle('end', tmSec > 0 && tmLeft === 0);
+            e.style.display = tmCur ? 'flex' : 'none';
+            e.classList.toggle('low', tmCur > 0 && tmLeft > 0 && tmLeft <= 10);
+            e.classList.toggle('end', tmCur > 0 && tmLeft === 0);
             document.getElementById('tm-text').textContent = tmLeft === 0 ? 'Hết giờ!' : String(Math.floor(tmLeft / 60)).padStart(2, '0') + ':' + String(tmLeft % 60).padStart(2, '0');
             document.getElementById('tm-pp').textContent = tmRun ? '⏸' : '▶';
         }
         function tmReset() {
-            clearInterval(tmInt); tmLeft = tmSec; tmRun = tmSec > 0;
+            clearInterval(tmInt); tmCur = qTimeSec(questions[currentQuestionIndex]); tmLeft = tmCur; tmRun = tmCur > 0;
             tmInt = setInterval(() => {
                 if (!tmRun) return;
                 if (tmLeft > 0) {
