@@ -1425,6 +1425,24 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
     <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<style>
+/* ===== v4: màn hình trình chiếu cho HS (chỉ câu hỏi) – nút điều khiển của GV tự ẩn ===== */
+.presentation-container.pres-clean .pres-body{max-width:1320px}
+.pres-clean .pres-question{font-size:clamp(30px,4.2vw,64px);line-height:1.35;margin-bottom:44px}
+.pres-clean .pres-options{gap:22px}
+.pres-clean .pres-opt-card{font-size:clamp(24px,3vw,46px);padding:30px 34px;border-radius:26px;min-height:120px;box-shadow:0 10px 30px -14px rgba(15,23,42,.22)}
+.pres-clean .pres-note{display:none!important}
+.pres-clean .reveal-banner{display:none!important}
+.pres-clean .pres-toolbar{position:fixed;left:24px;right:24px;bottom:18px;margin:0!important;z-index:30;transform:translateY(150%);opacity:0;pointer-events:none;transition:transform .35s cubic-bezier(.2,.8,.2,1),opacity .25s}
+.pres-clean.show-controls .pres-toolbar{transform:none;opacity:1;pointer-events:auto}
+.pres-clean.show-controls .reveal-banner.show{display:flex!important;position:fixed;left:24px;right:24px;bottom:112px;margin:0;z-index:30}
+.pres-clean .pres-header>div:last-child{opacity:0;pointer-events:none;transition:opacity .25s}
+.pres-clean.show-controls .pres-header>div:last-child{opacity:1;pointer-events:auto}
+#pres-handle{display:none;position:absolute;right:16px;bottom:14px;width:40px;height:40px;border-radius:50%;border:0;background:rgba(15,23,42,.07);color:#64748b;font-size:18px;cursor:pointer;z-index:29;opacity:.4}
+#pres-handle:hover{opacity:1}
+.pres-clean #pres-handle{display:block}.pres-clean.show-controls #pres-handle{opacity:0;pointer-events:none}
+</style>
 </head>
 <body class="locked">
 
@@ -1475,7 +1493,6 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                 <button class="tab-btn" onclick="switchTab('quizzes')" id="tab-quizzes" title="Đề thi"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg></span><span class="tl">Đề thi</span></button>
                 <button class="tab-btn" onclick="switchTab('classroom')" id="tab-classroom" title="Lớp & Thẻ"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="tl">Lớp &amp; Thẻ</span></button>
                 <button class="tab-btn" onclick="switchTab('reports')" id="tab-reports" title="Kết quả"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg></span><span class="tl">Kết quả</span></button>
-                <button class="tab-btn" onclick="switchTab('guide')" id="tab-guide" title="Hướng dẫn"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span><span class="tl">Hướng dẫn</span></button>
                 <button class="tab-btn" onclick="switchTab('admin')" id="tab-admin" title="Quản trị" style="display:none"><span class="ti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/><path d="M5 20h14"/></svg></span><span class="tl">Quản trị</span></button>
             </nav>
 
@@ -1488,7 +1505,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                     <div class="um-pop" id="um-pop" onclick="event.stopPropagation()">
                         <div class="um-head"><span class="uc-av big" id="um-av">G</span><div><b id="um-name"></b><small id="um-mail"></small></div></div>
                         <button onclick="openSettings()">⚙️ Cài đặt tài khoản</button>
-                        <button onclick="closeUserMenu();switchTab('guide')">📖 Hướng dẫn sử dụng</button>
+                        <button onclick="closeUserMenu();openVideoModal()">🎬 Video hướng dẫn</button>
                         <button id="um-admin" onclick="closeUserMenu();switchTab('admin')" style="display:none">👑 Quản trị giáo viên</button>
                         <hr><button class="um-out" onclick="closeUserMenu();logout()">🚪 Đăng xuất</button>
                     </div>
@@ -1525,7 +1542,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                     <div class="hero-cta">
                         <button class="btn hero-btn-main" onclick="startPresentation()">▶ Bắt đầu trình chiếu</button>
                         <button class="btn hero-btn-alt" onclick="switchTab('quizzes')">📝 Soạn đề</button>
-                        <button class="btn hero-btn-alt" onclick="switchTab('guide')">📖 Hướng dẫn</button>
+                        <button class="btn hero-btn-alt" onclick="openVideoModal()">🎬 Video hướng dẫn</button>
                     </div>
                 </div>
                 <div class="hero-art"><i>A</i><i>B</i><i>C</i><i>D</i></div>
@@ -1603,7 +1620,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 <text x="262" y="146" font-size="10" font-weight="700" fill="#64748b" text-anchor="middle">trả lời đúng</text>
 <text x="28" y="168" font-size="10" font-weight="700" fill="#64748b">Xanh = đúng · Đỏ = sai · Xám = chưa trả lời</text>
 </svg></div>
-                        <div class="vg-body"><div class="vg-h"><span class="hn">4</span><h4>Công bố đáp án</h4></div><p>Quét xong bấm <b>🏁 Công bố đáp án</b>, rồi xem kết quả từng em và bảng điểm.</p><button class="btn btn-outline" onclick="switchTab('guide')">Xem hướng dẫn chi tiết</button></div>
+                        <div class="vg-body"><div class="vg-h"><span class="hn">4</span><h4>Công bố đáp án</h4></div><p>Quét xong bấm <b>🏁 Công bố đáp án</b>, rồi xem kết quả từng em và bảng điểm.</p><button class="btn btn-outline" onclick="openVideoModal()">🎬 Xem video hướng dẫn</button></div>
                     </div>
                 </div>
             </div>
@@ -1654,6 +1671,8 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                     <div class="card-title">👥 Quản lý lớp học &amp; Danh sách học sinh</div>
                     <div class="card-actions">
                         <button class="btn btn-success" onclick="printStudentCards('a5')" title="Chọn khổ giấy A5 trong hộp thoại in; 1 thẻ mỗi trang">🖨️ In thẻ A5 (1 thẻ/trang)</button>
+                        <button class="btn btn-outline" onclick="downloadCardsPDF('a5')" title="Tải file PDF: mỗi trang 1 thẻ A5">📄 Tải PDF (A5)</button>
+                        <button class="btn btn-outline" onclick="downloadCardsPDF('a4')" title="Tải file PDF: A4 ngang, mỗi tờ 2 thẻ">📄 Tải PDF (A4 · 2 thẻ/tờ)</button>
                         <button class="btn btn-outline" onclick="printStudentCards('a4')" title="Giấy A4 nằm ngang, mỗi tờ 2 thẻ A5, cắt đôi theo nét đứt">✂️ A4 ngang: 2 thẻ/tờ</button>
                         <button class="btn btn-primary" onclick="document.getElementById('class-file-upload').click()">📁 Tải file Excel</button>
                         <button class="btn btn-danger" id="btn-batch-delete" onclick="batchDeleteSelectedStudents()" style="display: none;">🗑️ Xóa đã chọn (<span id="batch-delete-count">0</span>)</button>
@@ -1728,102 +1747,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
         </section>
     
         <!-- 5. GUIDE & IMPORTANT NOTES VIEW -->
-        <section id="view-guide" class="view-section">
-            <div class="card" style="border-left: 4px solid var(--primary);">
-                <div class="card-header">
-                    <div class="card-title">📖 Hướng Dẫn Sử Dụng &amp; Lưu Ý Quan Trọng Cho Giáo Viên</div>
-                    <button class="btn btn-warning" onclick="loadMathSampleQuiz()">📐 Tải thử đề mẫu môn Toán (LaTeX)</button>
-                </div>
-                <p style="color: var(--text-muted); font-size: 15px; line-height: 1.7;">
-                    Làm theo 10 bước bên dưới là dùng được ngay. Hệ thống được thiết kế tối ưu cho giáo viên mọi bộ môn (Toán, Lý, Hoá, Sinh, Sử, Địa, Ngoại ngữ...). Đặc biệt đối với <strong>môn Toán</strong>, hệ thống tích hợp sẵn trình biên dịch <strong>KaTeX / LaTeX</strong> siêu tốc giúp công thức hiển thị sắc nét cả trên màn hình máy tính lẫn máy chiếu trong lớp học.
-                </p>
-            </div>
-
-
-            <!-- Quy trình 10 bước theo đúng các nút trên trang -->
-            <div class="card flow-card" id="flow-card">
-                <div class="flow-head">
-                    <h3>🧭 Làm cùng thầy cô — từ đăng nhập đến bảng điểm qua 10 bước</h3>
-                    <p>Mỗi bước đều gọi tên đúng nút bạn sẽ thấy trên trang. Bấm từng bước hoặc dùng nút Tiếp / Trước.</p>
-                </div>
-                <div class="flow-pills" id="flow-pills"><button class="flow-pill" data-i="0" onclick="flowGo(0)"><i>1</i>Đăng nhập</button><button class="flow-pill" data-i="1" onclick="flowGo(1)"><i>2</i>Soạn đề</button><button class="flow-pill" data-i="2" onclick="flowGo(2)"><i>3</i>Tạo lớp</button><button class="flow-pill" data-i="3" onclick="flowGo(3)"><i>4</i>In thẻ</button><button class="flow-pill" data-i="4" onclick="flowGo(4)"><i>5</i>Trình chiếu</button><button class="flow-pill" data-i="5" onclick="flowGo(5)"><i>6</i>Điện thoại</button><button class="flow-pill" data-i="6" onclick="flowGo(6)"><i>7</i>Thu thẻ</button><button class="flow-pill" data-i="7" onclick="flowGo(7)"><i>8</i>Công bố</button><button class="flow-pill" data-i="8" onclick="flowGo(8)"><i>9</i>Kết quả</button><button class="flow-pill" data-i="9" onclick="flowGo(9)"><i>10</i>Bảng điểm</button></div>
-                <div class="flow-body"><div class="flow-step" data-i="0"><h4>🔑 Bước 1: Đăng ký &amp; đăng nhập</h4><div class="flow-sub">Chỉ giáo viên đã đăng nhập mới dùng được trang.</div><ol class="flow-list"><li>Mở trang, chọn thẻ <b>Đăng ký giáo viên</b>, nhập họ tên, email, <b>mật khẩu từ 6 ký tự</b>, trường và môn dạy.</li><li>Lần sau chọn <b>Đăng nhập</b>. Máy sẽ nhớ phiên đăng nhập cho đến khi thầy cô bấm <b>🚪 Đăng xuất</b> ở góc phải thanh trên.</li><li>Tài khoản được lưu trên trình duyệt của máy này, nên hãy dùng cùng một máy và trình duyệt cho các buổi dạy.</li></ol><div class="flow-tip">🔒 Chưa đăng nhập = chưa vào được</div></div><div class="flow-step" data-i="1"><h4>📝 Bước 2: Soạn đề thi</h4><div class="flow-sub">Vào thẻ <b>Đề thi</b>.</div><ol class="flow-list"><li>Dán nội dung vào ô theo mẫu: <b>Câu 1. … A. … B. … C. … D. … Đáp án: A</b>.</li><li>Bấm <b>⚡ Bóc tách &amp; Thêm vào đề</b>. Hệ thống tự tách câu hỏi, 4 phương án và đáp án đúng.</li><li>Muốn xem mẫu: <b>Dán mẫu Word</b>, <b>📐 Đề mẫu Toán</b> hoặc <b>Mẫu LaTeX (ex_test)</b>. Công thức đặt giữa hai dấu <b>$…$</b>.</li><li>Có thể thêm từng câu bằng <b>+ Thêm câu hỏi thủ công</b> và sửa ngay trong danh sách bên dưới.</li></ol><div class="flow-tip">✅ Mỗi câu có đủ A–D và đáp án đúng</div></div><div class="flow-step" data-i="2"><h4>👥 Bước 3: Tạo lớp &amp; nhập học sinh</h4><div class="flow-sub">Vào thẻ <b>Lớp &amp; Thẻ</b>.</div><ol class="flow-list"><li>Chọn lớp ở ô <b>🏫 Lớp</b> hoặc bấm <b>＋ Lớp mới</b> (VD: 12A1).</li><li>Bấm <b>📁 Tải file Excel</b> (xlsx, xls, csv, txt) hoặc dán mỗi em một dòng vào ô <b>Nhập hàng loạt</b> rồi bấm <b>⚡ Nhập danh sách này</b>.</li><li>Thêm lẻ từng em ở khung <b>Thêm học sinh mới</b>. Cột <b>Số thẻ</b> chính là số in trên thẻ giấy của em đó.</li></ol><div class="flow-tip">🔢 Số thẻ cố định cho từng em</div></div><div class="flow-step" data-i="3"><h4>🖨️ Bước 4: In thẻ &amp; phát cho học sinh</h4><div class="flow-sub">Vẫn ở thẻ <b>Lớp &amp; Thẻ</b>.</div><ol class="flow-list"><li>Bấm <b>🖨️ In thẻ A5 (1 thẻ/trang)</b>, hoặc <b>✂️ A4 ngang: 2 thẻ/tờ</b> rồi cắt đôi theo nét đứt.</li><li>Mỗi thẻ có <b>họ tên, số thẻ</b> và hình ô vuông ở giữa; 4 cạnh là 4 đáp án <b>A, B, C, D</b>.</li><li>Nên in giấy bìa dày hoặc ép plastic. Phát đúng thẻ theo số của từng em và dặn không che hình ở giữa thẻ.</li></ol><div class="flow-tip">📄 In một lần, dùng cả năm</div></div><div class="flow-step" data-i="4"><h4>⚙️ Bước 5: Thiết lập phiên &amp; trình chiếu</h4><div class="flow-sub">Dùng thanh trên cùng.</div><ol class="flow-list"><li>Bấm nút <b>🏫 Lớp · ⏱</b> để chọn lớp sẽ kiểm tra và <b>thời gian mỗi câu</b> (Tắt, 30s, 1 phút… hoặc tự nhập).</li><li>Bấm <b>▶ Trình chiếu</b>. Câu hỏi hiện toàn màn hình; bấm <b>⛶</b> (phím F) để phóng to.</li><li>Đồng hồ đếm ngược nằm cạnh số câu: ⏸/▶ tạm dừng (phím T), <b>+30s</b> thêm giờ, <b>↺</b> đếm lại.</li></ol><div class="flow-tip">⏱ Hết giờ sẽ có tiếng báo</div></div><div class="flow-step" data-i="5"><h4>📱 Bước 6: Kết nối điện thoại làm máy quét</h4><div class="flow-sub">Làm một lần cho cả buổi.</div><ol class="flow-list"><li>Trong màn hình trình chiếu bấm <b>📱 Kết nối ĐT</b> (hoặc biểu tượng 📱 trên thanh trên) để hiện mã QR.</li><li>Mở camera điện thoại quét mã QR. Điện thoại mở trang quét thẻ và tự ghép với máy tính, <b>không cần đăng nhập hay cài ứng dụng</b>.</li><li>Trang phải đưa lên địa chỉ <b>HTTPS</b> thì điện thoại mới mở được camera. Dán địa chỉ đó vào ô trong cửa sổ QR.</li><li>Thấy <b>✅ Đã kết nối</b> là xong. Chỉ máy tính của giáo viên đã đăng nhập mới tạo được mã QR.</li></ol><div class="flow-tip">📲 Quét QR → ghép máy → xong</div></div><div class="flow-step" data-i="6"><h4>🙌 Bước 7: Thu thẻ (quét)</h4><div class="flow-sub">Mỗi câu hỏi làm một lượt.</div><ol class="flow-list"><li>Đọc câu hỏi cho cả lớp. Học sinh <b>xoay chữ đáp án mình chọn lên phía trên</b> rồi giơ thẻ cao.</li><li>Trên điện thoại lia chậm từ trái sang phải. <b>Khung xanh</b> kèm chữ cái là đã ghi nhận; điện thoại hiện tên em vừa quét.</li><li>Màn hình máy tính báo <b>Đã thu X / Y em</b>. Chưa có điện thoại? Dùng <b>📷 Camera</b> của máy tính, hoặc <b>🎲 Mô phỏng</b> để chạy thử.</li></ol><div class="flow-tip">✅ Khung xanh = đã ghi nhận</div></div><div class="flow-step" data-i="7"><h4>🏁 Bước 8: Công bố đáp án</h4><div class="flow-sub">Sau khi quét xong câu đó.</div><ol class="flow-list"><li>Bấm <b>🏁 Công bố đáp án</b> (hoặc phím <b>A</b>). Nút sẽ nhấp nháy khi đã có em giơ thẻ.</li><li>Đáp án đúng được tô xanh, các đáp án còn lại mờ đi, mỗi lựa chọn hiện số em đã chọn. Thanh xanh bên dưới ghi <b>tỉ lệ em trả lời đúng</b>.</li><li>Trước khi công bố, bảng 📊 Kết quả chỉ cho biết số em chọn A/B/C/D, <b>chưa lộ đúng hay sai</b>. Sau khi công bố, câu đó không nhận thêm thẻ.</li><li>Quét nhầm hoặc cần quét lại? Bấm <b>↩ Thu lại</b> trên thanh xanh để mở lại câu đó.</li></ol><div class="flow-tip">🏁 Quét xong → Công bố</div></div><div class="flow-step" data-i="8"><h4>📊 Bước 9: Xem kết quả từng câu</h4><div class="flow-sub">Bấm <b>📊 Kết quả</b> (phím R).</div><ol class="flow-list"><li>Xem vòng phần trăm đúng, biểu đồ 4 đáp án và danh sách từng em: <b>xanh đúng, đỏ sai, xám chưa trả lời</b>.</li><li>Lọc nhanh bằng các nút <b>Đúng / Sai / Chưa trả lời</b>.</li><li>Camera đọc sai? Bấm tên em đó để đổi đáp án (A → B → C → D → bỏ trống).</li><li>Dùng <b>Câu trước / Câu tiếp</b> để chuyển câu, rồi lặp lại bước thu thẻ và công bố.</li></ol><div class="flow-tip">👀 Bấm tên để sửa đáp án</div></div><div class="flow-step" data-i="9"><h4>📈 Bước 10: Bảng điểm &amp; xuất file</h4><div class="flow-sub">Kết thúc buổi, bấm <b>✕ Thoát</b> (Esc), vào thẻ <b>Kết quả</b>.</div><ol class="flow-list"><li>Bảng cho thấy từng em làm đúng/sai mọi câu, số câu đúng và <b>điểm thang 10</b>. Hàng cuối là tỉ lệ cả lớp làm đúng từng câu.</li><li>Bấm vào một ô để sửa đáp án của em đó.</li><li><b>📥 Xuất file Excel (.csv)</b> để lưu bảng điểm; <b>Làm mới điểm</b> để xoá kết quả và bắt đầu buổi mới.</li></ol><div class="flow-recap"><div><span>📝</span>Soạn đề</div><div><span>👥</span>Tạo lớp</div><div><span>🖨️</span>In thẻ</div><div><span>▶️</span>Trình chiếu</div><div><span>🙌</span>Quét thẻ</div><div><span>🏁</span>Công bố</div></div><div class="flow-tip">🎓 Chúc thầy cô một tiết học sôi nổi!</div></div></div>
-                <div class="flow-nav">
-                    <button class="btn btn-outline" onclick="flowGo(flowIdx-1)">← Trước</button>
-                    <span class="flow-count" id="flow-count">Bước 1 / 10</span>
-                    <button class="btn btn-primary" onclick="flowGo(flowIdx+1)">Tiếp →</button>
-                </div>
-            </div>
-
-            <!-- Grid of 4 Key Guides -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 20px;">
-                <!-- Section 1: Soạn đề Toán & LaTeX -->
-                <div class="card" style="margin-bottom: 0;">
-                    <div class="card-title" style="font-size: 17px; margin-bottom: 12px; color: #60a5fa;">
-                        📐 1. Quy chuẩn soạn đề môn Toán (LaTeX)
-                    </div>
-                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 12px;">
-                        Để công thức hiển thị chuẩn đẹp, bạn chỉ cần kẹp công thức vào giữa 2 dấu đô la <code>$...$</code>:
-                    </p>
-                    <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 14px; font-family: monospace; line-height: 1.7; font-size: 13px; color: #a7f3d0; margin-bottom: 12px;">
-                        Câu 1: Cho hàm số $y = \frac{2x+1}{x-1}$.<br>
-                        A. $y' = -\frac{3}{(x-1)^2}$<br>
-                        B. $y' = \frac{3}{(x-1)^2}$<br>
-                        Đáp án: A
-                    </div>
-                    <ul style="font-size: 13px; color: var(--text-muted); padding-left: 20px; line-height: 1.6;">
-                        <li><strong>Phân số:</strong> <code>\frac{a}{b}</code> $\rightarrow \frac{a}{b}$</li>
-                        <li><strong>Căn thức:</strong> <code>\sqrt{x^2+1}</code> $\rightarrow \sqrt{x^2+1}$</li>
-                        <li><strong>Tích phân:</strong> <code>\int_0^1 f(x)dx</code> $\rightarrow \int_0^1 f(x)dx$</li>
-                        <li><strong>Giới hạn:</strong> <code>\lim_{x \to 0}</code> $\rightarrow \lim_{x \to 0}$</li>
-                        <li><strong>Vectơ:</strong> <code>\vec{u} = (1; 2; 3)</code> $\rightarrow \vec{u} = (1; 2; 3)$</li>
-                    </ul>
-                </div>
-
-                <!-- Section 2: In & Quản lý thẻ giấy -->
-                <div class="card" style="margin-bottom: 0;">
-                    <div class="card-title" style="font-size: 17px; margin-bottom: 12px; color: #34d399;">
-                        📄 2. Lưu ý khi In &amp; Phát thẻ cho học sinh
-                    </div>
-                    <ul style="font-size: 14px; color: var(--text-muted); padding-left: 20px; line-height: 1.7;">
-                        <li><strong>Chất liệu giấy:</strong> Nên in trên <strong>giấy bìa cứng (định lượng từ 160gsm trở lên)</strong> hoặc in giấy thường rồi ép plastic / dán decal bóng để dùng bền cả năm học.</li>
-                        <li><strong>Không làm trầy mã vạch:</strong> Tuyệt đối không dùng bút mực vẽ hay làm lem bẩn phần hoa văn đen trắng ở trung tâm thẻ.</li>
-                        <li><strong>Cách cầm thẻ:</strong> Nhắc học sinh đặt ngón tay ở <strong>mép rìa ngoài</strong>, không để ngón tay che mất vùng mã vạch quang học.</li>
-                        <li><strong>Thẻ dùng xuyên suốt:</strong> Mỗi em giữ đúng 1 số thẻ cố định cho tất cả các môn học.</li>
-                    </ul>
-                </div>
-
-                <!-- Section 3: Mẹo quét Camera -->
-                <div class="card" style="margin-bottom: 0;">
-                    <div class="card-title" style="font-size: 17px; margin-bottom: 12px; color: #facc15;">
-                        📷 3. Mẹo Quét Camera Đạt Độ Nhạy Cao Nhất
-                    </div>
-                    <ul style="font-size: 14px; color: var(--text-muted); padding-left: 20px; line-height: 1.7;">
-                        <li><strong>Khoảng cách đứng:</strong> Giáo viên đứng ở bục giảng hoặc vị trí cách hàng đầu <strong>2 – 4 mét</strong>, giơ điện thoại ngang tầm mắt.</li>
-                        <li><strong>Góc lia camera:</strong> Lia điện thoại chậm và đều từ trái sang phải lớp học trong 3 – 5 giây để nhận diện hết từng dãy bàn.</li>
-                        <li><strong>Ánh sáng phòng học:</strong> Đảm bảo lớp học đủ sáng, tránh để cửa sổ phía sau học sinh chiếu thẳng vào ống kính gây ngược sáng.</li>
-                        <li><strong>Không cần mạng mạnh:</strong> Chỉ cần kết nối 4G/Wifi thông thường để truyền tín hiệu đáp án lên máy tính trình chiếu.</li>
-                    </ul>
-                </div>
-
-                <!-- Section 4: Phím tắt trình chiếu -->
-                <div class="card" style="margin-bottom: 0;">
-                    <div class="card-title" style="font-size: 17px; margin-bottom: 12px; color: #f472b6;">
-                        ⌨️ 4. Phím Tắt Nhanh Khi Trình Chiếu (F5)
-                    </div>
-                    <div style="font-size: 14px; color: var(--text-muted); line-height: 1.8;">
-                        <p><kbd class="kbd">Space</kbd> hoặc <kbd class="kbd">➡</kbd>: Chuyển sang câu hỏi kế tiếp</p>
-                        <p><kbd class="kbd">⬅</kbd>: Quay lại câu hỏi trước</p>
-                        <p><kbd class="kbd">Phím A</kbd>: Công bố đáp án (tô xanh đáp án đúng, khoá không nhận thêm thẻ)</p>
-                        <p><kbd class="kbd">Phím R</kbd>: Mở bảng kết quả từng em của câu hiện tại</p>
-                        <p><kbd class="kbd">Phím C</kbd>: Mở / Đóng cửa sổ camera quét thẻ</p>
-                        <p><kbd class="kbd">Phím F</kbd>: Bật / tắt toàn màn hình</p>
-                        <p><kbd class="kbd">Phím T</kbd>: Tạm dừng / chạy tiếp đồng hồ</p>
-                        <p><kbd class="kbd">Phím Esc</kbd>: Thoát chế độ trình chiếu</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+        
 
         <section id="view-admin" class="view-section">
             <div class="card">
@@ -1997,6 +1921,11 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                     <source src="dethiso-tutorial.mp4" type="video/mp4">
                     <source src="1794808967259_1580195966031401650_2208868290436977656.mp4" type="video/mp4">
                 </video>
+                <div id="video-missing" style="display:none;width:100%;height:100%;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#e2e8f0;text-align:center;padding:24px;font-size:15px;line-height:1.6">
+                    <div style="font-size:40px">🎬</div>
+                    <div>Chưa tìm thấy video. Hãy đặt file <b>dethiso-tutorial.mp4</b> cùng thư mục với <b>index.html</b>,<br>hoặc chọn video từ máy:</div>
+                    <label class="btn btn-primary" style="cursor:pointer">📂 Chọn video<input type="file" accept="video/*" hidden onchange="pickTutorialVideo(this)"></label>
+                </div>
             </div>
         </div>
     </div>
@@ -3268,7 +3197,7 @@ D. Do môi trường sống thay đổi
             const act = document.querySelector('#flow-pills .flow-pill.active');
             if (act && act.scrollIntoView) act.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
         }
-        document.addEventListener('DOMContentLoaded', () => flowGo(0));
+        document.addEventListener('DOMContentLoaded', () => { try { flowGo(0); } catch (e) {} });
 
         function openVideoModal() {
             document.getElementById('video-modal').classList.add('active');
@@ -4213,6 +4142,74 @@ D. Do môi trường sống thay đổi
             if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); closeStuCard(); }
             else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); e.stopImmediatePropagation(); stuCardStep(e.key === 'ArrowRight' ? 1 : -1); }
         }, true);
-    </script>
+    
+// ===== v4: video hướng dẫn, chế độ HS/GV, tải PDF thẻ =====
+(function () {
+    const v = document.getElementById('modal-video'), miss = document.getElementById('video-missing');
+    if (v && miss) { const src = [...v.querySelectorAll('source')]; let bad = 0;
+        src.forEach(x => x.addEventListener('error', () => { if (++bad >= src.length) { v.style.display = 'none'; miss.style.display = 'flex'; } })); }
+})();
+function pickTutorialVideo(inp) {
+    const f = inp.files && inp.files[0]; if (!f) return;
+    const v = document.getElementById('modal-video'), miss = document.getElementById('video-missing');
+    v.removeAttribute('poster'); v.src = URL.createObjectURL(f); v.style.display = ''; miss.style.display = 'none'; v.play();
+}
+(function () {
+    const pc = document.getElementById('presentation-container'); let pinned = false, t = null;
+    pc.insertAdjacentHTML('beforeend', '<button id="pres-handle" onclick="presCtl(true)" title="Hiện nút điều khiển (H)">⚙</button>');
+    const hd = pc.querySelector('.pres-header > div:last-child');
+    if (hd) hd.insertAdjacentHTML('afterbegin', '<button class="btn btn-outline" id="btn-pin" onclick="presCtl()" title="Phím H" style="margin-right:8px">📌 Ghim nút</button>');
+    function apply() { clearTimeout(t); pc.classList.toggle('show-controls', pinned); const b = document.getElementById('btn-pin'); if (b) b.textContent = pinned ? '📌 Đang ghim (H)' : '📌 Ghim nút'; }
+    window.presCtl = function (force) { pinned = force === true ? true : !pinned; apply(); };
+    function peek() { if (pinned) return; pc.classList.add('show-controls'); clearTimeout(t); t = setTimeout(() => { if (!pinned) pc.classList.remove('show-controls'); }, 3500); }
+    pc.addEventListener('mousemove', e => { if (e.clientY > innerHeight - 160 || e.clientY < 80) peek(); });
+    pc.addEventListener('touchstart', e => { const y = e.touches[0].clientY; if (y > innerHeight - 160 || y < 80) peek(); }, { passive: true });
+    document.addEventListener('keydown', e => { if (e.key.toLowerCase() === 'h' && pc.classList.contains('active') && !/INPUT|TEXTAREA/.test(e.target.tagName)) window.presCtl(); });
+    const _sp4 = window.startPresentation;
+    window.startPresentation = function () { pinned = false; pc.classList.add('pres-clean'); pc.classList.remove('show-controls'); apply(); return _sp4.apply(this, arguments); };
+})();
+
+function drawCardCanvas(x, st, ox, w, mm) {
+    const c = CLS.list.find(k => k.id === CLS.cur), cx = ox + w / 2, F = 'Nunito, Inter, Arial, sans-serif';
+    x.fillStyle = '#fff'; x.fillRect(ox * mm, 0, w * mm, 210 * mm);
+    const box = (bx, by, ch, rot) => {
+        x.save(); x.translate(bx * mm, by * mm); x.rotate(rot * Math.PI / 180);
+        x.lineWidth = 1.1 * mm; x.strokeStyle = '#000'; x.beginPath(); x.roundRect(-7.45 * mm, -7.45 * mm, 14.9 * mm, 14.9 * mm, 4 * mm); x.stroke();
+        x.fillStyle = '#000'; x.font = `900 ${13 * mm}px ${F}`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText(ch, 0, 0.8 * mm); x.restore();
+    };
+    box(cx, 16.5, 'A', 0); box(cx, 156.5, 'C', 180); box(ox + 14, 86.5, 'D', -90); box(ox + w - 14, 86.5, 'B', 90);
+    const code = MK().list[(st.id - 1) % MK().list.length], cell = 92 / 6, gx = cx - 46, gy = 86.5 - 46;
+    x.fillStyle = '#fff'; x.fillRect((gx - 5) * mm, (gy - 5) * mm, 102 * mm, 102 * mm);
+    for (let r = 0; r < 6; r++) for (let q = 0; q < 6; q++) {
+        const b = r % 5 === 0 || q % 5 === 0 || (code >> ((r - 1) * 4 + q - 1) & 1);
+        x.fillStyle = b ? '#000' : '#fff'; x.fillRect((gx + q * cell) * mm, (gy + r * cell) * mm, cell * mm + 0.6, cell * mm + 0.6);
+    }
+    x.strokeStyle = '#888'; x.lineWidth = .4 * mm; x.beginPath(); x.moveTo((ox + 6) * mm, 175 * mm); x.lineTo((ox + w - 6) * mm, 175 * mm); x.stroke();
+    x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillStyle = '#000';
+    const nm = String(st.name); let fs = nm.length > 24 ? 5 : 6.8;
+    x.font = `900 ${fs * mm}px ${F}`; while (x.measureText(nm).width > (w - 12) * mm && fs > 3) { fs -= .3; x.font = `900 ${fs * mm}px ${F}`; }
+    x.fillText(nm, cx * mm, 184 * mm);
+    x.fillStyle = '#333'; x.font = `700 ${4 * mm}px ${F}`; x.fillText((c ? c.name + ' · ' : '') + 'Thẻ số ' + st.id, cx * mm, 192 * mm);
+    x.fillStyle = '#555'; x.font = `500 ${3.4 * mm}px ${F}`; x.fillText('Giơ thẻ sao cho chữ cái đáp án bạn chọn nằm ở phía trên', cx * mm, 199 * mm);
+}
+async function downloadCardsPDF(mode) {
+    if (!students.length) { alert('Lớp chưa có học sinh.'); return; }
+    mode = mode === 'a4' ? 'a4' : 'a5';
+    if (!window.jspdf) { alert('Chưa tải được thư viện tạo PDF (cần mạng). Có thể bấm In thẻ rồi chọn "Lưu dưới dạng PDF".'); return; }
+    try { await document.fonts.ready; } catch (e) {}
+    const mm = 8, pw = mode === 'a4' ? 297 : 148, per = mode === 'a4' ? 2 : 1, cw = mode === 'a4' ? 148.5 : 148;
+    const doc = new window.jspdf.jsPDF({ orientation: mode === 'a4' ? 'landscape' : 'portrait', unit: 'mm', format: mode });
+    for (let i = 0; i < students.length; i += per) {
+        const cv = document.createElement('canvas'); cv.width = pw * mm; cv.height = 210 * mm; const x = cv.getContext('2d');
+        x.fillStyle = '#fff'; x.fillRect(0, 0, cv.width, cv.height);
+        for (let j = 0; j < per && students[i + j]; j++) drawCardCanvas(x, students[i + j], j * cw, cw, mm);
+        if (per === 2) { x.setLineDash([2 * mm, 2 * mm]); x.strokeStyle = '#888'; x.lineWidth = .3 * mm; x.beginPath(); x.moveTo(148.5 * mm, 0); x.lineTo(148.5 * mm, 210 * mm); x.stroke(); }
+        if (i) doc.addPage(mode, mode === 'a4' ? 'landscape' : 'portrait');
+        doc.addImage(cv.toDataURL('image/png'), 'PNG', 0, 0, pw, 210);
+    }
+    const c = CLS.list.find(k => k.id === CLS.cur);
+    doc.save('The_hoc_sinh_' + (c ? c.name.replace(/\s+/g, '_') : 'lop') + '_' + mode.toUpperCase() + '.pdf');
+}
+</script>
 </body>
 </html>
