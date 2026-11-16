@@ -1443,6 +1443,33 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 #pres-handle:hover{opacity:1}
 .pres-clean #pres-handle{display:block}.pres-clean.show-controls #pres-handle{opacity:0;pointer-events:none}
 </style>
+<style>
+/* ===== v5: giao diện trang chiếu cho HS (nền tối, thẻ đáp án nổi bật) ===== */
+.presentation-container.pres-clean{background:radial-gradient(1100px 620px at 8% -8%,rgba(99,102,241,.55),transparent 62%),radial-gradient(900px 600px at 105% 108%,rgba(236,72,153,.32),transparent 60%),linear-gradient(160deg,#0b1020 0%,#1e1b4b 62%,#312e81 100%)!important}
+.pres-clean .pres-header{padding:26px 48px 0}
+.pres-clean .pres-title,.pres-clean .pres-title #pres-quiz-name{color:#e0e7ff!important;font-size:16px;font-weight:900;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.pres-clean .pres-counter{background:rgba(255,255,255,.12)!important;color:#fff!important;border:1px solid rgba(255,255,255,.28)!important;box-shadow:none!important;backdrop-filter:blur(10px);font-size:20px;font-weight:900;padding:8px 26px;border-radius:999px}
+.pres-clean .tm-box{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.28);font-size:20px;font-weight:900;border-radius:999px;padding:8px 18px}
+.pres-clean .pres-progress{height:8px;background:rgba(255,255,255,.12)}
+.pres-clean .pres-progress i{background:linear-gradient(90deg,#38bdf8,#a78bfa,#f472b6)}
+.pres-clean .pres-body{max-width:1440px;width:100%;padding:12px 56px 40px}
+.pres-clean .pres-question{color:#fff;font-size:clamp(32px,4.4vw,70px);font-weight:900;line-height:1.3;letter-spacing:-.01em;margin-bottom:48px;text-shadow:0 4px 28px rgba(0,0,0,.35);animation:presUp .55s both}
+.pres-clean .pres-question .katex{color:#fff}
+.pres-clean .pres-options{gap:26px}
+.presentation-container.pres-clean .pres-opt-card{display:flex;align-items:center;gap:26px;min-height:132px;padding:24px 34px 24px 24px;background:#fff;border:0!important;border-radius:30px;color:#0f172a;font-size:clamp(26px,3.2vw,54px);font-weight:800;line-height:1.25;box-shadow:0 22px 50px -20px rgba(0,0,0,.55),inset 0 -5px 0 rgba(15,23,42,.05);animation:presUp .5s both}
+.pres-clean .pres-opt-card:nth-child(1){animation-delay:.08s}.pres-clean .pres-opt-card:nth-child(2){animation-delay:.16s}.pres-clean .pres-opt-card:nth-child(3){animation-delay:.24s}.pres-clean .pres-opt-card:nth-child(4){animation-delay:.32s}
+.pres-clean .pres-opt-card .pres-letter{width:clamp(64px,6vw,100px);height:clamp(64px,6vw,100px);border-radius:26px;font-size:clamp(34px,3.4vw,56px);font-weight:900;color:#fff;box-shadow:0 10px 22px -8px rgba(0,0,0,.4),inset 0 2px 0 rgba(255,255,255,.35)}
+.pres-clean .pres-opt-card:nth-child(1) .pres-letter{background:linear-gradient(135deg,#f87171,#dc2626)}
+.pres-clean .pres-opt-card:nth-child(2) .pres-letter{background:linear-gradient(135deg,#60a5fa,#2563eb)}
+.pres-clean .pres-opt-card:nth-child(3) .pres-letter{background:linear-gradient(135deg,#fbbf24,#d97706)}
+.pres-clean .pres-opt-card:nth-child(4) .pres-letter{background:linear-gradient(135deg,#34d399,#059669)}
+.presentation-container.pres-clean .pres-opt-card.correct-revealed{background:#ecfdf5;box-shadow:0 0 0 7px #34d399,0 0 60px 6px rgba(52,211,153,.55)!important;transform:scale(1.025);transition:all .4s}
+.presentation-container.pres-clean .pres-opt-card.dimmed{opacity:.32;filter:saturate(.5);transform:scale(.985);transition:all .4s}
+.pres-clean .pres-dist b{font-size:clamp(20px,2vw,32px);color:#334155}
+#pres-handle{background:rgba(255,255,255,.12);color:#c7d2fe}
+@keyframes presUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@media(max-width:700px){.pres-clean .pres-header{padding:16px 16px 0}.pres-clean .pres-body{padding:10px 16px 24px}.pres-clean .pres-opt-card{min-height:96px!important;gap:16px!important;padding:14px 18px 14px 14px!important}}
+</style>
 </head>
 <body class="locked">
 
