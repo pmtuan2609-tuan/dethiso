@@ -1168,6 +1168,89 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 .sc-row.ok .sc-pick{background:#10b981;color:#fff}.sc-row.bad .sc-pick{background:#ef4444;color:#fff}.sc-row.got .sc-pick{background:#6366f1;color:#fff}
 .sc-right{font-size:12px;font-weight:800;color:#64748b}.sc-ic{font-weight:900}
 @media(max-width:520px){.sc-stats{grid-template-columns:repeat(2,1fr)}.sc-row{grid-template-columns:48px 1fr 30px 22px}.sc-right{display:none}}
+
+/* ===== v3: màn hình GV (đáp án chỉ để xem) + thẻ tên ===== */
+.presentation-container{padding:0!important;justify-content:flex-start;gap:0}
+.pres-header{padding:18px 36px 0}
+.pres-title{font-size:15px;color:#64748b}
+.pres-counter{font-size:15px;letter-spacing:.3px;background:#fff;box-shadow:0 1px 3px rgba(15,23,42,.08)}
+.pres-body{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:1180px;margin:0 auto;padding:12px 36px;min-height:0;overflow:auto}
+.pres-question{margin-bottom:30px}
+.pres-options{gap:16px}
+.pres-opt-card{cursor:default!important;pointer-events:none;user-select:text;box-shadow:0 1px 2px rgba(15,23,42,.05)}
+.pres-opt-card:hover{transform:none;border-color:var(--border);box-shadow:0 1px 2px rgba(15,23,42,.05)}
+.pres-opt-card.correct-revealed{box-shadow:0 0 0 4px rgba(16,185,129,.18)!important}
+.pres-note{text-align:center;font-size:13px;font-weight:700;color:#64748b;padding:6px 36px}
+.reveal-banner{margin:0 24px 10px}
+.pres-toolbar{margin:0 24px 18px;padding:12px 16px!important;border-radius:22px!important;display:grid!important;grid-template-columns:auto 1fr auto;align-items:center;gap:14px!important;border:1px solid #e2e8f0!important;box-shadow:0 12px 32px -12px rgba(15,23,42,.25)!important}
+.pt-mid{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center}
+.pt-nav{display:flex;gap:8px}
+.pt-nav .btn{padding:11px 18px!important;font-size:15px!important}
+.pres-toolbar .btn{border-radius:14px}
+.scanned-status{flex-direction:column;align-items:stretch!important;gap:6px!important;min-width:150px;background:#f8fafc!important;border:1px solid #e2e8f0!important;padding:8px 14px!important}
+.ss-txt{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.scanned-status .scan-label{color:#64748b;font-size:12px;text-transform:uppercase;letter-spacing:.4px}
+.scanned-status b{font-size:22px;color:#059669;font-weight:900;display:inline-block;transition:transform .2s}
+.ss-of{color:var(--text-muted);font-size:13px}
+.ss-bar{height:6px;border-radius:6px;background:#e2e8f0;overflow:hidden}
+.ss-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#10b981,#34d399);border-radius:6px;transition:width .35s}
+@media(max-width:1100px){.pres-toolbar{grid-template-columns:1fr 1fr}.pt-mid{grid-column:1/-1;order:3}.pt-nav{justify-self:end}}
+@media(max-width:600px){.pres-header{padding:12px 14px 0}.pres-body{padding:10px 14px}.pres-note{display:none}.pres-toolbar{margin:0 10px 10px;grid-template-columns:1fr}.pt-nav{justify-self:stretch}.pt-nav .btn{flex:1}.scanned-status{min-width:0}}
+
+/* Thẻ tên học sinh */
+#res-students{grid-template-columns:repeat(auto-fill,minmax(172px,1fr));gap:12px}
+.nc{position:relative;display:flex;flex-direction:column;align-items:stretch;gap:0;padding:0;overflow:hidden;border:1.5px solid #e2e8f0;border-radius:16px;background:#fff;box-shadow:0 1px 2px rgba(15,23,42,.05);text-align:center}
+.nc::before{content:"";position:absolute;top:7px;left:50%;width:34px;height:5px;margin-left:-17px;border-radius:5px;background:rgba(15,23,42,.14)}
+.nc-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:20px 12px 8px}
+.nc-no{flex:none;min-width:30px;height:30px;padding:0 8px;border-radius:9px;font:900 13px var(--font-sans)}
+.nc-st{font:900 11px var(--font-sans);letter-spacing:.3px;text-transform:uppercase;color:#94a3b8}
+.nc-nm{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;white-space:normal;text-overflow:clip;flex:none;min-height:2.6em;padding:2px 12px;font-weight:900;font-size:15px;line-height:1.3;color:#1e293b;text-align:center}
+.nc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding:8px 12px;background:#f1f5f9;border-top:1px solid #e2e8f0}
+.nc-lb{font:800 12px var(--font-sans);color:#64748b}
+.nc-ans{min-width:38px;height:38px;border-radius:11px;font:900 20px var(--font-sans)}
+.nc.none{opacity:1;background:#fff}.nc.none .nc-nm{color:#94a3b8}
+.nc.got{background:#fff;border-color:#a5b4fc}.nc.got .nc-st{color:#4f46e5}.nc.got .nc-foot{background:#eef2ff;border-top-color:#c7d2fe}
+.nc.ok{background:#fff;border-color:#34d399}.nc.ok .nc-st{color:#059669}.nc.ok .nc-foot{background:#ecfdf5;border-top-color:#a7f3d0}.nc.ok .nc-nm{color:#065f46}
+.nc.bad{background:#fff;border-color:#f87171}.nc.bad .nc-st{color:#dc2626}.nc.bad .nc-foot{background:#fef2f2;border-top-color:#fecaca}.nc.bad .nc-nm{color:#991b1b}
+@media(max-width:480px){#res-students{grid-template-columns:repeat(2,1fr);gap:8px}.nc-nm{font-size:13.5px}}
+
+/* Thẻ chi tiết từng em: banner như thẻ tên */
+.sc-top{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border-radius:16px;padding:14px 16px}
+.sc-top .uc-av{background:#fff;color:#4f46e5;box-shadow:0 0 0 4px rgba(255,255,255,.3)}
+.sc-top h3{color:#fff}.sc-top small{color:rgba(255,255,255,.8)}
+.sc-nav button{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.35);color:#fff}.sc-nav button:hover{background:rgba(255,255,255,.3)}
+
+/* Thẻ tên: chỉ 3 màu — xanh lá = đúng, đỏ = sai, trắng mờ = chưa chọn */
+.nc.none{background:rgba(255,255,255,.55);border-color:#e2e8f0;opacity:.7}
+.nc.none .nc-no{background:#f1f5f9;color:#94a3b8}.nc.none .nc-st{color:#94a3b8}.nc.none .nc-ans{background:#fff;color:#cbd5e1}.nc.none .nc-foot{background:transparent;border-top-color:#eef2f6}
+.nc.got{background:#fff;border-color:#cbd5e1;opacity:1}.nc.got .nc-no{background:#e2e8f0;color:#475569}.nc.got .nc-st{color:#64748b}.nc.got .nc-nm{color:#1e293b}.nc.got .nc-ans{background:#fff;color:#1e293b;border:1.5px solid #cbd5e1}.nc.got .nc-foot{background:#f8fafc;border-top-color:#e2e8f0}
+.nc.ok{background:#ecfdf5;border-color:#10b981}.nc.ok .nc-no,.nc.ok .nc-ans{background:#10b981;color:#fff}.nc.ok .nc-st,.nc.ok .nc-nm{color:#047857}.nc.ok .nc-foot{background:#d1fae5;border-top-color:#a7f3d0}
+.nc.bad{background:#fef2f2;border-color:#ef4444}.nc.bad .nc-no,.nc.bad .nc-ans{background:#ef4444;color:#fff}.nc.bad .nc-st,.nc.bad .nc-nm{color:#b91c1c}.nc.bad .nc-foot{background:#fee2e2;border-top-color:#fecaca}
+
+/* ===== Cột kết quả bên trái: biểu đồ cột đứng, bo đỉnh, không viền ===== */
+#result-modal .res-grid>.res-panel:first-child{border:none;background:#f1f5f9;border-radius:18px;padding:18px}
+#result-modal .res-pct{gap:16px;margin-bottom:14px}
+#result-modal .res-ring{width:92px;height:92px}
+#result-modal .res-ring span{width:68px;height:68px;font-size:20px;background:#f1f5f9}
+#result-modal .res-grid>.res-panel:first-child .res-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(0,1fr));gap:8px;margin:0 0 6px}
+#result-modal .res-grid>.res-panel:first-child .res-chip{border:none;border-radius:12px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:0;font-weight:800;font-size:12px}
+#result-modal .res-chip b{font-size:20px;font-weight:900;line-height:1.2}
+#result-modal .res-chip.ok{background:#d1fae5;color:#047857}
+#result-modal .res-chip.bad{background:#fee2e2;color:#b91c1c}
+#result-modal .res-chip.none{background:rgba(255,255,255,.65);color:#94a3b8}
+#result-modal .res-bars{border-bottom:none;gap:16px;padding:0 8px;margin:18px 0 8px;justify-items:center}
+#result-modal .res-bars .chart-bar-fill{width:min(100%,64px);border-radius:12px 12px 0 0;font-size:0;color:transparent;padding:0;box-shadow:none!important}
+#result-modal .rb-tag{height:16px;font-size:11px;font-weight:900;color:#059669}
+#result-modal .rb-num{font-size:18px;font-weight:900;color:#0f172a;line-height:1.2}
+#result-modal .chart-col.c .rb-num{color:#059669}
+#result-modal .rb-pc{font-size:11px;font-weight:700;color:#64748b;margin-bottom:5px;min-height:14px}
+#result-modal .res-bars .chart-letter{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;margin-top:10px}
+#result-modal .res-bars .chart-col:nth-child(1) .chart-letter{background:#ef4444}
+#result-modal .res-bars .chart-col:nth-child(2) .chart-letter{background:#3b82f6}
+#result-modal .res-bars .chart-col:nth-child(3) .chart-letter{background:#d97706}
+#result-modal .res-bars .chart-col:nth-child(4) .chart-letter{background:#10b981}
+#result-modal #res-correct-legend{background:#d1fae5;color:#047857!important;border-radius:12px;padding:8px 12px;text-align:left!important;font-size:13px!important}
+#result-modal.res-locked #chip-ok,#result-modal.res-locked #chip-bad{display:none!important}
 </style>
 
     <!-- KaTeX for Math / LaTeX rendering -->
@@ -1555,14 +1638,15 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
         </div>
 
         <div id="reveal-banner" class="reveal-banner"></div>
+        <div class="pres-note">✋ Học sinh giơ thẻ A / B / C / D · Giáo viên thu bài bằng Camera hoặc điện thoại, điều khiển bằng các nút bên dưới</div>
         <div class="pres-toolbar">
             <div class="scanned-status">
-                <span class="scan-label">Đã thu</span>
-                <span id="pres-scanned-count" style="font-size: 20px; color: #10b981;">0</span>
-                <span style="color: var(--text-muted);">/ <span id="pres-total-students">24</span> em</span>
+                <div class="ss-txt"><span class="scan-label">Đã thu</span>
+                    <span><b id="pres-scanned-count">0</b><span class="ss-of"> / <span id="pres-total-students">24</span> em</span></span></div>
+                <div class="ss-bar"><i id="pres-scan-bar"></i></div>
             </div>
 
-            <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="pt-mid">
                 <button class="btn btn-outline" onclick="openQrModal()" style="color: #2563eb; border-color: #93c5fd; background: #eff6ff;">📱 Kết nối ĐT</button>
                 <button class="btn btn-outline" onclick="toggleScannerModal()">📷 Camera</button>
                 <button class="btn btn-warning" onclick="simulateClassroomScan()">🎲 Mô phỏng</button>
@@ -1570,7 +1654,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                 <button class="btn btn-primary" onclick="showResultModal()">📊 Kết quả</button>
             </div>
 
-            <div style="display: flex; gap: 8px;">
+            <div class="pt-nav">
                 <button class="btn btn-outline" onclick="prevQuestion()">⬅ Câu trước</button>
                 <button class="btn btn-primary" onclick="nextQuestion()">Câu tiếp ➡</button>
             </div>
@@ -1610,18 +1694,18 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                         <div class="res-ring" id="res-ring"><span id="res-pct-text">0%</span></div>
                         <div>
                             <div style="font-weight: 900; font-size: 15px;" id="res-summary">0 / 0 em trả lời đúng</div>
-                            <div class="res-stats">
+                        </div>
+                    </div>
+                    <div class="res-stats">
                                 <button class="res-chip ok" id="chip-ok" onclick="setResultFilter('ok')">✓ Đúng 0</button>
                                 <button class="res-chip bad" id="chip-bad" onclick="setResultFilter('bad')">✗ Sai 0</button>
                                 <button class="res-chip none" id="chip-none" onclick="setResultFilter('none')">… Chưa trả lời 0</button>
                             </div>
-                        </div>
-                    </div>
                     <div class="chart-bars res-bars">
-                        <div class="chart-col"><div class="chart-bar-fill bar-a" id="rb-a">0</div><div class="chart-letter">A</div></div>
-                        <div class="chart-col"><div class="chart-bar-fill bar-b" id="rb-b">0</div><div class="chart-letter">B</div></div>
-                        <div class="chart-col"><div class="chart-bar-fill bar-c" id="rb-c">0</div><div class="chart-letter">C</div></div>
-                        <div class="chart-col"><div class="chart-bar-fill bar-d" id="rb-d">0</div><div class="chart-letter">D</div></div>
+                        <div class="chart-col"><div class="rb-tag" id="rt-a"></div><div class="rb-num" id="rn-a">0</div><div class="rb-pc" id="rp-a"></div><div class="chart-bar-fill bar-a" id="rb-a">0</div><div class="chart-letter">A</div></div>
+                        <div class="chart-col"><div class="rb-tag" id="rt-b"></div><div class="rb-num" id="rn-b">0</div><div class="rb-pc" id="rp-b"></div><div class="chart-bar-fill bar-b" id="rb-b">0</div><div class="chart-letter">B</div></div>
+                        <div class="chart-col"><div class="rb-tag" id="rt-c"></div><div class="rb-num" id="rn-c">0</div><div class="rb-pc" id="rp-c"></div><div class="chart-bar-fill bar-c" id="rb-c">0</div><div class="chart-letter">C</div></div>
+                        <div class="chart-col"><div class="rb-tag" id="rt-d"></div><div class="rb-num" id="rn-d">0</div><div class="rb-pc" id="rp-d"></div><div class="chart-bar-fill bar-d" id="rb-d">0</div><div class="chart-letter">D</div></div>
                     </div>
                     <div style="text-align: center; font-weight: 800; color: #059669; font-size: 14px;" id="res-correct-legend"></div>
                 </div>
@@ -1633,7 +1717,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                         </div>
                     </div>
                     <div class="res-students" id="res-students"></div>
-                    <div class="res-hint">Xanh = đúng · Đỏ = sai · Xám = chưa trả lời. Bấm vào tên một em để sửa đáp án (A → B → C → D → bỏ trống) khi camera đọc sai hoặc nhập tay.</div>
+                    <div class="res-hint">Xanh lá = đúng · Đỏ = sai · Trắng mờ = chưa trả lời. Bấm vào tên một em để sửa đáp án (A → B → C → D → bỏ trống) khi camera đọc sai hoặc nhập tay.</div>
                 </div>
             </div>
             <div class="res-foot">
@@ -2460,7 +2544,7 @@ D. Do môi trường sống thay đổi
 
             const optContainer = document.getElementById('pres-options-container');
             optContainer.innerHTML = ['A', 'B', 'C', 'D'].map(letter => `
-                <div class="pres-opt-card" id="pres-opt-${letter}" onclick="manualVoteOption('${letter}')">
+                <div class="pres-opt-card" id="pres-opt-${letter}" aria-readonly="true">
                     <span class="pres-letter">${letter}</span>
                     <span>${escapeHtml(q.options[letter] || '')}</span>
                 </div>
@@ -2503,8 +2587,7 @@ D. Do môi trường sống thay đổi
         }
 
         function manualVoteOption(letter) {
-            // Teacher can click option to simulate answers
-            simulateSingleVote(letter);
+            // Màn hình GV: đáp án chỉ để xem, không bấm được
         }
 
         function updateScannedProgress() {
@@ -3738,12 +3821,25 @@ D. Do môi trường sống thay đổi
             const votes = sessionResults[q.id] || {}, locked = !REV[q.id], cnt = { A: 0, B: 0, C: 0, D: 0 };
             students.forEach(s => { const a = votes[s.id]; if (cnt[a] !== undefined) cnt[a]++; });
             const mx = Math.max(1, ...Object.values(cnt));
-            ['A', 'B', 'C', 'D'].forEach(L => { byId('rb-' + L.toLowerCase()).style.height = Math.max(30, Math.round(cnt[L] / mx * 240)) + 'px'; });
+            let okN = 0, badN = 0;
+            students.forEach(s => { const a = votes[s.id]; if (a === q.answer) okN++; else if (a) badN++; });
+            const ansN = okN + badN, noneN = students.length - ansN;
+            byId('res-ring').style.background = `conic-gradient(#10b981 ${(ansN ? okN / ansN * 100 : 0) * 3.6}deg, #e2e8f0 0deg)`;
+            [['ok', okN, 'Đúng'], ['bad', badN, 'Sai'], ['none', noneN, 'Chưa trả lời']].forEach(([k, n, t]) => { const c = byId('chip-' + k); if (c) c.innerHTML = `<b>${n}</b><span>${t}</span>`; });
+            ['A', 'B', 'C', 'D'].forEach(L => {
+                const l = L.toLowerCase(), isR = !locked && L === q.answer;
+                byId('rb-' + l).style.height = Math.max(cnt[L] ? 12 : 4, Math.round(cnt[L] / mx * 170)) + 'px';
+                byId('rn-' + l).textContent = cnt[L];
+                byId('rp-' + l).textContent = ansN ? Math.round(cnt[L] / ansN * 100) + '%' : '';
+                byId('rt-' + l).innerHTML = isR ? '✓ Đúng' : '';
+                byId('rb-' + l).parentNode.classList.toggle('c', isR);
+            });
             const st = s => { const a = votes[s.id]; return !a ? 'none' : locked ? 'got' : (a === q.answer ? 'ok' : 'bad'); };
             const f = resultFilter, list = students.filter(s => f === 'all' || st(s) === f || (f === 'none' && st(s) === 'none'));
             byId('res-students').innerHTML = list.map(s => {
                 const a = votes[s.id];
-                return `<button class="nc ${st(s)}" onclick="openStuCard(${s.id})" title="Bấm để xem chi tiết bài làm"><span class="nc-no">${s.id}</span><span class="nc-nm">${escapeHtml(s.name)}</span><span class="nc-ans">${a || '–'}</span></button>`;
+                const LB = { none: 'Chưa trả lời', got: 'Đã giơ thẻ', ok: 'Đúng', bad: 'Sai' };
+                return `<button class="nc ${st(s)}" onclick="openStuCard(${s.id})" title="Bấm để xem chi tiết bài làm"><span class="nc-head"><span class="nc-no">${s.id}</span><span class="nc-st">${LB[st(s)]}</span></span><span class="nc-nm">${escapeHtml(s.name)}</span><span class="nc-foot"><span class="nc-lb">Em chọn</span><span class="nc-ans">${a || '–'}</span></span></button>`;
             }).join('') || '<div style="grid-column:1/-1;color:var(--text-muted);font-size:13px;padding:10px">Không có em nào trong nhóm này.</div>';
             mathIn(byId('res-qtext')); mathIn(byId('res-correct-legend'));
         }
@@ -3751,7 +3847,7 @@ D. Do môi trường sống thay đổi
             const _r = renderResultModal;
             renderResultModal = function () { _r.apply(this, arguments); upgradeResultUI(); if (scId !== null) renderStuCard(); };
             const hint = document.querySelector('#result-modal .res-hint');
-            if (hint) hint.textContent = 'Bấm vào thẻ tên của một em để xem em chọn đáp án nào, thống kê các câu trước đó và sửa đáp án khi camera đọc sai. Xanh = đúng · Đỏ = sai · Xám = chưa trả lời.';
+            if (hint) hint.textContent = 'Bấm vào thẻ tên của một em để xem em chọn đáp án nào, thống kê các câu trước đó và sửa đáp án khi camera đọc sai. Xanh lá = đúng · Đỏ = sai · Trắng mờ = chưa trả lời.';
         })();
 
         let scId = null;
@@ -3798,6 +3894,16 @@ D. Do môi trường sống thay đổi
             mathIn(byId('sc-body'));
         }
         toggleStudentAnswer = openStuCard;
+        (function () {
+            const _u = updateScannedProgress;
+            updateScannedProgress = function () {
+                _u.apply(this, arguments);
+                const q = curQ(); if (!q) return;
+                const n = Object.keys(sessionResults[q.id] || {}).length, t = students.length || 1, b = byId('pres-scan-bar');
+                if (b) b.style.width = Math.min(100, n / t * 100) + '%';
+            };
+            updateScannedProgress();
+        })();
         document.addEventListener('keydown', e => {
             if (scId === null || dlgOpen) return;
             if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); closeStuCard(); }
