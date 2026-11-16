@@ -1128,6 +1128,46 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 .dlg-btns{display:flex;gap:10px;margin-top:20px}.dlg-btns .btn{flex:1;padding:12px}
 .dlg-ok{background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff}
 .dlg[data-k="ok"] .dlg-ok{background:linear-gradient(90deg,#10b981,#059669)}.dlg[data-k="warn"] .dlg-ok{background:linear-gradient(90deg,#f59e0b,#f97316)}.dlg[data-k="danger"] .dlg-ok{background:linear-gradient(90deg,#ef4444,#dc2626)}
+
+.res-grid>.res-panel:first-child{display:flex;flex-direction:column}
+.res-grid>.res-panel:first-child .res-bars{margin-top:auto;align-items:flex-end;min-height:290px}
+#res-students{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.nc{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:14px;border:2px solid #e2e8f0;background:#fff;cursor:pointer;font-family:inherit;text-align:left;transition:.15s}
+.nc:hover{transform:translateY(-2px);box-shadow:0 8px 16px rgba(15,23,42,.12)}
+.nc-no{flex:none;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:900 12px var(--font-sans);background:#e2e8f0;color:#64748b}
+.nc-nm{flex:1;min-width:0;font-weight:800;font-size:13.5px;color:#334155;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nc-ans{flex:none;min-width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font:900 16px var(--font-sans);background:#f1f5f9;color:#94a3b8}
+.nc.none{background:#f8fafc;opacity:.75}
+.nc.got{background:#eef2ff;border-color:#a5b4fc}.nc.got .nc-no,.nc.got .nc-ans{background:#6366f1;color:#fff}
+.nc.ok{background:#ecfdf5;border-color:#34d399}.nc.ok .nc-nm{color:#065f46}.nc.ok .nc-no,.nc.ok .nc-ans{background:#10b981;color:#fff}
+.nc.bad{background:#fef2f2;border-color:#f87171}.nc.bad .nc-nm{color:#991b1b}.nc.bad .nc-no,.nc.bad .nc-ans{background:#ef4444;color:#fff}
+.sc-box{max-width:620px!important;width:94vw;max-height:90vh;overflow:auto;padding:22px!important;text-align:left}
+.sc-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}.sc-top .uc-av{width:52px;height:52px;font-size:20px}
+.sc-top h3{font-size:20px;font-weight:900;color:#0f172a}.sc-top small{color:var(--text-muted);font-weight:700}
+.sc-nav{margin-left:auto;display:flex;gap:6px;align-items:center}.sc-nav button{border:1px solid var(--border);background:#fff;border-radius:10px;width:34px;height:34px;font-size:15px;cursor:pointer;font-weight:900}.sc-nav button:hover{background:#eef2ff}
+.sc-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.sc-stat{border-radius:12px;padding:8px;text-align:center;background:#f1f5f9}.sc-stat b{display:block;font-size:20px;font-weight:900}.sc-stat span{font-size:11.5px;font-weight:800;color:#64748b}
+.sc-stat.ok{background:#d1fae5;color:#047857}.sc-stat.bad{background:#fee2e2;color:#b91c1c}.sc-stat.sc{background:#e0e7ff;color:#3730a3}
+.sc-dots{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.sc-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:900 11px var(--font-sans);font-style:normal;background:#e2e8f0;color:#64748b}
+.sc-dot.ok{background:#10b981;color:#fff}.sc-dot.bad{background:#ef4444;color:#fff}.sc-dot.got{background:#6366f1;color:#fff}.sc-dot.cur{outline:3px solid #facc15;outline-offset:1px}
+.sc-cur{border-radius:16px;padding:14px;border:2px solid #e2e8f0;background:#f8fafc;margin-bottom:14px}
+.sc-cur.ok{background:#ecfdf5;border-color:#34d399}.sc-cur.bad{background:#fef2f2;border-color:#f87171}.sc-cur.got{background:#eef2ff;border-color:#a5b4fc}
+.sc-cur h4{font-size:13px;font-weight:900;color:#475569;margin-bottom:6px}
+.sc-q{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:14px;font-weight:700;color:#1e293b}
+.sc-pickrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:10px;font-weight:800;font-size:14px}
+.sc-big{width:46px;height:46px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font:900 24px var(--font-sans);background:#e2e8f0;color:#64748b}
+.sc-cur.ok .sc-big.pick{background:#10b981;color:#fff}.sc-cur.bad .sc-big.pick{background:#ef4444;color:#fff}.sc-cur.got .sc-big.pick{background:#6366f1;color:#fff}.sc-big.right{background:#10b981;color:#fff}
+.sc-pill{padding:5px 12px;border-radius:999px;font-weight:900;font-size:13px;background:#e2e8f0;color:#475569}.sc-cur.ok .sc-pill{background:#10b981;color:#fff}.sc-cur.bad .sc-pill{background:#ef4444;color:#fff}.sc-cur.got .sc-pill{background:#6366f1;color:#fff}
+.sc-edit{display:flex;gap:6px;align-items:center;margin-top:12px;font-size:12.5px;font-weight:800;color:#64748b;flex-wrap:wrap}
+.sc-edit button{width:34px;height:34px;border-radius:9px;border:1.5px solid var(--border);background:#fff;font:900 14px var(--font-sans);cursor:pointer}.sc-edit button:hover{background:#eef2ff}.sc-edit button.on{background:#4f46e5;color:#fff;border-color:#4f46e5}
+.sc-h{font-size:14px;font-weight:900;margin:4px 0 8px}
+.sc-row{display:grid;grid-template-columns:56px 1fr 34px 86px 22px;gap:8px;align-items:center;padding:8px 10px;border-radius:10px;margin-bottom:6px;background:#f8fafc;border:1px solid #e2e8f0;font-size:13px}
+.sc-row b{font-weight:900}.sc-row.ok{background:#ecfdf5;border-color:#a7f3d0}.sc-row.bad{background:#fef2f2;border-color:#fecaca}.sc-row.got{background:#eef2ff;border-color:#c7d2fe}
+.sc-pick{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:900;background:#e2e8f0;color:#475569}
+.sc-row.ok .sc-pick{background:#10b981;color:#fff}.sc-row.bad .sc-pick{background:#ef4444;color:#fff}.sc-row.got .sc-pick{background:#6366f1;color:#fff}
+.sc-right{font-size:12px;font-weight:800;color:#64748b}.sc-ic{font-weight:900}
+@media(max-width:520px){.sc-stats{grid-template-columns:repeat(2,1fr)}.sc-row{grid-template-columns:48px 1fr 30px 22px}.sc-right{display:none}}
 </style>
 
     <!-- KaTeX for Math / LaTeX rendering -->
@@ -3687,6 +3727,82 @@ D. Do môi trường sống thay đổi
             const f = window[n]; if (typeof f !== 'function') return;
             window[n] = function () { return dlgRun(f, this, arguments, []); };
         });
+    
+        // ===== Bảng kết quả: biểu đồ sát đáy + thẻ tên học sinh + thẻ chi tiết từng em =====
+        const MATH_DELIMS = [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true }];
+        function mathIn(el) { if (el && typeof renderMathInElement === 'function') { try { renderMathInElement(el, { delimiters: MATH_DELIMS, throwOnError: false }); } catch (e) {} } }
+        const stripTikz = t => String(t).replace(/\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}/g, '[hình]');
+        function saveRes() { try { localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults)); } catch (e) {} }
+        function upgradeResultUI() {
+            const q = curQ(); if (!q) return;
+            const votes = sessionResults[q.id] || {}, locked = !REV[q.id], cnt = { A: 0, B: 0, C: 0, D: 0 };
+            students.forEach(s => { const a = votes[s.id]; if (cnt[a] !== undefined) cnt[a]++; });
+            const mx = Math.max(1, ...Object.values(cnt));
+            ['A', 'B', 'C', 'D'].forEach(L => { byId('rb-' + L.toLowerCase()).style.height = Math.max(30, Math.round(cnt[L] / mx * 240)) + 'px'; });
+            const st = s => { const a = votes[s.id]; return !a ? 'none' : locked ? 'got' : (a === q.answer ? 'ok' : 'bad'); };
+            const f = resultFilter, list = students.filter(s => f === 'all' || st(s) === f || (f === 'none' && st(s) === 'none'));
+            byId('res-students').innerHTML = list.map(s => {
+                const a = votes[s.id];
+                return `<button class="nc ${st(s)}" onclick="openStuCard(${s.id})" title="Bấm để xem chi tiết bài làm"><span class="nc-no">${s.id}</span><span class="nc-nm">${escapeHtml(s.name)}</span><span class="nc-ans">${a || '–'}</span></button>`;
+            }).join('') || '<div style="grid-column:1/-1;color:var(--text-muted);font-size:13px;padding:10px">Không có em nào trong nhóm này.</div>';
+            mathIn(byId('res-qtext')); mathIn(byId('res-correct-legend'));
+        }
+        (function () {
+            const _r = renderResultModal;
+            renderResultModal = function () { _r.apply(this, arguments); upgradeResultUI(); if (scId !== null) renderStuCard(); };
+            const hint = document.querySelector('#result-modal .res-hint');
+            if (hint) hint.textContent = 'Bấm vào thẻ tên của một em để xem em chọn đáp án nào, thống kê các câu trước đó và sửa đáp án khi camera đọc sai. Xanh = đúng · Đỏ = sai · Xám = chưa trả lời.';
+        })();
+
+        let scId = null;
+        function ensureStuCard() {
+            if (byId('sc-modal')) return;
+            document.body.insertAdjacentHTML('beforeend', '<div id="sc-modal" class="chart-modal" style="z-index:1300" onclick="closeStuCard()"><div class="chart-box sc-box" onclick="event.stopPropagation()"><div id="sc-body"></div></div></div>');
+        }
+        function openStuCard(id) { ensureStuCard(); scId = +id; renderStuCard(); byId('sc-modal').classList.add('active'); }
+        function closeStuCard() { const m = byId('sc-modal'); if (m) m.classList.remove('active'); scId = null; }
+        function stuCardStep(d) {
+            const i = students.findIndex(s => s.id === scId); if (i < 0) return;
+            scId = students[(i + d + students.length) % students.length].id; renderStuCard();
+        }
+        function stuSetAns(L) {
+            const q = curQ(); if (!q || scId === null) return;
+            if (!sessionResults[q.id]) sessionResults[q.id] = {};
+            if (L) sessionResults[q.id][scId] = L; else delete sessionResults[q.id][scId];
+            saveRes(); updateScannedProgress(); renderResultModal();
+        }
+        function renderStuCard() {
+            const s = students.find(x => x.id === scId); if (!s) { closeStuCard(); return; }
+            const cur = currentQuestionIndex, qs = questions.slice(0, cur + 1), q = qs[cur];
+            const ansOf = x => (sessionResults[x.id] || {})[s.id] || null;
+            const stOf = x => { const a = ansOf(x); return !a ? 'none' : !REV[x.id] ? 'got' : (a === x.answer ? 'ok' : 'bad'); };
+            let ok = 0, bad = 0, pend = 0, revN = 0;
+            qs.forEach(x => { const t = stOf(x); if (REV[x.id]) revN++; if (t === 'ok') ok++; else if (t === 'bad') bad++; else if (t === 'got') pend++; });
+            const score = revN ? (ok / revN * 10).toFixed(1) : '–';
+            const a = ansOf(q), t = stOf(q), rev = !!REV[q.id];
+            const ic = { ok: '✓', bad: '✗', got: '✋', none: '' };
+            const pill = t === 'ok' ? '✓ Trả lời đúng' : t === 'bad' ? '✗ Trả lời sai' : t === 'got' ? '✋ Đã giơ thẻ (chưa công bố)' : '… Chưa trả lời';
+            const prev = qs.slice(0, cur).map((x, i) => ({ x, i })).reverse().map(({ x, i }) => {
+                const tt = stOf(x), aa = ansOf(x);
+                return `<div class="sc-row ${tt}"><b>Câu ${i + 1}</b><span class="sc-q">${escapeHtml(stripTikz(x.question))}</span><span class="sc-pick">${aa || '–'}</span><span class="sc-right">${REV[x.id] ? 'Đáp án ' + x.answer : 'chưa công bố'}</span><span class="sc-ic">${ic[tt]}</span></div>`;
+            }).join('');
+            byId('sc-body').innerHTML = `
+                <div class="sc-top"><span class="uc-av">${s.id}</span><div><h3>${escapeHtml(s.name)}</h3><small>Thẻ số ${s.id}</small></div>
+                    <div class="sc-nav"><button onclick="stuCardStep(-1)" title="Học sinh trước">‹</button><button onclick="stuCardStep(1)" title="Học sinh sau">›</button><button onclick="closeStuCard()" title="Đóng">✕</button></div></div>
+                <div class="sc-stats"><div class="sc-stat ok"><b>${ok}</b><span>Đúng</span></div><div class="sc-stat bad"><b>${bad}</b><span>Sai</span></div><div class="sc-stat sc"><b>${pend}</b><span>Chờ công bố</span></div><div class="sc-stat"><b>${score}</b><span>Điểm /10</span></div></div>
+                <div class="sc-dots">${qs.map((x, i) => `<i class="sc-dot ${stOf(x)}${i === cur ? ' cur' : ''}" title="Câu ${i + 1}">${i + 1}</i>`).join('')}</div>
+                <div class="sc-cur ${t}"><h4>CÂU ${cur + 1} / ${questions.length} — đang xem</h4><div class="sc-q">${escapeHtml(stripTikz(q.question))}</div>
+                    <div class="sc-pickrow"><span>Em chọn:</span><span class="sc-big pick">${a || '–'}</span>${rev ? `<span>Đáp án đúng:</span><span class="sc-big right">${q.answer}</span>` : ''}<span class="sc-pill">${pill}</span></div>
+                    <div class="sc-edit">Sửa đáp án: ${['A', 'B', 'C', 'D'].map(L => `<button class="${a === L ? 'on' : ''}" onclick="stuSetAns('${L}')">${L}</button>`).join('')}<button onclick="stuSetAns(null)" title="Bỏ trống">✕</button></div></div>
+                ${cur > 0 ? `<div class="sc-h">Các câu trước đó</div>${prev}` : '<div style="color:var(--text-muted);font-size:13px">Đây là câu đầu tiên nên chưa có thống kê các câu trước.</div>'}`;
+            mathIn(byId('sc-body'));
+        }
+        toggleStudentAnswer = openStuCard;
+        document.addEventListener('keydown', e => {
+            if (scId === null || dlgOpen) return;
+            if (e.key === 'Escape') { e.preventDefault(); e.stopImmediatePropagation(); closeStuCard(); }
+            else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); e.stopImmediatePropagation(); stuCardStep(e.key === 'ArrowRight' ? 1 : -1); }
+        }, true);
     </script>
 </body>
 </html>
