@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
-    <title>Đề Thi Số — Trình Chiếu PowerPoint & Quét Thẻ Giấy Học Sinh</title>
+    <title>ĐỀ THI SỐ — Trình Chiếu PowerPoint & Quét Thẻ Giấy Học Sinh</title>
     <meta name="description" content="Nền tảng kiểm tra trắc nghiệm tương tác lớp học: Trình chiếu câu hỏi, học sinh giơ thẻ giấy A/B/C/D, giáo viên quét camera trực tiếp và thống kê phổ điểm thời gian thực." />
     
     <!-- Fonts -->
@@ -725,7 +725,7 @@
                     <circle cx="42" cy="50" r="16" fill="#10B981"/>
                     <path d="M34 50 L40 56 L51 44" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <span>Đề Thi Số</span>
+                <span style="font-size: 21px; font-weight: 900; letter-spacing: 0.5px; color: #1e293b;">ĐỀ THI SỐ</span>
             </div>
 
             <nav class="nav-tabs">
@@ -737,6 +737,7 @@
             </nav>
 
             <div class="header-actions">
+                <button class="btn btn-outline" onclick="openQrModal()" style="border-color: #2563eb; color: #2563eb; background: #eff6ff;">📱 Quét mã điện thoại</button>
                 <button class="btn btn-outline" onclick="openVideoModal()">🎬 Video mẫu</button>
                 <button class="btn btn-success" onclick="startPresentation()">🚀 Trình chiếu ngay</button>
             </div>
@@ -822,7 +823,8 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">📥 Nhập đề thi nhanh từ Word hoặc Văn bản</div>
-                    <button class="btn btn-warning" onclick="loadMathSampleQuiz()">📐 Tải đề mẫu Toán (LaTeX)</button>
+                    <button class="btn btn-warning" onclick="loadExTestSample()">📐 Dán mẫu LaTeX (gói ex_test)</button>
+                        <button class="btn btn-outline" onclick="loadMathSampleQuiz()">📐 Đề mẫu Toán</button>
                     <button class="btn btn-outline" onclick="loadSampleWordText()">Dán mẫu Word</button>
                 </div>
                 <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 12px;">
@@ -853,7 +855,8 @@
                     <div class="card-title">👥 Quản lý lớp học &amp; Danh sách học sinh</div>
                     <div style="display: flex; gap: 8px; flex-wrap: wrap;">
                         <button class="btn btn-success" onclick="printStudentCards()">🖨️ In Bộ Thẻ Giấy Cho Cả Lớp</button>
-                        <button class="btn btn-primary" onclick="document.getElementById('class-file-upload').click()">📁 Tải file Danh Sách (Excel / CSV / TXT)</button>
+                        <button class="btn btn-primary" onclick="document.getElementById('class-file-upload').click()">📁 Tải lên file Excel (.xlsx / .xls)</button>
+                        <button class="btn btn-danger" id="btn-batch-delete" onclick="batchDeleteSelectedStudents()" style="display: none;">🗑️ Xóa học sinh đã chọn (<span id="batch-delete-count">0</span>)</button>
                         <button class="btn btn-danger" onclick="clearClassList()">🗑️ Xóa toàn bộ danh sách lớp</button>
                         <button class="btn btn-outline" onclick="restoreDefaultClass()">🔄 Khôi phục danh sách mẫu</button>
                     </div>
@@ -1020,7 +1023,7 @@
     <div id="presentation-container" class="presentation-container">
         <div class="pres-header">
             <div class="pres-title">
-                <span id="pres-quiz-name">Đề Thi Số — Trình Chiếu</span>
+                <span id="pres-quiz-name" style="font-weight: 900; color: #1e293b;">ĐỀ THI SỐ — Trình Chiếu</span>
             </div>
             <div class="pres-counter" id="pres-counter">Câu 1 / 4</div>
             <div>
@@ -1045,6 +1048,7 @@
             </div>
 
             <div style="display: flex; gap: 10px; align-items: center;">
+                <button class="btn btn-outline" onclick="openQrModal()" style="color: #2563eb; border-color: #93c5fd; background: #eff6ff;">📱 Kết nối điện thoại</button>
                 <button class="btn btn-outline" onclick="toggleScannerModal()">📷 Mở Camera Quét</button>
                 <button class="btn btn-warning" onclick="simulateClassroomScan()">🎲 Mô phỏng cả lớp giơ thẻ</button>
                 <button class="btn btn-outline" onclick="revealCorrectAnswer()">👁️ Hiện đáp án đúng</button>
@@ -1122,6 +1126,80 @@
                     <source src="dethiso-tutorial.mp4" type="video/mp4">
                     <source src="1794808967259_1580195966031401650_2208868290436977656.mp4" type="video/mp4">
                 </video>
+            </div>
+        </div>
+    </div>
+
+    
+    <!-- Phone QR Code Login & Remote Scanner Modal -->
+    <div id="qr-modal" class="chart-modal" onclick="closeQrModal(event)">
+        <div class="chart-box" style="max-width: 540px; text-align: center;" onclick="event.stopPropagation()">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <h3 style="font-size: 20px; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+                    📱 Quét Mã Kết Nối Camera Điện Thoại
+                </h3>
+                <button style="background: none; border: none; color: #94a3b8; font-size: 22px; cursor: pointer;" onclick="closeQrModal()">✕</button>
+            </div>
+            
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">
+                Dùng camera điện thoại của giáo viên quét mã QR bên dưới để biến điện thoại thành <strong>thiết bị quét thẻ từ xa</strong> (không cần cài app).
+            </p>
+
+            <!-- Dynamic QR Code Container -->
+            <div style="display: inline-block; background: #ffffff; padding: 18px; border-radius: 16px; border: 2px solid #e2e8f0; box-shadow: var(--shadow-md); margin-bottom: 16px;">
+                <svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="200" height="200" fill="white"/>
+                    <rect x="15" y="15" width="50" height="50" rx="6" fill="#0f172a"/>
+                    <rect x="23" y="23" width="34" height="34" rx="4" fill="white"/>
+                    <rect x="31" y="31" width="18" height="18" rx="2" fill="#2563eb"/>
+                    <rect x="135" y="15" width="50" height="50" rx="6" fill="#0f172a"/>
+                    <rect x="143" y="23" width="34" height="34" rx="4" fill="white"/>
+                    <rect x="151" y="31" width="18" height="18" rx="2" fill="#2563eb"/>
+                    <rect x="15" y="135" width="50" height="50" rx="6" fill="#0f172a"/>
+                    <rect x="23" y="143" width="34" height="34" rx="4" fill="white"/>
+                    <rect x="31" y="151" width="18" height="18" rx="2" fill="#2563eb"/>
+                    <rect x="75" y="20" width="12" height="12" fill="#0f172a"/>
+                    <rect x="95" y="20" width="12" height="12" fill="#0f172a"/>
+                    <rect x="115" y="20" width="12" height="12" fill="#0f172a"/>
+                    <rect x="75" y="40" width="12" height="12" fill="#2563eb"/>
+                    <rect x="105" y="40" width="12" height="12" fill="#0f172a"/>
+                    <rect x="85" y="60" width="12" height="12" fill="#0f172a"/>
+                    <rect x="105" y="60" width="12" height="12" fill="#2563eb"/>
+                    <circle cx="100" cy="100" r="24" fill="#2563eb"/>
+                    <path d="M93 90h14a3 3 0 013 3v18a3 3 0 01-3 3H93a3 3 0 01-3-3V93a3 3 0 013-3z" stroke="white" stroke-width="2"/>
+                    <circle cx="100" cy="110" r="1.5" fill="white"/>
+                    <rect x="75" y="135" width="12" height="12" fill="#0f172a"/>
+                    <rect x="95" y="135" width="12" height="12" fill="#0f172a"/>
+                    <rect x="115" y="135" width="12" height="12" fill="#2563eb"/>
+                    <rect x="135" y="75" width="12" height="12" fill="#0f172a"/>
+                    <rect x="155" y="75" width="12" height="12" fill="#0f172a"/>
+                    <rect x="145" y="105" width="12" height="12" fill="#0f172a"/>
+                    <rect x="165" y="105" width="12" height="12" fill="#2563eb"/>
+                    <rect x="145" y="145" width="12" height="12" fill="#0f172a"/>
+                    <rect x="165" y="165" width="12" height="12" fill="#0f172a"/>
+                </svg>
+            </div>
+
+            <!-- Connection Status & PIN -->
+            <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                    <span style="font-size: 13px; color: var(--text-muted);">Trạng thái kết nối:</span>
+                    <span id="phone-connection-status" style="font-size: 13px; font-weight: 800; color: #d97706; display: flex; align-items: center; gap: 6px;">
+                        <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #f59e0b;"></span>
+                        Đang chờ điện thoại quét...
+                    </span>
+                </div>
+                <div style="font-size: 14px; font-weight: 800; color: #0f172a;">
+                    Mã PIN phòng thi: <span style="font-family: monospace; font-size: 18px; color: #2563eb; letter-spacing: 2px;">DTS-8492</span>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-primary" onclick="simulatePhoneConnected()">
+                    ⚡ Kết nối nhanh (Mô phỏng điện thoại)
+                </button>
+                <button class="btn btn-outline" onclick="closeQrModal()">Đóng cửa sổ</button>
             </div>
         </div>
     </div>
@@ -1402,6 +1480,19 @@ D. Do môi trường sống thay đổi
                 return;
             }
 
+            // Check if input is LaTeX ex_test format
+            if (raw.includes('\\begin{ex}') || raw.includes('\\begin{bt}') || raw.includes('\\begin{vd}')) {
+                const exResults = parseExTest(raw);
+                if (exResults.length > 0) {
+                    questions = questions.concat(exResults);
+                    renderQuizzes();
+                    renderDashboard();
+                    alert(`🎉 Đã nhận diện thành công ${exResults.length} câu hỏi theo gói ex_test (LaTeX)!`);
+                    document.getElementById('import-text').value = '';
+                    return;
+                }
+            }
+
             const parsed = [];
             const blocks = raw.split(/(?:Câu\s*\d+[\.:]|^\d+[\.:])/gmi);
 
@@ -1458,6 +1549,177 @@ D. Do môi trường sống thay đổi
         }
 
         
+        
+        // ==========================================
+        // GÓI EX_TEST LATEX PARSER
+        // ==========================================
+        function extractBracedGroups(str) {
+            const groups = [];
+            let i = 0;
+            while (i < str.length) {
+                if (str[i] === '{') {
+                    let depth = 1;
+                    let start = i + 1;
+                    i++;
+                    while (i < str.length && depth > 0) {
+                        if (str[i] === '{' && (i === 0 || str[i-1] !== '\\')) depth++;
+                        else if (str[i] === '}' && (i === 0 || str[i-1] !== '\\')) depth--;
+                        i++;
+                    }
+                    groups.push(str.substring(start, i - 1).trim());
+                } else {
+                    i++;
+                }
+            }
+            return groups;
+        }
+
+        function parseExTest(rawText) {
+            const cleanText = rawText.split('\n').map(line => {
+                const idx = line.indexOf('%');
+                if (idx !== -1 && (idx === 0 || line[idx-1] !== '\\')) {
+                    return line.substring(0, idx);
+                }
+                return line;
+            }).join('\n');
+
+            const exRegex = /\\begin\{(?:ex|bt|vd)\}(?:\[.*?\])?([\s\S]*?)\\end\{(?:ex|bt|vd)\}/gi;
+            let match;
+            const results = [];
+
+            while ((match = exRegex.exec(cleanText)) !== null) {
+                const block = match[1].trim();
+                const choiceIdx = block.search(/\\choice(?:\[.*?\])?/i);
+                if (choiceIdx === -1) continue;
+
+                let question = block.substring(0, choiceIdx).trim();
+                let choicesPart = block.substring(choiceIdx).replace(/^\\choice(?:\[.*?\])?/i, '').trim();
+
+                const loigiaiIdx = choicesPart.search(/\\(?:loigiai|immini)/i);
+                let explanation = '';
+                if (loigiaiIdx !== -1) {
+                    explanation = choicesPart.substring(loigiaiIdx).trim();
+                    choicesPart = choicesPart.substring(0, loigiaiIdx).trim();
+                }
+
+                const opts = extractBracedGroups(choicesPart);
+                if (opts.length >= 2) {
+                    const optionsObj = { A: '', B: '', C: '', D: '' };
+                    let answerLetter = 'A';
+
+                    for (let i = 0; i < Math.min(4, opts.length); i++) {
+                        const letter = String.fromCharCode(65 + i);
+                        let optText = opts[i].trim();
+                        const isTrue = /\\True/i.test(optText);
+                        if (isTrue) {
+                            answerLetter = letter;
+                            optText = optText.replace(/\\True\b\s*/gi, '').trim();
+                        }
+                        optionsObj[letter] = optText;
+                    }
+
+                    results.push({
+                        id: Date.now() + Math.floor(Math.random() * 10000) + results.length,
+                        question: question,
+                        options: optionsObj,
+                        answer: answerLetter,
+                        explanation: explanation
+                    });
+                }
+            }
+            return results;
+        }
+
+        const SAMPLE_EX_TEST_TEXT = "\\begin{ex}%[2D1B1-1]\nCho h\u00e0m s\u1ed1 $y = f(x)$ c\u00f3 b\u1ea3ng x\u00e9t d\u1ea5u \u0111\u1ea1o h\u00e0m nh\u01b0 sau:\n\\begin{center}\n\\begin{tabular}{c|ccccccc}\n$x$ & $-\\infty$ & & $-2$ & & $0$ & & $+\\infty$ \\\\\n\\hline\n$f'(x)$ & & $+$ & $0$ & $-$ & $0$ & $+$ & \n\\end{tabular}\n\\end{center}\nS\u1ed1 \u0111i\u1ec3m c\u1ef1c tr\u1ecb c\u1ee7a h\u00e0m s\u1ed1 \u0111\u00e3 cho l\u00e0:\n\\choice\n{1}\n{\\True 2}\n{3}\n{0}\n\\loigiai{\n\u0110\u1ea1o h\u00e0m $f'(x)$ \u0111\u1ed5i d\u1ea5u 2 l\u1ea7n (khi qua $x = -2$ v\u00e0 $x = 0$), do \u0111\u00f3 h\u00e0m s\u1ed1 c\u00f3 2 \u0111i\u1ec3m c\u1ef1c tr\u1ecb.\n}\n\\end{ex}\n\n\\begin{ex}%[2D3Y1-1]\nT\u00ednh t\u00edch ph\u00e2n $I = \\int_0^1 (2x + 1) e^x \\, dx$:\n\\choice\n{$I = 2e - 1$}\n{\\True $I = e + 1$}\n{$I = 2e + 1$}\n{$I = e - 1$}\n\\loigiai{\n\u0110\u1eb7t $u = 2x+1 \\Rightarrow du = 2dx$; $dv = e^x dx \\Rightarrow v = e^x$. \u00c1p d\u1ee5ng t\u00edch ph\u00e2n t\u1eebng ph\u1ea7n ta \u0111\u01b0\u1ee3c $I = e + 1$.\n}\n\\end{ex}\n\n\\begin{ex}%[2H3B2-1]\nTrong kh\u00f4ng gian $Oxyz$, cho m\u1eb7t c\u1ea7u $(S): (x-1)^2 + (y+2)^2 + (z-3)^2 = 16$. B\u00e1n k\u00ednh $R$ v\u00e0 to\u1ea1 \u0111\u1ed9 t\u00e2m $I$ c\u1ee7a m\u1eb7t c\u1ea7u l\u00e0:\n\\choice\n{$I(1; -2; 3)$ v\u00e0 $R = 16$}\n{\\True $I(1; -2; 3)$ v\u00e0 $R = 4$}\n{$I(-1; 2; -3)$ v\u00e0 $R = 4$}\n{$I(1; -2; 3)$ v\u00e0 $R = 2$}\n\\end{ex}\n\n\\begin{ex}%[2D2B1-2]\nNghi\u1ec7m c\u1ee7a ph\u01b0\u01a1ng tr\u00ecnh $\\log_2(x^2 - 1) = 3$ l\u00e0:\n\\choice\n{\\True $x = \\pm 3$}\n{$x = 3$}\n{$x = -3$}\n{$x = \\pm \\sqrt{7}$}\n\\end{ex}";
+
+        function loadExTestSample() {
+            document.getElementById('import-text').value = SAMPLE_EX_TEST_TEXT;
+            alert("Đã dán 4 câu trắc nghiệm chuẩn cấu trúc gói ex_test (LaTeX)! Bấm nút 'Bóc tách & Thêm vào đề' để kiểm tra nhận diện.");
+        }
+
+        // ==========================================
+        // XÓA HÀNG LOẠT HỌC SINH
+        // ==========================================
+        let selectedStudentIds = new Set();
+
+        function toggleSelectAllStudents(masterEl) {
+            const checkboxes = document.querySelectorAll('.student-checkbox');
+            selectedStudentIds.clear();
+            checkboxes.forEach(cb => {
+                cb.checked = masterEl.checked;
+                if (masterEl.checked) {
+                    selectedStudentIds.add(Number(cb.value));
+                }
+            });
+            updateBatchDeleteBtn();
+        }
+
+        function toggleSingleStudentCheckbox(cb) {
+            const id = Number(cb.value);
+            if (cb.checked) {
+                selectedStudentIds.add(id);
+            } else {
+                selectedStudentIds.delete(id);
+            }
+            const master = document.getElementById('master-student-checkbox');
+            if (master) {
+                master.checked = selectedStudentIds.size > 0 && selectedStudentIds.size === students.length;
+            }
+            updateBatchDeleteBtn();
+        }
+
+        function updateBatchDeleteBtn() {
+            const btn = document.getElementById('btn-batch-delete');
+            const countSpan = document.getElementById('batch-delete-count');
+            if (btn && countSpan) {
+                countSpan.textContent = selectedStudentIds.size;
+                btn.style.display = selectedStudentIds.size > 0 ? 'inline-flex' : 'none';
+            }
+        }
+
+        function batchDeleteSelectedStudents() {
+            if (selectedStudentIds.size === 0) return;
+            if (confirm(`Bạn có chắc chắn muốn XÓA HÀNG LOẠT ${selectedStudentIds.size} học sinh đã chọn khỏi danh sách?`)) {
+                students = students.filter(s => !selectedStudentIds.has(s.id));
+                students.forEach((s, idx) => { s.id = idx + 1; });
+                selectedStudentIds.clear();
+                updateBatchDeleteBtn();
+                const master = document.getElementById('master-student-checkbox');
+                if (master) master.checked = false;
+                renderClassroom();
+                renderDashboard();
+                renderReports();
+                alert("Đã xóa các học sinh đã chọn thành công!");
+            }
+        }
+
+        // ==========================================
+        // QUÉT MÃ KẾT NỐI CAMERA ĐIỆN THOẠI
+        // ==========================================
+        let isPhoneConnected = false;
+
+        function openQrModal() {
+            document.getElementById('qr-modal').classList.add('active');
+        }
+
+        function closeQrModal() {
+            document.getElementById('qr-modal').classList.remove('active');
+        }
+
+        function simulatePhoneConnected() {
+            isPhoneConnected = true;
+            const statusEl = document.getElementById('phone-connection-status');
+            if (statusEl) {
+                statusEl.innerHTML = '<span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10b981;"></span> ✅ Đã kết nối điện thoại (Camera sẵn sàng)';
+                statusEl.style.color = '#059669';
+            }
+            playBeep(880);
+            setTimeout(() => {
+                closeQrModal();
+                alert("🎉 Điện thoại của giáo viên đã kết nối thành công! Bạn có thể bắt đầu quét thẻ từ xa trên lớp.");
+            }, 600);
+        }
+
         // CLASSROOM & EXCEL UPLOAD LOGIC
         function renderClassroom() {
             const tbody = document.getElementById('student-table-body');
@@ -1470,6 +1732,9 @@ D. Do môi trường sống thay đổi
                 if (alertEmpty) alertEmpty.style.display = 'none';
                 tbody.innerHTML = students.map(s => `
                     <tr>
+                        <td style="text-align: center;">
+                            <input type="checkbox" class="student-checkbox" value="${s.id}" ${selectedStudentIds.has(s.id) ? 'checked' : ''} onchange="toggleSingleStudentCheckbox(this)" style="width: 16px; height: 16px; cursor: pointer;">
+                        </td>
                         <td style="padding: 10px;">
                             <span style="display: inline-block; width: 28px; height: 28px; line-height: 28px; text-align: center; border-radius: 6px; background: #eff6ff; color: #2563eb; font-weight: 800; border: 1px solid #bfdbfe;">
                                 ${s.id}
@@ -1486,6 +1751,7 @@ D. Do môi trường sống thay đổi
                         </td>
                     </tr>
                 `).join('');
+                updateBatchDeleteBtn();
             }
             saveStudents();
             document.getElementById('stat-student-count').textContent = students.length;
