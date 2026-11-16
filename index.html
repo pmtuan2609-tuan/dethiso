@@ -648,6 +648,12 @@
             }
         }
     </style>
+
+    <!-- KaTeX for Math / LaTeX rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+
 </head>
 <body>
 
@@ -669,6 +675,7 @@
                 <button class="tab-btn" onclick="switchTab('quizzes')" id="tab-quizzes">📝 Đề thi</button>
                 <button class="tab-btn" onclick="switchTab('classroom')" id="tab-classroom">👥 Lớp &amp; Thẻ giấy</button>
                 <button class="tab-btn" onclick="switchTab('reports')" id="tab-reports">📈 Báo cáo kết quả</button>
+                <button class="tab-btn" onclick="switchTab('guide')" id="tab-guide">📖 Hướng dẫn &amp; Lưu ý</button>
             </nav>
 
             <div class="header-actions">
@@ -757,6 +764,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">📥 Nhập đề thi nhanh từ Word hoặc Văn bản</div>
+                    <button class="btn btn-warning" onclick="loadMathSampleQuiz()">📐 Tải đề mẫu Toán (LaTeX)</button>
                     <button class="btn btn-outline" onclick="loadSampleWordText()">Dán mẫu Word</button>
                 </div>
                 <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 12px;">
@@ -849,6 +857,87 @@
                 </div>
             </div>
         </section>
+    
+        <!-- 5. GUIDE & IMPORTANT NOTES VIEW -->
+        <section id="view-guide" class="view-section">
+            <div class="card" style="border-left: 4px solid var(--primary);">
+                <div class="card-header">
+                    <div class="card-title">📖 Hướng Dẫn Sử Dụng &amp; Lưu Ý Quan Trọng Cho Giáo Viên</div>
+                    <button class="btn btn-warning" onclick="loadMathSampleQuiz()">📐 Tải thử đề mẫu môn Toán (LaTeX)</button>
+                </div>
+                <p style="color: var(--text-muted); font-size: 15px; line-height: 1.7;">
+                    Hệ thống được thiết kế tối ưu cho giáo viên mọi bộ môn (Toán, Lý, Hoá, Sinh, Sử, Địa, Ngoại ngữ...). Đặc biệt đối với <strong>môn Toán</strong>, hệ thống tích hợp sẵn trình biên dịch <strong>KaTeX / LaTeX</strong> siêu tốc giúp công thức hiển thị sắc nét cả trên màn hình máy tính lẫn máy chiếu trong lớp học.
+                </p>
+            </div>
+
+            <!-- Grid of 4 Key Guides -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px;">
+                <!-- Section 1: Soạn đề Toán & LaTeX -->
+                <div class="card" style="margin-bottom: 0;">
+                    <div class="card-title" style="font-size: 17px; margin-bottom: 12px; color: #60a5fa;">
+                        📐 1. Quy chuẩn soạn đề môn Toán (LaTeX)
+                    </div>
+                    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 12px;">
+                        Để công thức hiển thị chuẩn đẹp, bạn chỉ cần kẹp công thức vào giữa 2 dấu đô la <code>$...$</code>:
+                    </p>
+                    <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); border-radius: 8px; padding: 12px; font-family: monospace; font-size: 13px; color: #a7f3d0; margin-bottom: 12px;">
+                        Câu 1: Cho hàm số $y = \frac{2x+1}{x-1}$.<br>
+                        A. $y' = -\frac{3}{(x-1)^2}$<br>
+                        B. $y' = \frac{3}{(x-1)^2}$<br>
+                        Đáp án: A
+                    </div>
+                    <ul style="font-size: 13px; color: var(--text-muted); padding-left: 20px; line-height: 1.6;">
+                        <li><strong>Phân số:</strong> <code>\frac{a}{b}</code> $\rightarrow \frac{a}{b}$</li>
+                        <li><strong>Căn thức:</strong> <code>\sqrt{x^2+1}</code> $\rightarrow \sqrt{x^2+1}$</li>
+                        <li><strong>Tích phân:</strong> <code>\int_0^1 f(x)dx</code> $\rightarrow \int_0^1 f(x)dx$</li>
+                        <li><strong>Giới hạn:</strong> <code>\lim_{x \to 0}</code> $\rightarrow \lim_{x \to 0}$</li>
+                        <li><strong>Vectơ:</strong> <code>\vec{u} = (1; 2; 3)</code> $\rightarrow \vec{u} = (1; 2; 3)$</li>
+                    </ul>
+                </div>
+
+                <!-- Section 2: In & Quản lý thẻ giấy -->
+                <div class="card" style="margin-bottom: 0;">
+                    <div class="card-title" style="font-size: 17px; margin-bottom: 12px; color: #34d399;">
+                        📄 2. Lưu ý khi In &amp; Phát thẻ cho học sinh
+                    </div>
+                    <ul style="font-size: 14px; color: var(--text-muted); padding-left: 20px; line-height: 1.7;">
+                        <li><strong>Chất liệu giấy:</strong> Nên in trên <strong>giấy bìa cứng (định lượng từ 160gsm trở lên)</strong> hoặc in giấy thường rồi ép plastic / dán decal bóng để dùng bền cả năm học.</li>
+                        <li><strong>Không làm trầy mã vạch:</strong> Tuyệt đối không dùng bút mực vẽ hay làm lem bẩn phần hoa văn đen trắng ở trung tâm thẻ.</li>
+                        <li><strong>Cách cầm thẻ:</strong> Nhắc học sinh đặt ngón tay ở <strong>mép rìa ngoài</strong>, không để ngón tay che mất vùng mã vạch quang học.</li>
+                        <li><strong>Thẻ dùng xuyên suốt:</strong> Mỗi em giữ đúng 1 số thẻ cố định cho tất cả các môn học.</li>
+                    </ul>
+                </div>
+
+                <!-- Section 3: Mẹo quét Camera -->
+                <div class="card" style="margin-bottom: 0;">
+                    <div class="card-title" style="font-size: 17px; margin-bottom: 12px; color: #facc15;">
+                        📷 3. Mẹo Quét Camera Đạt Độ Nhạy Cao Nhất
+                    </div>
+                    <ul style="font-size: 14px; color: var(--text-muted); padding-left: 20px; line-height: 1.7;">
+                        <li><strong>Khoảng cách đứng:</strong> Giáo viên đứng ở bục giảng hoặc vị trí cách hàng đầu <strong>2 – 4 mét</strong>, giơ điện thoại ngang tầm mắt.</li>
+                        <li><strong>Góc lia camera:</strong> Lia điện thoại chậm và đều từ trái sang phải lớp học trong 3 – 5 giây để nhận diện hết từng dãy bàn.</li>
+                        <li><strong>Ánh sáng phòng học:</strong> Đảm bảo lớp học đủ sáng, tránh để cửa sổ phía sau học sinh chiếu thẳng vào ống kính gây ngược sáng.</li>
+                        <li><strong>Không cần mạng mạnh:</strong> Chỉ cần kết nối 4G/Wifi thông thường để truyền tín hiệu đáp án lên máy tính trình chiếu.</li>
+                    </ul>
+                </div>
+
+                <!-- Section 4: Phím tắt trình chiếu -->
+                <div class="card" style="margin-bottom: 0;">
+                    <div class="card-title" style="font-size: 17px; margin-bottom: 12px; color: #f472b6;">
+                        ⌨️ 4. Phím Tắt Nhanh Khi Trình Chiếu (F5)
+                    </div>
+                    <div style="font-size: 14px; color: var(--text-muted); line-height: 1.8;">
+                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">Space</kbd> hoặc <kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">➡</kbd>: Chuyển sang câu hỏi kế tiếp</p>
+                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">⬅</kbd>: Quay lại câu hỏi trước</p>
+                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">Phím A</kbd>: Bật sáng đáp án chính xác (tô xanh đáp án đúng)</p>
+                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">Phím R</kbd>: Bật / Tắt cửa sổ biểu đồ phổ điểm</p>
+                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">Phím C</kbd>: Mở / Đóng cửa sổ camera quét thẻ</p>
+                        <p><kbd style="background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 4px; color: #fff;">Phím Esc</kbd>: Thoát chế độ trình chiếu</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- FULLSCREEN PRESENTATION MODE -->
@@ -1080,9 +1169,60 @@
 
             if (tabName === 'reports') renderReports();
             if (tabName === 'dashboard') renderDashboard();
+            setTimeout(renderAllMath, 50);
         }
 
         // Dashboard Rendering
+        
+        // Math / LaTeX rendering helper
+        function renderAllMath() {
+            if (typeof renderMathInElement === 'function') {
+                const targets = [
+                    document.getElementById('questions-list-container'),
+                    document.getElementById('dashboard-quiz-preview'),
+                    document.getElementById('pres-question-text'),
+                    document.getElementById('pres-options-container'),
+                    document.getElementById('view-guide')
+                ];
+                targets.forEach(el => {
+                    if (el) {
+                        try {
+                            renderMathInElement(el, {
+                                delimiters: [
+                                    {left: '$$', right: '$$', display: true},
+                                    {left: '$', right: '$', display: false},
+                                    {left: '\\(', right: '\\)', display: false},
+                                    {left: '\\[', right: '\\]', display: true}
+                                ],
+                                throwOnError: false
+                            });
+                        } catch(err) {
+                            console.warn("KaTeX error:", err);
+                        }
+                    }
+                });
+            }
+        }
+
+        // Trigger math rendering when KaTeX loads
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(renderAllMath, 300);
+            setTimeout(renderAllMath, 1000);
+        });
+
+        // Sample Math Quiz with LaTeX
+        const MATH_SAMPLE_QUIZ = [{"id": 101, "question": "Cho hàm số $y = f(x)$ có đạo hàm $f'(x) = x(x-1)^2(x+2)^3, \\forall x \\in \\mathbb{R}$. Số điểm cực trị của hàm số đã cho là:", "options": {"A": "1", "B": "2", "C": "3", "D": "4"}, "answer": "B", "explanation": "$f'(x)$ đổi dấu khi đi qua các nghiệm bội lẻ $x = 0$ và $x = -2$. Nghiệm $x = 1$ là bội chẵn nên không phải điểm cực trị. Vậy hàm số có 2 điểm cực trị."}, {"id": 102, "question": "Tính tích phân $I = \\int_0^1 (2x + 1) e^x \\, dx$:", "options": {"A": "$I = 2e - 1$", "B": "$I = e + 1$", "C": "$I = 2e + 1$", "D": "$I = e - 1$"}, "answer": "B", "explanation": "Đặt $u = 2x+1 \\Rightarrow du = 2dx$; $dv = e^x dx \\Rightarrow v = e^x$. Áp dụng từng phần: $I = (2x+1)e^x|_0^1 - 2\\int_0^1 e^x dx = 3e - 1 - 2(e - 1) = e + 1$."}, {"id": 103, "question": "Trong không gian $Oxyz$, cho mặt cầu $(S): (x-1)^2 + (y+2)^2 + (z-3)^2 = 16$. Bán kính $R$ và tâm $I$ của mặt cầu $(S)$ là:", "options": {"A": "$I(1; -2; 3)$ và $R = 16$", "B": "$I(1; -2; 3)$ và $R = 4$", "C": "$I(-1; 2; -3)$ và $R = 4$", "D": "$I(1; -2; 3)$ và $R = 2$"}, "answer": "B", "explanation": "Phương trình chính tắc $(x-a)^2 + (y-b)^2 + (z-c)^2 = R^2 \\Rightarrow I(1; -2; 3)$ và $R = \\sqrt{16} = 4$."}, {"id": 104, "question": "Tập nghiệm của phương trình $\\log_2(x^2 - 1) = 3$ là:", "options": {"A": "$S = \\{-3; 3\\}$", "B": "$S = \\{3\\}$", "C": "$S = \\{-3\\}$", "D": "$S = \\{-\\sqrt{7}; \\sqrt{7}\\}$"}, "answer": "A", "explanation": "Điều kiện $x^2 - 1 > 0$. Ta có: $x^2 - 1 = 2^3 = 8 \\Leftrightarrow x^2 = 9 \\Leftrightarrow x = \\pm 3$ (thỏa mãn)."}];
+
+        function loadMathSampleQuiz() {
+            questions = MATH_SAMPLE_QUIZ;
+            saveQuestions();
+            renderQuizzes();
+            renderDashboard();
+            switchTab('quizzes');
+            setTimeout(renderAllMath, 100);
+            alert("Đã tải thành công 4 câu hỏi trắc nghiệm Toán học có chứa công thức LaTeX!");
+        }
+
         function renderDashboard() {
             document.getElementById('stat-quiz-count').textContent = questions.length;
             document.getElementById('stat-student-count').textContent = students.length;
@@ -1129,6 +1269,7 @@
                 </div>
             `).join('');
             saveQuestions();
+            renderAllMath();
         }
 
         function saveQuestions() {
@@ -1341,6 +1482,7 @@ D. Do môi trường sống thay đổi
             `).join('');
 
             updateScannedProgress();
+            renderAllMath();
         }
 
         function nextQuestion() {
