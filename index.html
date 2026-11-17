@@ -1532,6 +1532,8 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 .presentation-container.pres-clean.opt-1col .pres-opt-card{min-height:calc(84px*var(--fit))!important;padding-top:calc(10px*var(--fit))!important;padding-bottom:calc(10px*var(--fit))!important}
 .pres-clean.opt-1col .pres-opt-card .pres-letter{width:calc(clamp(48px,4.2vw,70px)*var(--fit))!important;height:calc(clamp(48px,4.2vw,70px)*var(--fit))!important;font-size:calc(clamp(26px,2.4vw,40px)*var(--fit))!important}
 </style>
+<style>.pres-clean .tkz-fig{--tkz:#fff}
+</style>
 </head>
 <body class="locked">
 
@@ -3505,8 +3507,8 @@ D. Do môi trường sống thay đổi
             const tops = [0]; rows.forEach((r, i) => tops.push(tops[i] + Math.max(r.h * U, 30)));
             const H = tops[rows.length]; let svg = '', html = '';
             const lab = (x, y, t, bg) => html += `<div style="position:absolute;left:${x}px;top:${y}px;transform:translate(-50%,-50%);font-size:16px;white-space:nowrap;${bg ? 'background:#fff;padding:0 2px;' : ''}">${escapeHtml(t)}</div>`;
-            const ln = (x1, y1, x2, y2, ex) => svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#000" stroke-width="1.3" ${ex || ''}/>`;
-            svg += `<defs><marker id="tka" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z"/></marker><pattern id="tkh" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="#000" stroke-width="1"/></pattern></defs><rect x="0.5" y="0.5" width="${W}" height="${H}" fill="none" stroke="#000" stroke-width="1.6"/>`;
+            const ln = (x1, y1, x2, y2, ex) => svg += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="currentColor" stroke-width="1.3" ${ex || ''}/>`;
+            svg += `<defs><marker id="tka" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0L8,4L0,8z" fill="currentColor"/></marker><pattern id="tkh" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="6" stroke="currentColor" stroke-width="1"/></pattern></defs><rect x="0.5" y="0.5" width="${W}" height="${H}" fill="none" stroke="currentColor" stroke-width="1.6"/>`;
             ln(L, 0, L, H); for (let i = 1; i < rows.length; i++) ln(0, tops[i], W, tops[i]);
             rows.forEach((r, i) => lab(L / 2, (tops[i] + tops[i + 1]) / 2, r.lb));
             xs.forEach((x, i) => lab(X(i), tops[1] / 2, x));
@@ -3549,7 +3551,7 @@ D. Do môi trường sống thay đổi
                 }
                 ri++;
             }
-            return `<div class="tkz-fig" style="position:relative;width:${W + 2}px;height:${H + 2}px;margin:14px auto;font-weight:400;color:#000"><svg width="${W + 2}" height="${H + 2}" style="position:absolute;left:0;top:0">${svg}</svg>${html}</div>`;
+            return `<div class="tkz-fig" style="position:relative;width:${W + 2}px;height:${H + 2}px;margin:14px auto;font-weight:400;color:var(--tkz,#000)"><svg width="${W + 2}" height="${H + 2}" style="position:absolute;left:0;top:0">${svg}</svg>${html}</div>`;
         }
         function tikzFill(el, text) {
             if (typeof el === 'string') el = document.getElementById(el);
