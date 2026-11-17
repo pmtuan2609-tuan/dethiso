@@ -1514,6 +1514,17 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 .pres-clean .pres-toolbar{background:rgba(255,255,255,.9)!important;backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.6)!important;border-radius:24px!important;box-shadow:0 24px 60px -22px rgba(0,0,0,.7)!important}
 @media(prefers-reduced-motion:reduce){.presentation-container.pres-clean,.pres-clean *{animation:none!important;transition:none!important}}
 </style>
+<style>
+/* ===== bảng (bảng tần số, tabular/tabu) trong câu hỏi ===== */
+.ftab-wrap{display:table;margin:14px auto;max-width:100%;text-align:center}
+.ftab{border-collapse:collapse;background:#fff;color:#0f172a;font-size:.6em;font-weight:500;line-height:1.3;border-radius:12px;overflow:hidden;box-shadow:0 8px 24px -14px rgba(0,0,0,.6);margin:0 auto;text-shadow:none;white-space:normal}
+.ftab td{padding:.42em .9em;text-align:center;white-space:nowrap}
+.ftab td:first-child{font-weight:800;background:#eef2ff;color:#312e81}
+.ftab.grid td{border:1.5px solid #475569}
+.ftab tr.hl>td{border-top:1.5px solid #475569}
+.ftab tr.hb>td{border-bottom:1.5px solid #475569}
+.ftab .katex{color:#0f172a!important}
+</style>
 </head>
 <body class="locked">
 
@@ -3535,18 +3546,18 @@ D. Do môi trường sống thay đổi
         }
         function tikzFill(el, text) {
             if (typeof el === 'string') el = document.getElementById(el);
-            if (!el || !/\\begin\{tikzpicture\}/.test(text)) return;
+            if (!el || !/\\begin\{(?:tikzpicture|tabular\*?|tabularx|tabu|longtabu|longtable)\}/.test(text)) return;
             const pre = (text.match(/\\(usetikzlibrary|usepackage)\{[^}]*\}/g) || []).join('');
-            const re = /\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}/g;
+            const re = /\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}|\\begin\{(tabular\*?|tabularx|tabu|longtabu|longtable)\}[\s\S]*?\\end\{\1\}/g;
             let out = '', last = 0, m;
             while ((m = re.exec(text))) {
-                out += escapeHtml(text.slice(last, m.index).replace(/\\(usetikzlibrary|usepackage)\{[^}]*\}/g, ''));
+                out += escapeHtml(text.slice(last, m.index).replace(/\\(usetikzlibrary|usepackage)\{[^}]*\}/g, '').replace(/\\(?:begin|end)\{(?:center|flushleft|flushright)\}|\\centering/g, ''));
                 const blk = m[0];
-                out += /\\tkzTabInit/.test(blk) ? (tkzTabHTML(blk) || '')
+                out += !/^\\begin\{tikzpicture/.test(blk) ? texTableHTML(blk) : /\\tkzTabInit/.test(blk) ? (tkzTabHTML(blk) || '')
                     : `<div style="text-align:center;margin:12px 0"><script type="text/tikz" data-show-console="false">${pre}${/axis/.test(blk) ? '\\usepackage{pgfplots}\\pgfplotsset{compat=1.16}' : ''}\\begin{document}${blk}\\end{document}<\/script></div>`;
                 last = re.lastIndex;
             }
-            out += escapeHtml(text.slice(last).replace(/\\(usetikzlibrary|usepackage)\{[^}]*\}/g, ''));
+            out += escapeHtml(text.slice(last).replace(/\\(usetikzlibrary|usepackage)\{[^}]*\}/g, '').replace(/\\(?:begin|end)\{(?:center|flushleft|flushright)\}|\\centering/g, ''));
             el.innerHTML = out;
         }
         const _rc3 = renderCurrentSlide;
@@ -4311,6 +4322,51 @@ function fitSlide() {
         return r;
     };
 })();
+
+// ===== Bảng LaTeX (tabular/tabu/longtable) -> bảng HTML, dùng cho bảng tần số =====
+function texTableHTML(blk) {
+    const nm = blk.match(/^\\begin\{(\w+\*?)\}/)[1];
+    let s = blk, i = nm.length + 8;
+    const ws = () => { while (i < s.length && /\s/.test(s[i])) i++; };
+    const group = () => { ws(); if (s[i] !== '{') return null; let d = 0, st = i; for (; i < s.length; i++) { if (s[i] === '{') d++; else if (s[i] === '}' && --d === 0) { i++; return s.slice(st + 1, i - 1); } } return null; };
+    if (nm === 'tabular*' || nm === 'tabularx') group();
+    else if (nm === 'tabu' || nm === 'longtabu') { const t = s.slice(i).match(/^\s*(?:to|spread)\s*[^{]*/); if (t) i += t[0].length; }
+    ws(); while (s[i] === '[') { i = s.indexOf(']', i) + 1; ws(); }
+    const spec = group() || 'c';
+    const body0 = s.slice(i, s.lastIndexOf('\\end{' + nm + '}'));
+    const cols = []; let grid = spec.indexOf('|') !== -1;
+    for (let k = 0; k < spec.length; k++) {
+        const ch = spec[k];
+        if ('clrX'.includes(ch)) cols.push(ch === 'X' ? 'c' : ch);
+        else if ('pmb'.includes(ch)) { cols.push('c'); if (spec[k + 1] === '{') { let d = 0; do { if (spec[k + 1] === '{') d++; if (spec[k + 1] === '}') d--; k++; } while (d > 0 && k < spec.length); } }
+        else if ('@><!'.includes(ch) && spec[k + 1] === '{') { let d = 0; do { if (spec[k + 1] === '{') d++; if (spec[k + 1] === '}') d--; k++; } while (d > 0 && k < spec.length); }
+    }
+    const body = body0.replace(/\\(?:toprule|midrule|bottomrule)\b/g, '\\hline').replace(/\\cline\{[^}]*\}/g, '\\hline')
+        .replace(/\\(?:rowcolor|cellcolor|columncolor)(?:\[[^\]]*\])?\{[^}]*\}/g, '').replace(/\\(?:endhead|endfirsthead|endfoot|endlastfoot)\b/g, '');
+    const parts = body.split(/\\\\(?:\[[^\]]*\])?/), rows = [];
+    let pendingTop = false;
+    parts.forEach(r => {
+        const hasLine = /\\hline/.test(r), txt = r.replace(/\\hline/g, '').trim();
+        if (!txt) { if (hasLine) { if (rows.length) rows[rows.length - 1].hb = true; } return; }
+        rows.push({ txt, hl: /^\s*\\hline/.test(r) || pendingTop, hb: false });
+    });
+    if (rows.length && rows.some(r => r.hl || r.hb)) grid = grid || true;
+    const al = a => a === 'l' ? 'left' : a === 'r' ? 'right' : 'center';
+    const clean = t => escapeHtml(t).replace(/\\textbf\{([^{}]*)\}/g, '<b>$1</b>').replace(/\\(?:textit|emph)\{([^{}]*)\}/g, '<i>$1</i>')
+        .replace(/\\multirow\{[^}]*\}\{[^}]*\}\{([\s\S]*)\}/g, '$1').replace(/\\(?:centering|small|footnotesize|large|hfill|noindent)\b/g, '').replace(/\n+/g, ' ').trim();
+    const trs = rows.map(r => {
+        const cells = r.txt.split(/(?<!\\)&/); let ci = 0;
+        const tds = cells.map(c => {
+            c = c.trim(); let span = 1, a = cols[ci] || 'c';
+            const mc = c.match(/^\\multicolumn\{(\d+)\}\{([^}]*)\}\{([\s\S]*)\}$/);
+            if (mc) { span = +mc[1]; a = /l/.test(mc[2]) ? 'l' : /r/.test(mc[2]) ? 'r' : 'c'; c = mc[3]; }
+            ci += span;
+            return '<td' + (span > 1 ? ' colspan="' + span + '"' : '') + (a !== 'c' ? ' style="text-align:' + al(a) + '"' : '') + '>' + clean(c) + '</td>';
+        }).join('');
+        return '<tr' + (r.hl || r.hb ? ' class="' + (r.hl ? 'hl ' : '') + (r.hb ? 'hb' : '') + '"' : '') + '>' + tds + '</tr>';
+    }).join('');
+    return '<div class="ftab-wrap"><table class="ftab' + (spec.indexOf('|') !== -1 ? ' grid' : '') + '">' + trs + '</table></div>';
+}
 </script>
 </body>
 </html>
