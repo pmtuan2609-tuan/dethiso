@@ -1534,6 +1534,42 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 </style>
 <style>.pres-clean .tkz-fig{--tkz:#fff}
 </style>
+<style>
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.hero-chips span,.hero-chips button{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);color:#fff;border-radius:999px;padding:6px 13px;font:800 12.5px var(--font-sans);cursor:default}
+.hero-chips button{cursor:pointer;background:#fde047;color:#1e1b4b;border-color:#fde047}
+#demo-modal{position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;background:rgba(2,6,23,.72);backdrop-filter:blur(6px);padding:20px}
+#demo-modal.open{display:flex}
+.dm-box{width:min(920px,100%);background:#0f172a;border-radius:22px;overflow:hidden;box-shadow:0 40px 100px -30px #000;color:#fff}
+.dm-stage{position:relative;aspect-ratio:16/9;background:radial-gradient(700px 400px at 10% 0,rgba(99,102,241,.5),transparent 60%),radial-gradient(600px 400px at 100% 100%,rgba(236,72,153,.3),transparent 60%),#1e1b4b;display:grid;grid-template-columns:1.05fr 1fr;align-items:center;gap:20px;padding:4% 5%}
+.dm-txt .no{display:inline-block;font:900 12px var(--font-sans);letter-spacing:.18em;color:#c7d2fe;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:6px 14px;margin-bottom:14px}
+.dm-txt h3{margin:0 0 10px;font:900 clamp(22px,3.2vw,40px)/1.15 var(--font-sans)}
+.dm-txt p{margin:0;font:600 clamp(14px,1.6vw,19px)/1.55 var(--font-sans);color:#dbe3ff}
+.dm-art{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;min-height:0}
+.dm-art .t{width:clamp(64px,10vw,120px);height:clamp(64px,10vw,120px);border-radius:26px;display:grid;place-items:center;font:900 clamp(32px,5vw,60px) var(--font-sans);background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25)}
+.dm-art .ar{font-size:clamp(24px,3vw,40px);color:#a5b4fc}
+.dm-art .t,.dm-art .ar,.dm-phone{animation:dmIn .6s cubic-bezier(.2,.9,.3,1.2) backwards}
+.dm-art>*:nth-child(2){animation-delay:.12s}.dm-art>*:nth-child(3){animation-delay:.24s}.dm-art>*:nth-child(4){animation-delay:.36s}.dm-art>*:nth-child(5){animation-delay:.48s}
+@keyframes dmIn{from{opacity:0;transform:translateY(16px) scale(.9)}to{opacity:1;transform:none}}
+.dm-txt{animation:dmTxt .5s cubic-bezier(.2,.8,.2,1) backwards}
+@keyframes dmTxt{from{opacity:0;transform:translateX(-14px)}to{opacity:1;transform:none}}
+.dm-phone{position:relative;width:clamp(120px,17vw,190px);aspect-ratio:9/16;max-height:100%;background:#fff;border-radius:26px;border:6px solid #0b1020;padding:12px;display:grid;grid-template-columns:repeat(9,1fr);gap:2px;align-content:center;overflow:hidden}
+.dm-phone i{aspect-ratio:1;background:#0f172a;border-radius:1px}.dm-phone i.o{background:transparent}
+.dm-phone::after{content:"";position:absolute;left:0;right:0;height:3px;background:#22c55e;box-shadow:0 0 14px 3px #22c55e;animation:dmScan 1.8s ease-in-out infinite alternate}
+@keyframes dmScan{from{top:12%}to{top:88%}}
+.dm-bar{display:flex;gap:6px;padding:12px 18px 0}.dm-bar i{flex:1;height:5px;border-radius:5px;background:rgba(255,255,255,.15);overflow:hidden}.dm-bar i b{display:block;height:100%;width:0;background:#a78bfa}
+.dm-bar i.done b{width:100%}.dm-bar i.cur b{width:100%;transition:width var(--dur,5.5s) linear}
+.dm-ctl{display:flex;align-items:center;gap:8px;padding:12px 18px 16px}
+.dm-ctl button{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:12px;padding:8px 14px;font:800 14px var(--font-sans);cursor:pointer}
+.dm-ctl .sp{flex:1}
+@media(max-width:700px){.dm-stage{grid-template-columns:1fr;aspect-ratio:auto;min-height:420px}}
+@media(prefers-reduced-motion:reduce){.dm-art *,.dm-txt{animation:none!important}}
+</style>
+<style>.q-text .ftab,.sc-q .ftab{font-size:.92em;box-shadow:none;border:1px solid #cbd5e1}
+.q-text .ftab-wrap{margin:8px 0;display:table}
+</style>
+<style>.presentation-container.pres-clean .pres-opt-card{font-size:calc(clamp(22px,2.5vw,41px)*var(--fit)*var(--osz,1))!important}
+</style>
 </head>
 <body class="locked">
 
@@ -1630,10 +1666,15 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                     <span class="hero-tag">🎓 Kiểm tra trắc nghiệm bằng thẻ giấy</span>
                     <h1>Xin chào, <span id="hero-name">thầy cô</span>! 👋</h1>
                     <p>Chiếu câu hỏi, học sinh giơ thẻ A/B/C/D, thầy cô quét cả lớp rồi <b>công bố đáp án</b> và xem ngay em nào đúng, em nào sai.</p>
+                    <div class="hero-chips">
+                        <span>📝 Soạn đề / tải đề LaTeX</span><span>🖥️ Trình chiếu đẹp, tự co chữ</span><span>🪪 In thẻ A5 · PDF</span>
+                        <button onclick="openQrModal()" title="Mở mã QR để kết nối điện thoại">📱 ĐT quét mã QR</button><span>📊 Kết quả từng em ngay lập tức</span><span>🏫 Nhiều lớp</span>
+                    </div>
                     <div class="hero-cta">
                         <button class="btn hero-btn-main" onclick="startPresentation()">▶ Bắt đầu trình chiếu</button>
                         <button class="btn hero-btn-alt" onclick="switchTab('quizzes')">📝 Soạn đề</button>
                         <button class="btn hero-btn-alt" onclick="openVideoModal()">🎬 Video hướng dẫn</button>
+                        <button class="btn hero-btn-alt" onclick="openDemo()">🎞 Demo hoạt ảnh (40 giây)</button>
                     </div>
                 </div>
                 <div class="hero-art"><i>A</i><i>B</i><i>C</i><i>D</i></div>
@@ -2323,7 +2364,7 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
                 <div class="question-card" id="q-card-${q.id}">
                     <div class="question-top">
                         <span class="q-badge">Câu ${idx + 1}</span>
-                        <div class="q-text">${escapeHtml(q.question)}</div>
+                        <div class="q-text">${qHTML(q.question)}</div>
                         <div class="q-tools">
                             <label class="q-time" title="Thời gian đếm ngược cho câu này. Để trống = mặc định, 0 = không đếm giờ">⏱ <input type="number" min="0" max="3600" step="5" placeholder="Mặc định" value="${q.time === undefined || q.time === null || q.time === '' ? '' : q.time}" onchange="setQTime(${q.id}, this.value)"> giây</label>
                             <button class="btn btn-outline" style="padding: 4px 10px; font-size: 12px;" onclick="startEditQ(${q.id})">✎ Sửa</button>
@@ -3720,7 +3761,7 @@ D. Do môi trường sống thay đổi
             let h = '<table class="stu-t"><tr><th>Câu</th><th>Nội dung</th><th>Chọn</th><th>Đúng</th><th></th></tr>';
             questions.forEach((q, i) => {
                 const a = (sessionResults[q.id] || {})[s.id];
-                const txt = escapeHtml(String(q.question).replace(/\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}/g, '[hình]').slice(0, 60));
+                const txt = escapeHtml(String(q.question).replace(/\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}/g, '[hình]').replace(/\\begin\{(tabular\*?|tabularx|tabu|longtabu|longtable)\}[\s\S]*?\\end\{\1\}/g, '[bảng]').slice(0, 60));
                 h += `<tr><td>${i + 1}</td><td style="color:#475569">${txt}</td><td><b>${a || '—'}</b></td><td>${q.answer}</td><td>${!a ? '' : a === q.answer ? '<span style="color:#059669;font-weight:900">✓</span>' : '<span style="color:#dc2626;font-weight:900">✗</span>'}</td></tr>`;
             });
             document.getElementById('sd-body').innerHTML = h + '</table>';
@@ -4126,7 +4167,7 @@ D. Do môi trường sống thay đổi
         // ===== Bảng kết quả: biểu đồ sát đáy + thẻ tên học sinh + thẻ chi tiết từng em =====
         const MATH_DELIMS = [{ left: '$$', right: '$$', display: true }, { left: '$', right: '$', display: false }, { left: '\\(', right: '\\)', display: false }, { left: '\\[', right: '\\]', display: true }];
         function mathIn(el) { if (el && typeof renderMathInElement === 'function') { try { renderMathInElement(el, { delimiters: MATH_DELIMS, throwOnError: false }); } catch (e) {} } }
-        const stripTikz = t => String(t).replace(/\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}/g, '[hình]');
+        const stripTikz = t => String(t).replace(/\\begin\{tikzpicture\}[\s\S]*?\\end\{tikzpicture\}/g, '[hình]').replace(/\\begin\{(tabular\*?|tabularx|tabu|longtabu|longtable)\}[\s\S]*?\\end\{\1\}/g, '[bảng]');
         function saveRes() { try { localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults)); } catch (e) {} }
         // Viết tắt họ và tên đệm, chừa nguyên tên: "Nguyễn Văn An" -> "N.V. An"
         function nameHtml(n) {
@@ -4308,14 +4349,25 @@ function fitSlide() {
     if (!pc || !pc.classList.contains('active') || !pc.classList.contains('pres-clean')) return;
     const b = pc.querySelector('.pres-body'); if (!b) return;
     b.classList.remove('fit-fail'); let f = 1; pc.style.setProperty('--fit', f);
-    // bố cục đáp án: ưu tiên 2 cột; hơi dài thì giảm cỡ chữ; quá dài thì xuống 1 cột
+    // bố cục đáp án: ưu tiên 2 cột, không xuống dòng; chữ nhỏ dần cho vừa 1 dòng; không được thì 1 cột
     pc.classList.remove('opt-1col'); pc.style.setProperty('--osz', 1);
     const osp = ['A', 'B', 'C', 'D'].map(l => document.querySelector('#pres-opt-' + l + ' span:last-child')).filter(Boolean);
-    const maxLines = () => Math.max(1, ...osp.map(e => { const cs = getComputedStyle(e), lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.25; return Math.round(e.getBoundingClientRect().height / lh); }));
-    if (maxLines() > 2) {
-        let ok = false;
-        for (const z of [0.9, 0.8]) { pc.style.setProperty('--osz', z); if (maxLines() <= 2) { ok = true; break; } }
-        if (!ok) { pc.style.setProperty('--osz', 1); pc.classList.add('opt-1col'); }
+    const isWrapped = el => {
+        const items = [], tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, { acceptNode: n => n.nodeType === 3 ? (n.textContent.trim() && !n.parentElement.closest('.katex') ? 1 : 3) : (n.classList.contains('base') ? 1 : 3) });
+        let n; while ((n = tw.nextNode())) {
+            if (n.nodeType === 3) { const r = document.createRange(); r.selectNodeContents(n); if (r.getClientRects().length > 1) return true; items.push(r.getBoundingClientRect()); }
+            else items.push(n.getBoundingClientRect());
+        }
+        for (let i = 1; i < items.length; i++) if (items[i].left < items[i - 1].left - 3) return true;
+        return false;
+    };
+    const anyWrap = () => osp.some(isWrapped);
+    let okFit = false;
+    for (const z of [1, 0.92, 0.84, 0.76, 0.68]) { pc.style.setProperty('--osz', z); if (!anyWrap()) { okFit = true; break; } }
+    if (!okFit) {
+        pc.classList.add('opt-1col');
+        for (const z of [1, 0.88, 0.76, 0.66]) { pc.style.setProperty('--osz', z); if (!anyWrap()) { okFit = true; break; } }
+        if (!okFit) pc.style.setProperty('--osz', 0.8);
     }
     for (let n = 0; n < 40 && b.scrollHeight > b.clientHeight + 1 && f > 0.3; n++) { f -= 0.03; pc.style.setProperty('--fit', f.toFixed(2)); }
     if (b.scrollHeight > b.clientHeight + 1) b.classList.add('fit-fail');
@@ -4448,6 +4500,54 @@ function extractNamesFromRows(rows) {
         rd.readAsArrayBuffer(f); ev.target.value = '';
     };
 })();
+
+// ===== Demo hoạt ảnh hướng dẫn (không cần file video) =====
+(function () {
+    const T = (c, t) => `<div class="t" style="${c ? 'background:' + c + ';border:0' : ''}">${t}</div>`, AR = '<div class="ar">➜</div>';
+    const qr = () => { let h = ''; for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) { const e = (r < 3 && c < 3) || (r < 3 && c > 5) || (r > 5 && c < 3); h += '<i class="' + (e || (r * 7 + c * 3 + r * c) % 3 ? '' : 'o') + '"></i>'; } return '<div class="dm-phone">' + h + '</div>'; };
+    const SC = [
+        { h: 'Soạn hoặc tải đề lên', p: 'Vào tab <b>Soạn đề</b>: gõ câu hỏi hoặc tải đề LaTeX (\\begin{ex}). Công thức, bảng tần số và bảng biến thiên đều hiển thị đẹp trên slide.', a: T('', '📄') + AR + T('', '❓') },
+        { h: 'Tạo lớp & in thẻ', p: 'Tab <b>Lớp &amp; Thẻ</b>: tải <b>file Excel mẫu</b>, nhập danh sách (mỗi sheet một lớp), rồi in thẻ A5 hoặc tải PDF. Mỗi em một thẻ riêng.', a: T('', '📊') + AR + T('', '🪪') + AR + T('', '🖨️') },
+        { h: 'Trình chiếu cho cả lớp', p: 'Bấm <b>Bắt đầu trình chiếu</b>. Học sinh chỉ thấy câu hỏi và 4 đáp án. Thầy cô rê chuột xuống đáy màn hình (hoặc nhấn <b>H</b>) để hiện các nút điều khiển.', a: T('', '🖥️') },
+        { h: 'Học sinh giơ thẻ', p: 'Mỗi em giơ thẻ sao cho chữ cái đáp án mình chọn nằm ở phía trên: <b>A, B, C hoặc D</b>.', a: T('#dc2626', 'A') + T('#2563eb', 'B') + T('#d97706', 'C') + T('#059669', 'D') },
+        { h: '📱 Điện thoại quét mã', p: 'Bấm <b>Kết nối ĐT</b> để hiện mã QR, dùng điện thoại quét mã. Điện thoại trở thành máy quét thẻ cho cả lớp. Cũng có thể dùng nút <b>Camera</b> trên máy tính.', a: qr() },
+        { h: 'Công bố đáp án & xem kết quả', p: 'Bấm <b>Công bố đáp án</b>: thẻ đúng sáng xanh. Mở <b>Kết quả</b> và <b>Bài làm HS</b> để biết em nào đúng, em nào sai.', a: T('#10b981', '✓') + T('', '📊') }
+    ];
+    let cur = 0, tm = null, playing = true; const DUR = 6500;
+    function show() {
+        document.getElementById('dm-bar').innerHTML = SC.map((_, k) => '<i class="' + (k < cur ? 'done' : '') + '"><b></b></i>').join('');
+        const sc = SC[cur], tx = document.getElementById('dm-txt'); tx.style.animation = 'none'; void tx.offsetWidth; tx.style.animation = '';
+        tx.innerHTML = '<span class="no">BƯỚC ' + (cur + 1) + ' / ' + SC.length + '</span><h3>' + sc.h + '</h3><p>' + sc.p + '</p>';
+        document.getElementById('dm-art').innerHTML = sc.a;
+        const bars = document.querySelectorAll('#dm-bar i'), b = bars[cur];
+        if (playing) requestAnimationFrame(() => requestAnimationFrame(() => { b.style.setProperty('--dur', DUR + 'ms'); b.classList.add('cur'); }));
+        clearTimeout(tm); if (playing) tm = setTimeout(() => demoGo(1, true), DUR);
+    }
+    window.demoGo = function (d, auto) { const n = cur + d; if (n >= SC.length) { if (auto) { playing = false; document.getElementById('dm-play').textContent = '↻ Xem lại'; clearTimeout(tm); return; } return; } if (n < 0) return; cur = n; show(); };
+    window.demoToggle = function () { const bt = document.getElementById('dm-play'); if (!playing && cur >= SC.length - 1 && /Xem lại/.test(bt.textContent)) { cur = 0; } playing = !playing; bt.textContent = playing ? '⏸ Tạm dừng' : '▶ Phát'; show(); };
+    window.openDemo = function () { cur = 0; playing = true; document.getElementById('dm-play').textContent = '⏸ Tạm dừng'; document.getElementById('demo-modal').classList.add('open'); show(); };
+    window.closeDemo = function () { document.getElementById('demo-modal').classList.remove('open'); clearTimeout(tm); };
+    document.addEventListener('keydown', e => { if (!document.getElementById('demo-modal').classList.contains('open')) return; if (e.key === 'Escape') closeDemo(); else if (e.key === 'ArrowRight') demoGo(1); else if (e.key === 'ArrowLeft') demoGo(-1); else if (e.key === ' ') { e.preventDefault(); demoToggle(); } });
+})();
+
+// hiển thị bảng LaTeX trong phần xem trước câu hỏi
+function qHTML(text) {
+    const re = /\\begin\{(tabular\*?|tabularx|tabu|longtabu|longtable)\}[\s\S]*?\\end\{\1\}/g, clean = t => escapeHtml(t.replace(/\\(?:begin|end)\{(?:center|flushleft|flushright)\}|\\centering/g, ''));
+    text = String(text); let out = '', last = 0, m;
+    while ((m = re.exec(text))) { out += clean(text.slice(last, m.index)) + texTableHTML(m[0]); last = m.index + m[0].length; }
+    return out + clean(text.slice(last));
+}
 </script>
+
+<div id="demo-modal" onclick="if(event.target===this)closeDemo()">
+    <div class="dm-box">
+        <div class="dm-bar" id="dm-bar"></div>
+        <div class="dm-stage"><div class="dm-txt" id="dm-txt"></div><div class="dm-art" id="dm-art"></div></div>
+        <div class="dm-ctl">
+            <button onclick="demoGo(-1)">◀</button><button id="dm-play" onclick="demoToggle()">⏸ Tạm dừng</button><button onclick="demoGo(1)">▶</button>
+            <span class="sp"></span><button onclick="closeDemo()">✕ Đóng</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>
