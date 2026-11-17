@@ -3730,7 +3730,7 @@ D. Do môi trường sống thay đổi
         document.head.insertAdjacentHTML('beforeend', '<style>.stu-t{width:100%;border-collapse:collapse;font-size:15px}.stu-t th,.stu-t td{padding:8px 10px;border-bottom:1px solid #e2e8f0;text-align:left}.stu-t th{color:#64748b;font-size:13px}.stu-t tr.rw{cursor:pointer}.stu-t tr.rw:hover{background:#eff6ff}.cls-sel{padding:8px 10px;border:1px solid var(--border);border-radius:12px;font:800 14px var(--font-sans);background:#fff;margin-right:8px;max-width:220px}</style>');
         const mkModal = (id, t, b) => `<div id="${id}" class="chart-modal" onclick="closeStu('${id}')"><div class="chart-box" style="max-width:760px;width:94vw;max-height:88vh;overflow:auto;padding:20px;text-align:left" onclick="event.stopPropagation()"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h3 id="${t}" style="font-size:20px;font-weight:900;color:#0f172a"></h3><button style="background:none;border:none;font-size:22px;cursor:pointer;color:#94a3b8" onclick="closeStu('${id}')">✕</button></div><div id="${b}"></div></div></div>`;
         document.body.insertAdjacentHTML('beforeend', mkModal('stu-list', 'stu-title', 'stu-body') + mkModal('stu-detail', 'sd-title', 'sd-body'));
-        document.getElementById('view-classroom').insertAdjacentHTML('afterbegin', '<div class="card" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;margin-bottom:16px"><b>🏫 Lớp:</b><select class="cls-sel" onchange="clsSwitch(this.value)"></select><button class="btn btn-outline" onclick="clsAdd()">＋ Lớp mới</button><button class="btn btn-outline" onclick="clsRename()">✎ Đổi tên</button><button class="btn btn-outline" onclick="clsDel()">🗑 Xoá lớp</button><button class="btn btn-primary" onclick="openStuList()" style="margin-left:auto">📋 Bài làm học sinh</button></div>');
+        document.getElementById('view-classroom').insertAdjacentHTML('afterbegin', '<div class="card" style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:12px 16px;margin-bottom:16px"><b>🏫 Lớp:</b><select class="cls-sel" onchange="clsSwitch(this.value)"></select><button class="btn btn-outline" onclick="clsAdd()">＋ Lớp mới</button><button class="btn btn-outline" onclick="clsRename()">✎ Đổi tên</button><button class="btn btn-outline" onclick="clsDel()">🗑 Xoá lớp</button><button class="btn btn-outline" onclick="downloadClassTemplate()" title="Tải file Excel mẫu (mỗi sheet là một lớp)">📥 File Excel mẫu</button><button class="btn btn-outline" onclick="document.getElementById(\'class-file-upload\').click()" title="Nhập danh sách lớp từ Excel">📤 Nhập Excel</button><button class="btn btn-primary" onclick="openStuList()" style="margin-left:auto">📋 Bài làm học sinh</button></div>');
         document.querySelectorAll('.tm-box').forEach(b => b.insertAdjacentHTML('beforebegin', '<select class="cls-sel" onchange="clsSwitch(this.value)" title="Chọn lớp"></select>'));
         const rb = document.querySelector('.pres-toolbar button[onclick="showResultModal()"]');
         if (rb) rb.insertAdjacentHTML('beforebegin', '<button class="btn btn-outline" onclick="openStuList()">👥 Bài làm HS</button>');
@@ -4385,6 +4385,69 @@ function texTableHTML(blk) {
     }).join('');
     return '<div class="ftab-wrap"><table class="ftab' + (spec.indexOf('|') !== -1 ? ' grid' : '') + '">' + trs + '</table></div>';
 }
+
+// ===== Excel mẫu + nhập nhiều lớp (mỗi sheet = 1 lớp) =====
+function downloadClassTemplate() {
+    if (!window.XLSX) { alert('Chưa tải được thư viện Excel (cần mạng).'); return; }
+    const wb = XLSX.utils.book_new();
+    const guide = [['HƯỚNG DẪN NHẬP DANH SÁCH LỚP'], [''],
+        ['1. Mỗi SHEET là một lớp. Tên sheet chính là tên lớp (VD: 12A1, 12A2, 12A3).'],
+        ['2. Cần thêm lớp: bấm chuột phải vào tên sheet > Sao chép (Move or Copy), rồi đổi tên sheet.'],
+        ['3. Mỗi sheet có 3 cột: STT, Họ và tên, Ghi chú. Cột "Họ và tên" bắt buộc, hai cột còn lại có thể bỏ trống.'],
+        ['4. Xoá các dòng mẫu (Nguyễn Văn A...) và nhập danh sách thật, mỗi dòng một học sinh.'],
+        ['5. Lưu file, rồi vào tab Lớp & Thẻ > bấm "Nhập Excel" và chọn file.'],
+        ['6. Nếu file có nhiều sheet, phần mềm sẽ tạo nhiều lớp một lượt. Lớp trùng tên sẽ được thay danh sách mới.'],
+        ['7. Đừng đổi tên sheet "Hướng dẫn" này (nó sẽ được bỏ qua khi nhập).']];
+    const g = XLSX.utils.aoa_to_sheet(guide); g['!cols'] = [{ wch: 100 }]; XLSX.utils.book_append_sheet(wb, g, 'Hướng dẫn');
+    ['12A1', '12A2'].forEach(n => {
+        const ws = XLSX.utils.aoa_to_sheet([['STT', 'Họ và tên', 'Ghi chú'], [1, 'Nguyễn Văn A', ''], [2, 'Trần Thị B', ''], [3, 'Lê Văn C', '']]);
+        ws['!cols'] = [{ wch: 6 }, { wch: 32 }, { wch: 24 }]; XLSX.utils.book_append_sheet(wb, ws, n);
+    });
+    XLSX.writeFile(wb, 'Mau_danh_sach_lop.xlsx');
+}
+function extractNamesFromRows(rows) {
+    const hdr = /^(họ\s*(và\s*)?tên(\s*học\s*sinh)?|tên\s*học\s*sinh|họ tên)$/i; let col = -1, start = 0;
+    for (let r = 0; r < Math.min(rows.length, 10) && col < 0; r++) (rows[r] || []).forEach((c, k) => { if (col < 0 && typeof c === 'string' && hdr.test(c.trim())) { col = k; start = r + 1; } });
+    const clean = v => String(v == null ? '' : v).trim().replace(/^\d+[\.\-\s]+/, '');
+    if (col >= 0) return rows.slice(start).map(r => clean((r || [])[col])).filter(n => n.length > 1);
+    const out = [];
+    rows.forEach(r => { for (const c of (r || [])) { if (typeof c === 'string') { const t = c.trim(); if (t.length > 2 && !/^(stt|số thứ tự|họ và tên|họ tên|danh sách|lớp|năm học|ghi chú)/i.test(t) && !/^\d+$/.test(t)) { out.push(t.replace(/^\d+[\.\-\s]+/, '')); break; } } } });
+    return out;
+}
+(function () {
+    const _old = window.handleClassFileUpload;
+    window.handleClassFileUpload = function (ev) {
+        const f = ev.target.files && ev.target.files[0];
+        if (!f || !/\.xlsx?$/i.test(f.name) || !window.XLSX) return _old.apply(this, arguments);
+        const rd = new FileReader();
+        rd.onload = e => {
+            try {
+                const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' }), sheets = [];
+                wb.SheetNames.forEach(n => {
+                    if (/hướng dẫn|huong dan|readme/i.test(n)) return;
+                    const names = extractNamesFromRows(XLSX.utils.sheet_to_json(wb.Sheets[n], { header: 1, defval: '' }));
+                    if (names.length) sheets.push({ name: n.trim(), names });
+                });
+                if (!sheets.length) { alert('Không tìm thấy cột "Họ và tên" trong file. Bạn hãy dùng file Excel mẫu (nút 📥 File Excel mẫu).'); return; }
+                if (sheets.length === 1) { applyNewStudentList(sheets[0].names); return; }
+                const msg = 'File có ' + sheets.length + ' lớp:\n' + sheets.map(x => '• ' + x.name + ': ' + x.names.length + ' HS' + (CLS.list.some(c => c.name.toLowerCase() === x.name.toLowerCase()) ? ' (lớp đã có, sẽ thay danh sách và xoá kết quả cũ của lớp đó)' : ' (lớp mới)')).join('\n') + '\n\nTiếp tục nhập?';
+                if (!confirm(msg)) return;
+                clsSave(); let first = null;
+                sheets.forEach((x, k) => {
+                    const list = x.names.map((n, i) => ({ id: i + 1, name: n }));
+                    let c = CLS.list.find(c => c.name.toLowerCase() === x.name.toLowerCase());
+                    if (c) { c.students = list; c.results = {}; } else { c = { id: 'c' + Date.now() + k, name: x.name, students: list, results: {} }; CLS.list.push(c); }
+                    if (!first) first = c;
+                });
+                CLS.cur = first.id; students = first.students; sessionResults = first.results;
+                saveStudents(); try { localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(sessionResults)); } catch (e2) {}
+                clsSave(); clsRefresh();
+                alert('🎉 Đã nhập ' + sheets.length + ' lớp. Dùng ô "🏫 Lớp" để chuyển giữa các lớp.');
+            } catch (err) { alert('Lỗi khi đọc file Excel: ' + err.message); }
+        };
+        rd.readAsArrayBuffer(f); ev.target.value = '';
+    };
+})();
 </script>
 </body>
 </html>
