@@ -1525,6 +1525,13 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 .ftab tr.hb>td{border-bottom:1.5px solid #475569}
 .ftab .katex{color:#0f172a!important}
 </style>
+<style>
+/* ===== đáp án: 2 cột mặc định, dài thì giảm chữ / xuống 1 cột ===== */
+.presentation-container.pres-clean .pres-opt-card{font-size:calc(clamp(24px,2.8vw,46px)*var(--fit)*var(--osz,1))!important}
+.pres-clean.opt-1col .pres-options{grid-template-columns:1fr!important}
+.presentation-container.pres-clean.opt-1col .pres-opt-card{min-height:calc(84px*var(--fit))!important;padding-top:calc(10px*var(--fit))!important;padding-bottom:calc(10px*var(--fit))!important}
+.pres-clean.opt-1col .pres-opt-card .pres-letter{width:calc(clamp(48px,4.2vw,70px)*var(--fit))!important;height:calc(clamp(48px,4.2vw,70px)*var(--fit))!important;font-size:calc(clamp(26px,2.4vw,40px)*var(--fit))!important}
+</style>
 </head>
 <body class="locked">
 
@@ -4299,6 +4306,15 @@ function fitSlide() {
     if (!pc || !pc.classList.contains('active') || !pc.classList.contains('pres-clean')) return;
     const b = pc.querySelector('.pres-body'); if (!b) return;
     b.classList.remove('fit-fail'); let f = 1; pc.style.setProperty('--fit', f);
+    // bố cục đáp án: ưu tiên 2 cột; hơi dài thì giảm cỡ chữ; quá dài thì xuống 1 cột
+    pc.classList.remove('opt-1col'); pc.style.setProperty('--osz', 1);
+    const osp = ['A', 'B', 'C', 'D'].map(l => document.querySelector('#pres-opt-' + l + ' span:last-child')).filter(Boolean);
+    const maxLines = () => Math.max(1, ...osp.map(e => { const cs = getComputedStyle(e), lh = parseFloat(cs.lineHeight) || parseFloat(cs.fontSize) * 1.25; return Math.round(e.getBoundingClientRect().height / lh); }));
+    if (maxLines() > 2) {
+        let ok = false;
+        for (const z of [0.9, 0.8]) { pc.style.setProperty('--osz', z); if (maxLines() <= 2) { ok = true; break; } }
+        if (!ok) { pc.style.setProperty('--osz', 1); pc.classList.add('opt-1col'); }
+    }
     for (let n = 0; n < 40 && b.scrollHeight > b.clientHeight + 1 && f > 0.3; n++) { f -= 0.03; pc.style.setProperty('--fit', f.toFixed(2)); }
     if (b.scrollHeight > b.clientHeight + 1) b.classList.add('fit-fail');
 }
