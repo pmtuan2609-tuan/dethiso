@@ -1480,6 +1480,40 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 .presentation-container.pres-clean .pres-opt-card{font-size:calc(clamp(26px,3.2vw,54px)*var(--fit))!important;min-height:calc(132px*var(--fit))!important;padding:calc(24px*var(--fit)) calc(34px*var(--fit)) calc(24px*var(--fit)) calc(24px*var(--fit))!important;gap:calc(26px*var(--fit))!important;border-radius:calc(30px*var(--fit))!important}
 .pres-clean .pres-opt-card .pres-letter{width:calc(clamp(64px,6vw,100px)*var(--fit))!important;height:calc(clamp(64px,6vw,100px)*var(--fit))!important;font-size:calc(clamp(34px,3.4vw,56px)*var(--fit))!important;border-radius:calc(26px*var(--fit))!important}
 </style>
+<style>
+/* ===== v7: gọn hơn, hiệu ứng hợp lý hơn ===== */
+.presentation-container.pres-clean{background-size:150% 150%,150% 150%,100% 100%!important;animation:presAmbient 32s ease-in-out infinite alternate}
+@keyframes presAmbient{from{background-position:0% 0%,100% 100%,0 0}to{background-position:30% 22%,70% 78%,0 0}}
+.pres-clean .pres-header{padding:16px 36px 0!important}
+.pres-clean .pres-title,.pres-clean .pres-title #pres-quiz-name{font-size:13px!important;letter-spacing:.2em!important;opacity:.7!important}
+.pres-clean .pres-counter{display:none!important}
+.pres-clean .pres-progress{height:4px!important}
+.pres-clean .pres-body{max-width:1280px!important;padding:6px 48px 28px!important;justify-content:center}
+/* câu hỏi: chip số câu + chữ gọn */
+.pres-clean .pres-question{font-size:calc(clamp(30px,3.9vw,60px)*var(--fit))!important;line-height:1.28!important;margin-bottom:calc(34px*var(--fit))!important;text-shadow:0 2px 18px rgba(0,0,0,.3)!important}
+.pres-clean .pres-question::before{content:attr(data-n);display:table;font:900 clamp(12px,1.1vw,16px)/1 var(--font-sans,system-ui);letter-spacing:.18em;text-transform:uppercase;color:#c7d2fe;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);padding:8px 16px;border-radius:999px;margin-bottom:16px;text-shadow:none}
+.pres-clean .pres-question:not([data-n])::before{display:none}
+/* đáp án: gọn, thẻ mềm */
+.pres-clean .pres-options{gap:calc(18px*var(--fit))!important}
+.presentation-container.pres-clean .pres-opt-card{font-size:calc(clamp(24px,2.8vw,46px)*var(--fit))!important;min-height:calc(104px*var(--fit))!important;padding:calc(16px*var(--fit)) calc(28px*var(--fit)) calc(16px*var(--fit)) calc(16px*var(--fit))!important;gap:calc(20px*var(--fit))!important;border-radius:calc(24px*var(--fit))!important;background:rgba(255,255,255,.96)!important;box-shadow:0 14px 34px -18px rgba(0,0,0,.65)!important;animation:none!important}
+.pres-clean .pres-opt-card .pres-letter{width:calc(clamp(56px,5vw,84px)*var(--fit))!important;height:calc(clamp(56px,5vw,84px)*var(--fit))!important;font-size:calc(clamp(30px,2.9vw,48px)*var(--fit))!important;border-radius:calc(20px*var(--fit))!important}
+.pres-clean .pres-question,.pres-clean .pres-opt-card,.pres-clean .pres-opt-card .pres-letter{animation:none}
+/* hiệu ứng chỉ chạy khi sang câu mới (class .enter) */
+.pres-clean.enter .pres-question{animation:presRise .55s cubic-bezier(.2,.8,.2,1) backwards}
+.presentation-container.pres-clean.enter .pres-opt-card{animation:presIn .55s cubic-bezier(.2,.9,.3,1.15) backwards!important}
+.pres-clean.enter .pres-opt-card:nth-child(1){animation-delay:.15s!important}.pres-clean.enter .pres-opt-card:nth-child(2){animation-delay:.23s!important}.pres-clean.enter .pres-opt-card:nth-child(3){animation-delay:.31s!important}.pres-clean.enter .pres-opt-card:nth-child(4){animation-delay:.39s!important}
+.pres-clean.enter .pres-opt-card .pres-letter{animation:presPop .5s cubic-bezier(.34,1.56,.64,1) .35s backwards}
+@keyframes presRise{from{opacity:0;transform:translateY(16px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes presIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes presPop{from{transform:scale(.4) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+/* công bố đáp án: thẻ đúng nổi lên + dấu ✓, thẻ sai lùi xuống */
+.presentation-container.pres-clean .pres-opt-card.correct-revealed{transform:scale(1.02);box-shadow:0 0 0 5px #34d399,0 18px 50px -12px rgba(52,211,153,.6)!important;background:#ecfdf5!important;transition:transform .45s cubic-bezier(.34,1.56,.64,1),box-shadow .3s}
+.pres-clean .pres-opt-card.correct-revealed::after{content:"✓";margin-left:auto;flex:none;width:clamp(38px,3.4vw,56px);height:clamp(38px,3.4vw,56px);border-radius:50%;background:#10b981;color:#fff;display:grid;place-items:center;font-size:clamp(22px,2.2vw,36px);font-weight:900;animation:presPop .5s cubic-bezier(.34,1.56,.64,1) backwards}
+.presentation-container.pres-clean .pres-opt-card.dimmed{opacity:.3;filter:saturate(.4);transform:scale(.985);transition:opacity .4s,filter .4s,transform .4s}
+/* thanh điều khiển GV: kính mờ */
+.pres-clean .pres-toolbar{background:rgba(255,255,255,.9)!important;backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.6)!important;border-radius:24px!important;box-shadow:0 24px 60px -22px rgba(0,0,0,.7)!important}
+@media(prefers-reduced-motion:reduce){.presentation-container.pres-clean,.pres-clean *{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body class="locked">
 
@@ -4262,6 +4296,20 @@ function fitSlide() {
     window.renderCurrentSlide = function () { const r = _r.apply(this, arguments); [0, 120, 400, 900].forEach(t => setTimeout(() => requestAnimationFrame(fitSlide), t)); return r; };
     window.addEventListener('resize', fitSlide);
     document.addEventListener('fullscreenchange', () => setTimeout(fitSlide, 150));
+})();
+
+// ===== v7: chip số câu + hiệu ứng chỉ chạy khi sang câu mới =====
+(function () {
+    let last = '', tm = null;
+    const _r = window.renderCurrentSlide;
+    window.renderCurrentSlide = function () {
+        const r = _r.apply(this, arguments);
+        const pc = document.getElementById('presentation-container'), c = pc.querySelector('.pres-counter');
+        const q = pc.querySelector('.pres-question'), key = c ? c.textContent.trim() : '';
+        if (q && key) q.dataset.n = key;
+        if (key !== last) { last = key; pc.classList.remove('enter'); void pc.offsetWidth; pc.classList.add('enter'); clearTimeout(tm); tm = setTimeout(() => pc.classList.remove('enter'), 1300); }
+        return r;
+    };
 })();
 </script>
 </body>
