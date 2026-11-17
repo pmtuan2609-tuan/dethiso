@@ -4353,7 +4353,7 @@ function texTableHTML(blk) {
     if (rows.length && rows.some(r => r.hl || r.hb)) grid = grid || true;
     const al = a => a === 'l' ? 'left' : a === 'r' ? 'right' : 'center';
     const clean = t => escapeHtml(t).replace(/\\textbf\{([^{}]*)\}/g, '<b>$1</b>').replace(/\\(?:textit|emph)\{([^{}]*)\}/g, '<i>$1</i>')
-        .replace(/\\multirow\{[^}]*\}\{[^}]*\}\{([\s\S]*)\}/g, '$1').replace(/\\(?:centering|small|footnotesize|large|hfill|noindent)\b/g, '').replace(/\n+/g, ' ').trim();
+        .replace(/\\multirow\{[^}]*\}\{[^}]*\}\{([\s\S]*)\}/g, '$1').replace(/\\(?:centering|small|footnotesize|large|hfill|noindent)\b/g, '').replace(/\n+/g, ' ').trim().split(/(\$[^$]*\$)/).map((p, k) => k % 2 ? p : p.replace(/(?<!\\)[{}]/g, '')).join('').trim();
     const trs = rows.map(r => {
         const cells = r.txt.split(/(?<!\\)&/); let ci = 0;
         const tds = cells.map(c => {
