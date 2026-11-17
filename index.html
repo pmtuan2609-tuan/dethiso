@@ -1570,6 +1570,59 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
 </style>
 <style>.presentation-container.pres-clean .pres-opt-card{font-size:calc(clamp(22px,2.5vw,41px)*var(--fit)*var(--osz,1))!important}
 </style>
+<style>
+/* ===== v8: màn hình Xin chào (trang chủ) ===== */
+.hero.hero2{grid-template-columns:1.1fr .9fr!important;gap:28px!important;padding:40px 44px!important;border-radius:30px!important;position:relative;background:radial-gradient(900px 420px at 0 -10%,rgba(99,102,241,.55),transparent 62%),radial-gradient(700px 420px at 105% 110%,rgba(236,72,153,.4),transparent 60%),linear-gradient(150deg,#0f172a 0%,#1e1b4b 58%,#312e81 100%)!important;box-shadow:0 30px 70px -28px rgba(30,27,75,.75)!important}
+.hero2::before{content:"";position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,.1) 1px,transparent 1.3px);background-size:22px 22px;mask-image:linear-gradient(90deg,#000,transparent 75%);-webkit-mask-image:linear-gradient(90deg,#000,transparent 75%);pointer-events:none}
+.h2-main{position:relative;z-index:1;animation:h2up .6s cubic-bezier(.2,.8,.2,1) backwards}
+.h2-brand{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.h2-brand .lg{box-shadow:0 12px 26px -8px rgba(99,102,241,.8)}
+.h2-brand b{display:block;font:900 15px var(--font-sans);letter-spacing:.2em;color:#e0e7ff}
+.h2-brand small{display:block;margin-top:3px;font:700 13px var(--font-sans);color:#a5b4fc}
+.hero2 h1{font-size:clamp(32px,4.2vw,52px)!important;line-height:1.1!important;margin:0 0 12px!important;letter-spacing:-.02em}
+.hero2 h1 #hero-name{background:linear-gradient(90deg,#fde047,#fb7185);-webkit-background-clip:text;background-clip:text;color:transparent}
+.h2-wave{display:inline-block;transform-origin:70% 70%;animation:h2wave 2.6s ease-in-out 1s infinite}
+@keyframes h2wave{0%,60%,100%{transform:rotate(0)}10%{transform:rotate(16deg)}20%{transform:rotate(-8deg)}30%{transform:rotate(14deg)}40%{transform:rotate(-4deg)}50%{transform:rotate(10deg)}}
+.hero2 p{color:#dbe3ff!important;font-size:16px!important;max-width:560px}
+.hero2 .hero-cta{margin-top:22px!important}
+.hero2 .hero-btn-main{background:linear-gradient(90deg,#fde047,#fb923c)!important;color:#1e1b4b!important;border:0!important;border-radius:14px!important;padding:14px 26px!important;font-size:16px!important;box-shadow:0 12px 30px -10px rgba(251,191,36,.8)!important;transition:transform .2s}
+.hero2 .hero-btn-main:hover{transform:translateY(-2px)}
+.hero2 .hero-btn-alt{background:rgba(255,255,255,.1)!important;border:1px solid rgba(255,255,255,.25)!important;border-radius:14px!important;backdrop-filter:blur(8px);transition:background .2s}
+.hero2 .hero-btn-alt:hover{background:rgba(255,255,255,.2)!important}
+.hero2 .hero-chips{margin-top:20px!important}
+.hero2 .hero-chips span,.hero2 .hero-chips button{background:rgba(255,255,255,.08)!important;border:1px solid rgba(255,255,255,.2)!important;color:#e0e7ff!important;font-size:12.5px!important}
+.hero2 .hero-chips button{background:rgba(253,224,71,.16)!important;border-color:rgba(253,224,71,.6)!important;color:#fde047!important}
+.h2-art{position:relative;height:300px;z-index:1}
+.h2-glow{position:absolute;left:50%;top:50%;width:280px;height:280px;margin:-140px;background:radial-gradient(circle,rgba(167,139,250,.55),transparent 65%);filter:blur(10px)}
+.h2-card{position:absolute;left:50%;top:50%;width:172px;height:244px;margin:-122px 0 0 -92px;rotate:-6deg;border-radius:18px;background:#fff;box-shadow:0 34px 60px -22px rgba(0,0,0,.75);animation:h2card 6s ease-in-out infinite}
+.h2-card svg{width:100%;height:100%;display:block}
+.h2-t{position:absolute;width:74px;height:74px;border-radius:20px;display:flex;align-items:center;justify-content:center;font:900 38px var(--font-sans);color:#fff;font-style:normal;background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 70%,#000));rotate:var(--r);box-shadow:0 16px 30px -10px rgba(0,0,0,.6),inset 0 2px 0 rgba(255,255,255,.35);animation:h2float 5s ease-in-out infinite}
+.h2-phone{position:absolute;right:4%;bottom:6%;width:92px;aspect-ratio:9/17;background:#fff;border:5px solid #0b1020;border-radius:20px;padding:9px;display:grid;grid-template-columns:repeat(9,1fr);gap:1.5px;align-content:center;overflow:hidden;rotate:7deg;box-shadow:0 22px 40px -14px rgba(0,0,0,.7);animation:h2float 5.5s ease-in-out .4s infinite}
+.h2-phone i{aspect-ratio:1;background:#0f172a}.h2-phone i.o{background:transparent}
+.h2-phone::after{content:"";position:absolute;left:0;right:0;height:3px;background:#22c55e;box-shadow:0 0 12px 3px #22c55e;animation:dmScan 1.8s ease-in-out infinite alternate}
+@keyframes h2up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes h2float{0%,100%{translate:0 0}50%{translate:0 -10px}}
+@keyframes h2card{0%,100%{translate:0 0;rotate:-6deg}50%{translate:0 -8px;rotate:-3deg}}
+@media(max-width:900px){.hero.hero2{grid-template-columns:1fr!important;padding:28px 22px!important}.h2-art{display:none}}
+@media(prefers-reduced-motion:reduce){.hero2 *{animation:none!important}}
+</style>
+<style>
+/* ===== v9: nút và tính năng trên banner ===== */
+.hero2 .hero-cta{display:grid!important;grid-template-columns:repeat(3,1fr);gap:10px!important;max-width:540px;margin-top:22px!important}
+.hero2 .hero-cta .hero-btn-main{grid-column:1/-1;justify-content:center;text-align:center}
+.hero2 .hero-cta .hero-btn-alt{display:flex;align-items:center;justify-content:center;gap:7px;padding:12px 8px!important;font-size:14px;white-space:nowrap}
+.h2-feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(172px,1fr));gap:10px;margin-top:22px;max-width:640px}
+.ft{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:#fff;text-align:left;font-family:var(--font-sans);transition:transform .2s,background .2s,border-color .2s}
+.ft i{flex:none;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;font-style:normal;font-size:19px;background:rgba(255,255,255,.12)}
+.ft b{display:block;font-size:13.5px;font-weight:800;line-height:1.2}
+.ft small{display:block;margin-top:2px;font-size:11.5px;font-weight:600;color:#a5b4fc;line-height:1.25}
+.ft.qr{cursor:pointer;background:rgba(253,224,71,.12);border-color:rgba(253,224,71,.55);animation:ftPulse 2.8s ease-in-out infinite}
+.ft.qr i{background:rgba(253,224,71,.22)}.ft.qr b{color:#fde047}.ft.qr small{color:#fde68a}
+.ft.qr:hover{transform:translateY(-2px);background:rgba(253,224,71,.2)}
+@keyframes ftPulse{0%,100%{box-shadow:0 0 0 0 rgba(253,224,71,.0)}50%{box-shadow:0 0 0 6px rgba(253,224,71,.12)}}
+@media(max-width:560px){.h2-feats{grid-template-columns:1fr 1fr}.ft{padding:9px 10px}.ft i{width:34px;height:34px}.hero2 .hero-cta .hero-btn-alt{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.ft.qr{animation:none}}
+</style>
 </head>
 <body class="locked">
 
@@ -1661,23 +1714,26 @@ header::after{content:'';position:absolute;left:0;right:0;bottom:0;height:3px;ba
     <main>
         <!-- 1. DASHBOARD VIEW -->
         <section id="view-dashboard" class="view-section active">
-            <div class="hero">
-                <div>
-                    <span class="hero-tag">🎓 Kiểm tra trắc nghiệm bằng thẻ giấy</span>
-                    <h1>Xin chào, <span id="hero-name">thầy cô</span>! 👋</h1>
-                    <p>Chiếu câu hỏi, học sinh giơ thẻ A/B/C/D, thầy cô quét cả lớp rồi <b>công bố đáp án</b> và xem ngay em nào đúng, em nào sai.</p>
-                    <div class="hero-chips">
-                        <span>📝 Soạn đề / tải đề LaTeX</span><span>🖥️ Trình chiếu đẹp, tự co chữ</span><span>🪪 In thẻ A5 · PDF</span>
-                        <button onclick="openQrModal()" title="Mở mã QR để kết nối điện thoại">📱 ĐT quét mã QR</button><span>📊 Kết quả từng em ngay lập tức</span><span>🏫 Nhiều lớp</span>
-                    </div>
+            <div class="hero hero2">
+                <div class="h2-main">
+                    <div class="h2-brand"><span class="lg" style="width:68px;height:68px;border-radius:20px"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="15" y="15" width="34" height="34" rx="7" fill="#fff" transform="rotate(8 32 32)"/><circle cx="32" cy="10.5" r="5" fill="#ef4444" stroke="#fff" stroke-width="1.6"/><circle cx="53.5" cy="32" r="5" fill="#3b82f6" stroke="#fff" stroke-width="1.6"/><circle cx="32" cy="53.5" r="5" fill="#f59e0b" stroke="#fff" stroke-width="1.6"/><circle cx="10.5" cy="32" r="5" fill="#10b981" stroke="#fff" stroke-width="1.6"/><path d="M23.5 33l6.5 6.5 11.5-13.5" stroke="#4f46e5" stroke-width="4.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>ĐỀ THI SỐ</b><small>Kiểm tra trắc nghiệm bằng thẻ giấy</small></div></div>
+                    <h1>Xin chào, <span id="hero-name">thầy cô</span>! <span class="h2-wave">👋</span></h1>
+                    <p>Chiếu câu hỏi, học sinh giơ thẻ A/B/C/D, thầy cô quét cả lớp bằng <b>camera hoặc điện thoại</b>, rồi <b>công bố đáp án</b> và xem ngay em nào đúng, em nào sai.</p>
                     <div class="hero-cta">
                         <button class="btn hero-btn-main" onclick="startPresentation()">▶ Bắt đầu trình chiếu</button>
-                        <button class="btn hero-btn-alt" onclick="switchTab('quizzes')">📝 Soạn đề</button>
-                        <button class="btn hero-btn-alt" onclick="openVideoModal()">🎬 Video hướng dẫn</button>
-                        <button class="btn hero-btn-alt" onclick="openDemo()">🎞 Demo hoạt ảnh (40 giây)</button>
+                        <button class="btn hero-btn-alt" onclick="switchTab('quizzes')" title="Soạn hoặc tải đề lên"><span>📝</span> Soạn đề</button>
+                        <button class="btn hero-btn-alt" onclick="openVideoModal()" title="Video hướng dẫn sử dụng"><span>🎬</span> Video</button>
+                        <button class="btn hero-btn-alt" onclick="openDemo()" title="Demo hoạt ảnh 40 giây"><span>🎞</span> Demo 40s</button>
                     </div>
+                    <div class="h2-feats"><div class="ft"><i>📝</i><span><b>Soạn đề</b><small>Gõ hoặc tải đề LaTeX</small></span></div><div class="ft"><i>🖥️</i><span><b>Trình chiếu</b><small>Đẹp, tự co chữ</small></span></div><div class="ft"><i>🪪</i><span><b>In thẻ</b><small>A5 · tải PDF</small></span></div><button class="ft qr" onclick="openQrModal()" title="Mở mã QR để kết nối điện thoại"><i>📱</i><span><b>ĐT quét mã QR</b><small>Bấm để mở mã kết nối</small></span></button><div class="ft"><i>📊</i><span><b>Kết quả</b><small>Từng em, tức thì</small></span></div><div class="ft"><i>🏫</i><span><b>Nhiều lớp</b><small>Nhập từ Excel mẫu</small></span></div></div>
                 </div>
-                <div class="hero-art"><i>A</i><i>B</i><i>C</i><i>D</i></div>
+                <div class="h2-art" aria-hidden="true">
+                    <div class="h2-glow"></div>
+                    <div class="h2-card" id="h2-card"></div>
+                    <i class="h2-t" style="--c:#ef4444;left:2%;top:6%;--r:-10deg">A</i><i class="h2-t" style="--c:#3b82f6;right:4%;top:0;--r:9deg;animation-delay:.7s">B</i>
+                    <i class="h2-t" style="--c:#f59e0b;left:6%;bottom:2%;--r:7deg;animation-delay:1.3s">C</i><i class="h2-t" style="--c:#10b981;right:30%;bottom:-2%;--r:-8deg;animation-delay:1.9s">D</i>
+                    <div class="h2-phone" id="h2-phone"></div>
+                </div>
             </div>
 
             <div class="stat-grid">
@@ -4537,6 +4593,17 @@ function qHTML(text) {
     while ((m = re.exec(text))) { out += clean(text.slice(last, m.index)) + texTableHTML(m[0]); last = m.index + m[0].length; }
     return out + clean(text.slice(last));
 }
+
+// ===== v8: vẽ thẻ và điện thoại cho màn hình Xin chào =====
+(function () {
+    const card = document.getElementById('h2-card'), ph = document.getElementById('h2-phone'); if (!card || !ph) return;
+    let g = '', code = 0b1011001110010110, cs = 15, gx = 86 - cs * 3, gy = 122 - cs * 3;
+    for (let r = 0; r < 6; r++) for (let c = 0; c < 6; c++) if (r % 5 === 0 || c % 5 === 0 || (code >> ((r - 1) * 4 + c - 1)) & 1) g += `<rect x="${gx + c * cs}" y="${gy + r * cs}" width="${cs}" height="${cs}" fill="#0f172a"/>`;
+    const bx = (x, y, L, rot) => `<g transform="rotate(${rot} ${x} ${y})"><rect x="${x - 15}" y="${y - 15}" width="30" height="30" rx="8" fill="#fff" stroke="#0f172a" stroke-width="3"/><text x="${x}" y="${y + 8}" text-anchor="middle" font-family="Nunito,Inter,Arial" font-weight="900" font-size="22" fill="#0f172a">${L}</text></g>`;
+    card.innerHTML = `<svg viewBox="0 0 172 244" aria-hidden="true">${g}${bx(86, 24, 'A', 0)}${bx(86, 220, 'C', 180)}${bx(22, 122, 'D', -90)}${bx(150, 122, 'B', 90)}</svg>`;
+    let q = ''; for (let r = 0; r < 9; r++) for (let c = 0; c < 9; c++) { const e = (r < 3 && c < 3) || (r < 3 && c > 5) || (r > 5 && c < 3); q += '<i class="' + (e || (r * 7 + c * 3 + r * c) % 3 ? '' : 'o') + '"></i>'; }
+    ph.innerHTML = q;
+})();
 </script>
 
 <div id="demo-modal" onclick="if(event.target===this)closeDemo()">
